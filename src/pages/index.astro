@@ -121,6 +121,34 @@ const process = [
     </div>
   </section>
 
+  <!-- FIBERLYTIC -->
+  <section class="section fl bg-ink" id="fiberlytic">
+    <div class="wrap">
+      <div class="grid fl__head">
+        <div class="fl__title">
+          <span class="label">Operations platform</span>
+          <h2 class="h2">Our crews run on <span class="gold">FiberLytic.</span></h2>
+        </div>
+        <div class="fl__copy">
+          <p class="lead">FiberLytic is the operating system for fiber construction. We use it to run our field operations: production by span, GPS-stamped photos, redlines and closeout in one place, from the bucket to the office.</p>
+          <a class="link" href="https://fiberlytic.com" rel="noopener" target="_blank">fiberlytic.com <Arrow /></a>
+        </div>
+      </div>
+      <figure class="fl__film" data-reveal>
+        <div class="fl__frame" data-film>
+          <video preload="none" playsinline poster="/img/photos/fiberlytic-film-poster.webp" width="1280" height="720" aria-label="NextGen Fiber crews in the field using FiberLytic">
+            <source src="/video/nextgen-fiberlytic.mp4" type="video/mp4" />
+          </video>
+          <button class="fl__play" type="button" data-play aria-label="Play film, 1 minute 30 seconds">
+            <span class="fl__play-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" /></svg></span>
+            <span class="fl__play-txt">Watch the film <span class="annot">1:30</span></span>
+          </button>
+        </div>
+        <figcaption class="annot fl__cap">NextGen Fiber crews in the field · Filmed by SPM Creative</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- PROCESS -->
   <section class="section process bg-stone">
     <div class="wrap">
@@ -225,6 +253,23 @@ const process = [
   .proof__media { grid-column: 7 / -1; margin: 0; display: grid; gap: .8rem; }
   .proof__media img { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
 
+  /* FIBERLYTIC */
+  .fl__head { row-gap: 1.5rem; align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .fl__title { grid-column: 1 / span 6; display: grid; gap: 1.2rem; }
+  .fl__copy { grid-column: 8 / -1; display: grid; gap: 1.2rem; justify-items: start; }
+  .fl__copy .link { color: var(--ivory); }
+  .fl__film { margin: 0; display: grid; gap: .9rem; }
+  .fl__frame { position: relative; border-radius: var(--radius); overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
+  .fl__frame video { width: 100%; height: 100%; object-fit: cover; }
+  .fl__play { position: absolute; left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); display: inline-flex; align-items: center; gap: 1rem; padding: .6rem 1.2rem .6rem .6rem; border: 0; border-radius: var(--radius); background: rgba(16, 16, 16, .78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: var(--ivory); font: inherit; font-weight: 700; cursor: pointer; }
+  .fl__play-ico { display: grid; place-items: center; width: 48px; height: 48px; background: var(--gold); color: var(--ink); border-radius: var(--radius); transition: transform var(--t-med) var(--ease); }
+  .fl__play-ico svg { width: 22px; height: 22px; }
+  .fl__play:hover .fl__play-ico { transform: scale(1.06); }
+  .fl__play-txt { display: grid; gap: .1rem; text-align: left; }
+  .fl__play-txt .annot { color: rgba(247, 246, 242, .6); }
+  .fl__frame.is-playing .fl__play { display: none; }
+  .fl__cap { color: rgba(247, 246, 242, .5); }
+
   /* PROCESS */
   .process__head { margin-bottom: 3.5rem; }
   .process__head > div { grid-column: 1 / span 7; display: grid; gap: 1.2rem; }
@@ -251,6 +296,7 @@ const process = [
     .hero__visual { max-width: 640px; }
     .svc__head { grid-column: 1 / -1; position: static; }
     .svc__list { grid-column: 1 / -1; }
+    .fl__title, .fl__copy,
     .field__media, .field__copy, .proof__copy, .proof__media, .where__head, .where__list { grid-column: 1 / -1; }
     .process__steps { grid-template-columns: repeat(2, 1fr); }
   }
@@ -268,5 +314,19 @@ const process = [
     .process__steps { grid-template-columns: 1fr; gap: 2.5rem; }
     .where__list { grid-template-columns: 1fr; }
     .field__tag { position: static; display: block; margin-top: .75rem; }
+    .fl__play { padding: .4rem; }
+    .fl__play-txt { display: none; }
   }
 </style>
+
+<script>
+  // The film loads only when asked for; native controls take over after play.
+  document.querySelectorAll<HTMLElement>('[data-film]').forEach((frame) => {
+    const video = frame.querySelector('video') as HTMLVideoElement;
+    frame.querySelector('[data-play]')?.addEventListener('click', () => {
+      frame.classList.add('is-playing');
+      video.controls = true;
+      video.play();
+    });
+  });
+</script>
