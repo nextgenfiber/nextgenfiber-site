@@ -19,7 +19,19 @@ const process = [
   <section class="hero" aria-label="Introduction">
     <div class="hero__media" aria-hidden="true">
       <img class="hero__poster" src="/img/photos/hero-poster.webp" srcset="/img/photos/hero-poster-800.webp 800w, /img/photos/hero-poster-1280.webp 1280w, /img/photos/hero-poster.webp 1920w" sizes="100vw" width="1920" height="1080" alt="" fetchpriority="high" decoding="async" />
-      <video class="hero__video" muted loop playsinline preload="none" width="1920" height="1080" data-hero-video data-src="/video/hero-loop-1080.mp4" data-src-small="/video/hero-loop-720.mp4"></video>
+      <video class="hero__video" muted loop playsinline preload="auto" width="1920" height="1080" data-hero-video></video>
+      <script is:inline>
+        // Start the hero loop as soon as the element exists (not after page
+        // load). Skipped for reduced motion and Save-Data / slow connections.
+        (function () {
+          var v = document.querySelector('[data-hero-video]');
+          var c = navigator.connection || {};
+          if (!v || matchMedia('(prefers-reduced-motion: reduce)').matches || c.saveData || /2g|3g/.test(c.effectiveType || '')) return;
+          v.addEventListener('playing', function () { v.classList.add('is-playing'); }, { once: true });
+          v.src = innerWidth >= 900 ? '/video/hero-loop-1080.mp4' : '/video/hero-loop-720.mp4';
+          var p = v.play(); if (p && p.catch) p.catch(function () {});
+        })();
+      </script>
       <div class="hero__shade"></div>
     </div>
     <div class="wrap hero__inner">
@@ -220,7 +232,7 @@ const process = [
   .hero__media, .hero__poster, .hero__video, .hero__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
   .hero__media { z-index: -1; }
   .hero__poster, .hero__video { object-fit: cover; }
-  .hero__video { opacity: 0; transition: opacity 1.2s var(--ease); }
+  .hero__video { opacity: 0; transition: opacity .35s linear; }
   .hero__video.is-playing { opacity: 1; }
   .hero__shade { background: linear-gradient(90deg, rgba(13,13,12,.62) 0%, rgba(13,13,12,.25) 45%, rgba(13,13,12,0) 70%), linear-gradient(180deg, rgba(13,13,12,.55) 0%, rgba(13,13,12,.05) 26%, rgba(13,13,12,.1) 55%, rgba(13,13,12,.78) 100%); }
   .hero__inner { padding-block: 9rem clamp(3.5rem, 7vw, 6rem); display: grid; gap: 1.4rem; justify-items: start; }
@@ -355,21 +367,9 @@ const process = [
 </style>
 
 <script>
-  // Hero loop: the poster paints first; the clip starts after load, never with
-  // reduced motion or Save-Data.
-  const hv = document.querySelector<HTMLVideoElement>('[data-hero-video]');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
   const saveData = conn?.saveData || /(^|-)2g|3g/.test(conn?.effectiveType || '');
-  if (hv && !reduce && !saveData) {
-    const start = () => {
-      // Full HD on wide screens; a lighter 720p cut on phones.
-      hv.src = (innerWidth >= 900 ? hv.dataset.src : hv.dataset.srcSmall) || '';
-      hv.addEventListener('playing', () => hv.classList.add('is-playing'), { once: true });
-      hv.play().catch(() => {});
-    };
-    if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
-  }
 
   // The FiberLytic film plays by itself, muted, whenever it is on screen and
   // pauses when it leaves. Sound is one tap away. Reduced motion / Save-Data:
