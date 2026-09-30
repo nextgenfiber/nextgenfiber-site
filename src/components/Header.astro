@@ -19,10 +19,6 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
         ))}
       </ul>
     </nav>
-    <div class="hdr__cta">
-      <a class="hdr__phone" href={company.phoneHref}>{company.phone}</a>
-      <a class="btn btn--small" href="/contact">Request a bid <Arrow /></a>
-    </div>
     <button class="hdr__menu" type="button" aria-expanded="false" aria-controls="mnav" data-menu>
       <span class="sr-only">Menu</span><span></span><span></span>
     </button>
@@ -33,7 +29,6 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
         {nav.map((n, i) => (
           <li><a href={n.href}><span class="index"><b>0{i + 1}</b></span>{n.label}</a></li>
         ))}
-        <li><a href="/contact"><span class="index"><b>0{nav.length + 1}</b></span>Request a bid</a></li>
       </ul>
       <div class="mnav__foot">
         <a class="btn btn--gold" href={company.phoneHref}>Call {company.phone} <Arrow /></a>
@@ -48,8 +43,8 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
   .hdr.is-scrolled { background: rgba(247, 246, 242, .86); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom-color: var(--line); }
   .hdr__row { display: flex; align-items: center; gap: 2rem; height: 76px; }
   .hdr__brand { text-decoration: none; margin-right: auto; }
-  .hdr__nav ul { display: flex; gap: clamp(1.2rem, 2.2vw, 2.4rem); list-style: none; margin: 0; padding: 0; }
-  .hdr__link { position: relative; font-size: .92rem; font-weight: 600; text-decoration: none; color: var(--ink-3); padding-block: .5rem; }
+  .hdr__nav ul { display: flex; gap: clamp(1.6rem, 3vw, 3.2rem); list-style: none; margin: 0; padding: 0; }
+  .hdr__link { position: relative; font-size: .74rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; text-decoration: none; color: var(--ink-3); padding-block: .5rem; }
   .hdr__link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform var(--t-med) var(--ease); }
   .hdr__link:hover::after, .hdr__link.is-active::after { transform: scaleX(1); }
   .hdr__link.is-active { color: var(--ink); }
@@ -67,8 +62,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
   .mnav ul { list-style: none; margin: 0; padding: 0; }
   .mnav li a { display: flex; align-items: baseline; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); font-size: 1.9rem; font-weight: 700; letter-spacing: -.03em; text-decoration: none; }
   .mnav__foot { display: grid; gap: 1.25rem; justify-items: start; }
-  @media (max-width: 1080px) { .hdr__nav, .hdr__phone { display: none; } }
-  @media (max-width: 720px) { .hdr__cta { display: none; } .hdr__menu { display: block; } .hdr__row { height: 68px; } .mnav { inset: 68px 0 0; } }
+  @media (max-width: 720px) { .hdr__nav { display: none; } .hdr__menu { display: block; } .hdr__row { height: 68px; } .mnav { inset: 68px 0 0; } }
 </style>
 
 <script>

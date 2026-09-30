@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Arrow from './Arrow.astro';
-import { company, addressLine, nav, states } from '../data/site';
+import { company, states } from '../data/site';
 import { services } from '../data/services';
 const year = new Date().getFullYear();
 ---
@@ -13,7 +13,7 @@ const year = new Date().getFullYear();
         <p class="h2">Crews for your next<br /> fiber build. <span class="gold">Start here.</span></p>
       </div>
       <div class="ftr__cta-act">
-        <a class="btn btn--gold" href="/contact">Request a bid <Arrow /></a>
+        <a class="btn btn--gold" href="/contact">Get a quote <Arrow /></a>
         <a class="btn btn--ghost" href={company.phoneHref}>{company.phone}</a>
       </div>
     </div>
@@ -30,7 +30,10 @@ const year = new Date().getFullYear();
       <nav class="ftr__col" aria-label="Company">
         <span class="label">Company</span>
         <ul>
-          {nav.filter((n) => n.href !== '/services').map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/safety">Safety</a></li>
+          <li><a href="/careers">Careers</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
       </nav>

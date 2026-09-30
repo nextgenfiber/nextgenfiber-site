@@ -53,7 +53,6 @@ export const safetyMetrics: { label: string; value: string }[] = [];
 export const nav = [
   { href: '/services', label: 'Services' },
   { href: '/projects', label: 'Projects' },
-  { href: '/safety', label: 'Safety' },
-  { href: '/company', label: 'Company' },
-  { href: '/careers', label: 'Careers' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
 ];

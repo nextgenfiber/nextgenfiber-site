@@ -19,11 +19,11 @@ const process = [
     <div class="wrap grid hero__grid">
       <div class="hero__copy">
         <span class="label" data-reveal>Fiber construction subcontractor · Knoxville, TN</span>
-        <h1 class="h1" data-reveal data-reveal-delay="1">The crews behind the fiber networks of the Southeast.</h1>
-        <p class="lead" data-reveal data-reveal-delay="2">Aerial, underground and splicing crews for prime contractors. We build to print, document every span and hand over closeout packages that don't hold up your billing.</p>
+        <h1 class="h1 hero__h1" data-reveal data-reveal-delay="1">Precision<br />infrastructure<br />for the next<br /><span class="gold">connection.</span></h1>
+        <p class="lead" data-reveal data-reveal-delay="2">We build and deploy fiber infrastructure designed for performance, reliability and scale.</p>
         <div class="hero__act" data-reveal data-reveal-delay="3">
-          <a class="btn" href="/contact">Request a bid <Arrow /></a>
-          <a class="btn btn--ghost" href="/services">Our capabilities</a>
+          <a class="btn" href="/contact">Get a quote <Arrow /></a>
+          <a class="btn btn--ghost" href="/services">Our services</a>
         </div>
         <ul class="hero__caps annot" data-reveal data-reveal-delay="4">
           <li>Aerial</li><li>Underground / HDD</li><li>Fiber pulling</li><li>Splicing & testing</li>
@@ -177,7 +177,9 @@ const process = [
   .hero { padding-block: clamp(2.5rem, 6vw, 6rem) clamp(3rem, 6vw, 5rem); overflow: hidden; }
   .hero__grid { align-items: center; row-gap: 3rem; }
   .hero__copy { grid-column: 1 / span 6; display: grid; gap: 1.6rem; }
-  .hero__copy .h1 { max-width: 13ch; }
+  /* Sized so the longest line (INFRASTRUCTURE, ~8.4em wide) fits its column. */
+  .hero__h1 { text-transform: uppercase; font-size: min(4.9rem, 5.1vw); letter-spacing: -.035em; line-height: .95; }
+  @media (max-width: 1080px) { .hero__h1 { font-size: min(4.6rem, 9.8vw); } }
   .hero__act { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .5rem; }
   .hero__caps { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; list-style: none; padding: 0; margin: .5rem 0 0; }
   .hero__caps li { display: inline-flex; align-items: center; gap: .5rem; }
@@ -252,12 +254,14 @@ const process = [
     .field__media, .field__copy, .proof__copy, .proof__media, .where__head, .where__list { grid-column: 1 / -1; }
     .process__steps { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 720px) {
+  @media (max-width: 1080px) {
     .stats__row { grid-template-columns: 1fr 1fr; }
     .stat { padding: 1.5rem 1rem 1.6rem 0; }
     .stat:nth-child(2) { border-right: 0; }
     .stat:nth-child(3) { padding-left: 0; }
     .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 720px) {
     .svc__row { grid-template-columns: 2.6rem 1fr 1.5rem; gap: .5rem 1rem; padding: 1.5rem 0; }
     .svc__short { grid-column: 2 / 3; font-size: .95rem; }
     .svc__go { grid-row: 1; grid-column: 3; }
