@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import Arrow from '../components/Arrow.astro';
-import RouteSchematic from '../components/RouteSchematic.astro';
 import Photo from '../components/Photo.astro';
 import USMap from '../components/USMap.astro';
 import { jobsites, hq, extraStates } from '../data/jobsites';
@@ -117,7 +116,6 @@ const process = [
     <div class="wrap">
       <header class="process__head grid">
         <div class="process__title"><span class="label">How we work</span><h2 class="h2" data-split>From award to closeout.</h2></div>
-        <div class="process__fig"><RouteSchematic /></div>
       </header>
       <ol class="process__steps">
         {process.map((p, i) => (
