@@ -39,6 +39,24 @@ if ((x1 - x0) / (y1 - y0) < ratio) { const w = (y1 - y0) * ratio, c = (x0 + x1) 
 else { const h = (x1 - x0) / ratio, c = (y0 + y1) / 2; y0 = c - h / 2; y1 = c + h / 2; }
 const vb = `${x0.toFixed(1)} ${y0.toFixed(1)} ${(x1 - x0).toFixed(1)} ${(y1 - y0).toFixed(1)}`;
 const k = (x1 - x0) / 975; // scale factor for text and dots in the zoomed view
+// Labels: try right, left, above, below; keep the first spot that clears the
+// labels already placed and the office tag.
+const fs = 10.5 * k, cw = 0.58 * fs;
+const boxes: number[][] = [[hx - 6 * k, hy - 26 * k, hx + 16 * k + hq.name.length * 14 * k * 0.6, hy + 6 * k]];
+const hit = (b: number[]) => boxes.some((o) => b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]);
+const labels = placed.filter((s) => s.label).map((s) => {
+  const [x, y] = s.xy, w = s.name.length * cw, h = fs;
+  const tries = [
+    { dx: 7 * k, dy: 3.5 * k, anchor: 'start', b: [x + 6 * k, y - h * .6, x + 6 * k + w, y + h * .5] },
+    { dx: -7 * k, dy: 3.5 * k, anchor: 'end', b: [x - 6 * k - w, y - h * .6, x - 6 * k, y + h * .5] },
+    { dx: 0, dy: -8 * k, anchor: 'middle', b: [x - w / 2, y - 8 * k - h, x + w / 2, y - 7 * k] },
+    { dx: 0, dy: 14 * k, anchor: 'middle', b: [x - w / 2, y + 4 * k, x + w / 2, y + 15 * k] },
+  ];
+  const t = tries.find((c) => !hit(c.b));
+  if (!t) return null;
+  boxes.push(t.b);
+  return { ...s, ...t };
+}).filter(Boolean) as any[];
 const stateLabels = states
   .filter((f) => worked.has(f.properties.name))
   .map((f) => ({ name: f.properties.name, c: path.centroid(f) }));
@@ -53,9 +71,6 @@ const stateLabels = states
       ))}
     </g>
     <path class="usmap__borders" d={borders} />
-    {stateLabels.map((l) => (
-      <text class="usmap__label" x={l.c[0].toFixed(1)} y={(l.c[1] + 26 * k).toFixed(1)} font-size={(12 * k).toFixed(2)}>{l.name}</text>
-    ))}
     <g class="usmap__routes draw">
       {placed.map((s) => <path d={arc(s.xy)} stroke-width={(1.3 * k).toFixed(2)} />)}
     </g>
@@ -63,9 +78,13 @@ const stateLabels = states
       {placed.map((s) => (
         <g transform={`translate(${s.xy[0].toFixed(1)} ${s.xy[1].toFixed(1)})`}>
           <circle r={(4 * k).toFixed(2)} stroke-width={(1.4 * k).toFixed(2)} />
-          <text x={(7 * k).toFixed(2)} y={(3.5 * k).toFixed(2)} font-size={(10.5 * k).toFixed(2)} stroke-width={(3 * k).toFixed(2)}>{s.name}</text>
           <title>{`${s.name}, ${s.state}${s.work ? ' · ' + s.work : ''}`}</title>
         </g>
+      ))}
+    </g>
+    <g class="usmap__names">
+      {labels.map((l) => (
+        <text x={(l.xy[0] + l.dx).toFixed(1)} y={(l.xy[1] + l.dy).toFixed(1)} text-anchor={l.anchor} font-size={fs.toFixed(2)} stroke-width={(3 * k).toFixed(2)}>{l.name}</text>
       ))}
     </g>
     <g class="usmap__hq" transform={`translate(${hx.toFixed(1)} ${hy.toFixed(1)})`}>
@@ -94,7 +113,7 @@ const stateLabels = states
   .usmap__zoom { fill: none; stroke: var(--gold); stroke-width: 2; vector-effect: non-scaling-stroke; }
   .usmap__routes path { fill: none; stroke: var(--gold); opacity: .7; }
   .usmap__sites circle { fill: var(--gold); stroke: var(--ink); }
-  .usmap__sites text { font-family: var(--font); font-weight: 600; fill: var(--ivory); paint-order: stroke; stroke: var(--ink); stroke-linejoin: round; }
+  .usmap__names text { font-family: var(--font); font-weight: 600; fill: var(--ivory); paint-order: stroke; stroke: var(--ink); stroke-linejoin: round; }
   .usmap__hq circle { fill: var(--gold); }
   .usmap__hq .usmap__hq-ring { fill: none; stroke: var(--gold); }
   .usmap__hq text { font-family: var(--font); font-weight: 750; fill: var(--gold); paint-order: stroke; stroke: var(--ink); stroke-linejoin: round; }

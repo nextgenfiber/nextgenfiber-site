@@ -13,7 +13,7 @@ const approved = clients.filter((c) => c.approved);
 const byState = Object.entries(Object.groupBy(jobsites, (j) => j.state)) as [string, typeof jobsites][];
 byState.sort((a, b) => b[1].length - a[1].length);
 ---
-<Base title="Projects" description="Fiber construction record of NextGen Fiber: millions of feet of aerial fiber built for prime contractor programs in Tennessee, Alabama, North Carolina and Virginia.">
+<Base title="Projects" description="Fiber construction record of NextGen Fiber: millions of feet of aerial fiber built for prime contractor programs in Tennessee, Alabama, North Carolina, South Carolina and Virginia.">
   <PageHead label="Projects" title="The record, in feet." lead="We report what was invoiced, not what was estimated. Program owners and prime contractors are named only with their written approval." marker={0.3} />
 
   <section class="section pj">

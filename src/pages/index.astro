@@ -98,7 +98,7 @@ const process = [
           <div><dt class="label">Mobilization</dt><dd>Typically within 48 hours of award</dd></div>
           <div><dt class="label">Underground</dt><dd>Own directional drill (Vermeer D20x22) and missile crews</dd></div>
           <div><dt class="label">Documentation</dt><dd>GPS-stamped photos, redlines, as-builts and OTDR results</dd></div>
-          <div><dt class="label">Coverage</dt><dd>Tennessee, Alabama, North Carolina and Virginia</dd></div>
+          <div><dt class="label">Coverage</dt><dd>Tennessee, Alabama, the Carolinas and Virginia</dd></div>
         </dl>
       </div>
     </div>
@@ -130,25 +130,25 @@ const process = [
     <div class="wrap">
       <div class="grid fl__head">
         <div class="fl__title">
-          <span class="label">Operations platform</span>
+          <span class="label">Technology partner</span>
+          <img class="fl__logo" src="/img/partners/fiberlytic-lockup.png" width="443" height="104" alt="FiberLytic" />
           <h2 class="h2" data-split>Our crews run on FiberLytic.</h2>
         </div>
         <div class="fl__copy">
-          <p class="lead">FiberLytic is the operating system for fiber construction. We use it to run our field operations: production by span, GPS-stamped photos, redlines and closeout in one place, from the bucket to the office.</p>
+          <p class="lead">FiberLytic is the operating system for fiber construction, and NextGen Fiber runs its field operations on it: production by span, GPS-stamped photos, redlines and closeout in one place, from the bucket to the office.</p>
           <a class="link" href="https://fiberlytic.com" rel="noopener" target="_blank">fiberlytic.com <Arrow /></a>
         </div>
       </div>
-      <figure class="fl__film" data-reveal>
+      <figure class="fl__film">
         <div class="fl__frame" data-film>
-          <video preload="none" playsinline poster="/img/photos/fiberlytic-film-poster.webp" width="1920" height="1080" aria-label="NextGen Fiber crews in the field using FiberLytic">
-            <source src="/video/nextgen-fiberlytic.mp4" type="video/mp4" />
-          </video>
-          <button class="fl__play" type="button" data-play aria-label="Play film, 1 minute 30 seconds">
-            <span class="fl__play-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" /></svg></span>
-            <span class="fl__play-txt">Watch the film <span class="annot">1:30</span></span>
+          <video muted loop playsinline preload="none" poster="/img/photos/fiberlytic-film-poster.webp" width="1920" height="1080" aria-label="NextGen Fiber crews in the field using FiberLytic" data-src="/video/nextgen-fiberlytic.mp4" data-src-small="/video/nextgen-fiberlytic-720.mp4"></video>
+          <button class="fl__sound" type="button" data-sound aria-pressed="false">
+            <svg class="fl__ico fl__ico--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+            <svg class="fl__ico fl__ico--on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+            <span data-sound-label>Sound on</span>
           </button>
         </div>
-        <figcaption class="annot fl__cap">NextGen Fiber crews in the field · Filmed by SPM Creative</figcaption>
+        <figcaption class="annot fl__cap">NextGen Fiber crews in the field, filmed by SPM Creative for FiberLytic</figcaption>
       </figure>
     </div>
   </section>
@@ -187,7 +187,7 @@ const process = [
     <div class="wrap grid where__grid">
       <div class="where__head">
         <span class="label">Where we've built</span>
-        <h2 class="h2" data-split>Markets across four states.</h2>
+        <h2 class="h2" data-split>{markets.reduce((n, m) => n + m.places.length, 0)} markets across five states.</h2>
         <p class="lead">Programs supported through prime contractors for national and regional carriers. Based in Knoxville, working wherever the route goes.</p>
         <a class="link" href="/projects">See project work <Arrow /></a>
       </div>
@@ -290,19 +290,17 @@ const process = [
 
   /* FIBERLYTIC */
   .fl__head { row-gap: 1.5rem; align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
-  .fl__title { grid-column: 1 / span 6; display: grid; gap: 1.2rem; }
+  .fl__title { grid-column: 1 / span 6; display: grid; gap: 1.4rem; justify-items: start; }
   .fl__copy { grid-column: 8 / -1; display: grid; gap: 1.2rem; justify-items: start; }
   .fl__copy .link { color: var(--ivory); }
   .fl__film { margin: 0; display: grid; gap: .9rem; }
   .fl__frame { position: relative; border-radius: var(--radius); overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
   .fl__frame video { width: 100%; height: 100%; object-fit: cover; }
-  .fl__play { position: absolute; left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); display: inline-flex; align-items: center; gap: 1rem; padding: .5rem 1.4rem .5rem .5rem; border: 0; border-radius: var(--pill); background: rgba(16, 16, 16, .78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: var(--ivory); font: inherit; font-weight: 700; cursor: pointer; }
-  .fl__play-ico { display: grid; place-items: center; width: 48px; height: 48px; background: var(--gold); color: var(--ink); border-radius: 50%; transition: transform var(--t-med) var(--ease); }
-  .fl__play-ico svg { width: 22px; height: 22px; }
-  .fl__play:hover .fl__play-ico { transform: scale(1.06); }
-  .fl__play-txt { display: grid; gap: .1rem; text-align: left; }
-  .fl__play-txt .annot { color: rgba(247, 246, 242, .6); }
-  .fl__frame.is-playing .fl__play { display: none; }
+  .fl__logo { width: min(260px, 60%); height: auto; }
+  .fl__sound { position: absolute; right: clamp(.8rem, 2vw, 1.4rem); bottom: clamp(.8rem, 2vw, 1.4rem); display: inline-flex; align-items: center; gap: .5rem; padding: .55rem 1rem .55rem .8rem; border: 1px solid rgba(247,246,242,.35); border-radius: var(--pill); background: rgba(16,16,16,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: var(--ivory); font: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; transition: border-color var(--t-fast), background var(--t-fast); }
+  .fl__sound:hover { border-color: var(--ivory); background: rgba(16,16,16,.75); }
+  .fl__ico { width: 18px; height: 18px; }
+  .fl__sound[aria-pressed='false'] .fl__ico--on, .fl__sound[aria-pressed='true'] .fl__ico--off { display: none; }
   .fl__cap { color: rgba(247, 246, 242, .5); }
 
   /* PROCESS */
@@ -350,8 +348,6 @@ const process = [
     .process__steps { grid-template-columns: 1fr; gap: 2.5rem; }
     .where__list { grid-template-columns: 1fr; }
     .field__tag { position: static; display: block; margin-top: .75rem; }
-    .fl__play { padding: .4rem; }
-    .fl__play-txt { display: none; }
     .hero { margin-top: -68px; min-height: 86svh; }
     .hero__shade { background: linear-gradient(180deg, rgba(13,13,12,.6) 0%, rgba(13,13,12,.45) 40%, rgba(13,13,12,.85) 100%); }
     .hero__cap { position: static; padding: 0 var(--gutter) 1.2rem; }
@@ -375,13 +371,25 @@ const process = [
     if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
   }
 
-  // The film loads only when asked for; native controls take over after play.
+  // The FiberLytic film plays by itself, muted, whenever it is on screen and
+  // pauses when it leaves. Sound is one tap away. Reduced motion / Save-Data:
+  // it stays on the poster until the visitor turns sound on.
   document.querySelectorAll<HTMLElement>('[data-film]').forEach((frame) => {
     const video = frame.querySelector('video') as HTMLVideoElement;
-    frame.querySelector('[data-play]')?.addEventListener('click', () => {
-      frame.classList.add('is-playing');
-      video.controls = true;
-      video.play();
+    const btn = frame.querySelector<HTMLButtonElement>('[data-sound]');
+    const label = frame.querySelector<HTMLElement>('[data-sound-label]');
+    const auto = !reduce && !saveData;
+    const load = () => { if (!video.src) video.src = (innerWidth >= 900 ? video.dataset.src : video.dataset.srcSmall) || ''; };
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && (auto || !video.muted)) { load(); video.play().catch(() => {}); }
+      else if (!e.isIntersecting) video.pause();
+    }, { rootMargin: '200px 0px', threshold: 0.25 }).observe(frame);
+    btn?.addEventListener('click', () => {
+      load();
+      video.muted = !video.muted;
+      if (!video.muted) video.play().catch(() => {});
+      btn.setAttribute('aria-pressed', String(!video.muted));
+      if (label) label.textContent = video.muted ? 'Sound on' : 'Sound off';
     });
   });
 </script>

@@ -13,7 +13,7 @@ must trace to a line here. No source, no claim.
 | First invoiced production Apr 2023 | 04/10/2023 | First invoice in the ledger | 2026-09-29 |
 | Office in Knoxville, Sep 2026 | 1719 N Central St | Owner confirmation, 2026-09-29 | 2026-09-29 |
 | Vermeer D20x22 Series III drill | — | Owner confirmation (underground equipment) | 2026-09-29 |
-| Markets by state (`src/data/site.ts`) | TN, AL, NC, VA | Invoice ledger and Drive job folders | 2026-09-29 |
+| Job sites and markets (Projects map, home) | 55 sites in TN, AL, NC, SC, VA | ngf@ Gmail, one opened thread per site (production, debrief, closeout, claims); list and thread IDs kept in the 2026-09-30 research note. Only "confirmed" sites; "likely" ones (Carrollton GA, Illinois, Parsons TN, Carthage/Louisburg NC, Hanover/Augusta VA) left out. Coordinates: 2024 US Census Gazetteer. | 2026-09-30 |
 | Crew photos (home, services) | — | Stills from the SPM Creative FiberLytic film V5 (NextGen crews) | 2026-09-30 |
 | Daily tailboard and JHA (safety) | — | Company's own statement on site v1 | — |
 
