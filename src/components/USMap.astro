@@ -1,0 +1,103 @@
+---
+// US map drawn at build time (no client JS): state shapes from us-atlas
+// (pre-projected Albers USA, 975×610) and job sites projected with the same
+// d3 projection, so dots land exactly on the shapes.
+import { feature, mesh } from 'topojson-client';
+import { geoAlbersUsa, geoPath } from 'd3-geo';
+import us from 'us-atlas/states-albers-10m.json';
+import type { JobSite } from '../data/jobsites';
+
+interface Props { sites: JobSite[]; hq: { name: string; lat: number; lon: number } }
+const { sites, hq } = Astro.props;
+
+const projection = geoAlbersUsa().scale(1300).translate([487.5, 305]);
+const path = geoPath();
+const topo = us as any;
+const states = (feature(topo, topo.objects.states) as any).features as any[];
+const borders = path(mesh(topo, topo.objects.states, (a: any, b: any) => a !== b)) || '';
+const worked = new Set(sites.map((s) => s.stateName));
+
+const pt = (lon: number, lat: number) => projection([lon, lat]) as [number, number];
+const [hx, hy] = pt(hq.lon, hq.lat);
+const placed = sites
+  .map((s) => ({ ...s, xy: pt(s.lon, s.lat) }))
+  .filter((s) => s.xy);
+// A gentle arc from the Knoxville office to each site, like a fiber route.
+const arc = ([x, y]: [number, number]) => {
+  const mx = (hx + x) / 2, my = (hy + y) / 2;
+  const d = Math.hypot(x - hx, y - hy);
+  return `M${hx.toFixed(1)} ${hy.toFixed(1)} Q${mx.toFixed(1)} ${(my - d * 0.28).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
+};
+// Region view: bounding box of every site plus the office, padded, at the
+// frame's aspect ratio. The full US map becomes a small locator inset.
+const xs = [hx, ...placed.map((s) => s.xy[0])], ys = [hy, ...placed.map((s) => s.xy[1])];
+let [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+const padX = (x1 - x0) * 0.22 + 20, padY = (y1 - y0) * 0.18 + 20;
+x0 -= padX; x1 += padX; y0 -= padY; y1 += padY;
+const ratio = 16 / 10;
+if ((x1 - x0) / (y1 - y0) < ratio) { const w = (y1 - y0) * ratio, c = (x0 + x1) / 2; x0 = c - w / 2; x1 = c + w / 2; }
+else { const h = (x1 - x0) / ratio, c = (y0 + y1) / 2; y0 = c - h / 2; y1 = c + h / 2; }
+const vb = `${x0.toFixed(1)} ${y0.toFixed(1)} ${(x1 - x0).toFixed(1)} ${(y1 - y0).toFixed(1)}`;
+const k = (x1 - x0) / 975; // scale factor for text and dots in the zoomed view
+const stateLabels = states
+  .filter((f) => worked.has(f.properties.name))
+  .map((f) => ({ name: f.properties.name, c: path.centroid(f) }));
+---
+<figure class="usmap">
+  <svg class="usmap__region" viewBox={vb} role="img" aria-labelledby="usmap-title usmap-desc" style={`--k:${k.toFixed(3)}`}>
+    <title id="usmap-title">Where NextGen Fiber crews have worked</title>
+    <desc id="usmap-desc">{`Map of the Southeast United States. States worked: ${[...worked].join(', ')}. Job sites: ${placed.map((s) => s.name + ', ' + s.state).join('; ')}. Office in ${hq.name}.`}</desc>
+    <g>
+      {states.map((f) => (
+        <path d={path(f) || ''} class:list={['usmap__state', { 'is-worked': worked.has(f.properties.name) }]}><title>{f.properties.name}</title></path>
+      ))}
+    </g>
+    <path class="usmap__borders" d={borders} />
+    {stateLabels.map((l) => (
+      <text class="usmap__label" x={l.c[0].toFixed(1)} y={(l.c[1] + 26 * k).toFixed(1)} font-size={(12 * k).toFixed(2)}>{l.name}</text>
+    ))}
+    <g class="usmap__routes draw">
+      {placed.map((s) => <path d={arc(s.xy)} stroke-width={(1.3 * k).toFixed(2)} />)}
+    </g>
+    <g class="usmap__sites">
+      {placed.map((s) => (
+        <g transform={`translate(${s.xy[0].toFixed(1)} ${s.xy[1].toFixed(1)})`}>
+          <circle r={(4 * k).toFixed(2)} stroke-width={(1.4 * k).toFixed(2)} />
+          <text x={(7 * k).toFixed(2)} y={(3.5 * k).toFixed(2)} font-size={(10.5 * k).toFixed(2)} stroke-width={(3 * k).toFixed(2)}>{s.name}</text>
+          <title>{`${s.name}, ${s.state}${s.work ? ' · ' + s.work : ''}`}</title>
+        </g>
+      ))}
+    </g>
+    <g class="usmap__hq" transform={`translate(${hx.toFixed(1)} ${hy.toFixed(1)})`}>
+      <circle class="usmap__hq-ring" r={(12 * k).toFixed(2)} stroke-width={(1.6 * k).toFixed(2)} />
+      <circle r={(5.5 * k).toFixed(2)} />
+      <text x={(16 * k).toFixed(2)} y={(-10 * k).toFixed(2)} font-size={(14 * k).toFixed(2)} stroke-width={(4 * k).toFixed(2)}>{hq.name}</text>
+    </g>
+  </svg>
+  <svg class="usmap__inset" viewBox="0 0 975 610" aria-hidden="true">
+    {states.map((f) => <path d={path(f) || ''} class:list={['usmap__state', { 'is-worked': worked.has(f.properties.name) }]} />)}
+    <path class="usmap__borders" d={borders} />
+    <rect class="usmap__zoom" x={x0.toFixed(1)} y={y0.toFixed(1)} width={(x1 - x0).toFixed(1)} height={(y1 - y0).toFixed(1)} />
+  </svg>
+</figure>
+
+<style>
+  .usmap { margin: 0; position: relative; }
+  .usmap svg { display: block; }
+  .usmap__region { width: 100%; height: auto; border-radius: var(--radius); }
+  .usmap__inset { position: absolute; right: 0; bottom: 0; width: clamp(150px, 24%, 280px); height: auto; background: var(--ivory); padding: .6rem; border: 1px solid var(--line); border-radius: 8px; }
+  .usmap__state { fill: var(--stone); stroke: none; transition: fill var(--t-med) var(--ease); }
+  .usmap__state.is-worked { fill: var(--ink); }
+  .usmap__region .usmap__state:hover { fill: var(--steel); }
+  .usmap__region .usmap__state.is-worked:hover { fill: var(--ink-3); }
+  .usmap__borders { fill: none; stroke: var(--ivory); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+  .usmap__zoom { fill: none; stroke: var(--gold); stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .usmap__routes path { fill: none; stroke: var(--gold); opacity: .7; }
+  .usmap__sites circle { fill: var(--gold); stroke: var(--ink); }
+  .usmap__sites text { font-family: var(--font); font-weight: 600; fill: var(--ivory); paint-order: stroke; stroke: var(--ink); stroke-linejoin: round; }
+  .usmap__hq circle { fill: var(--gold); }
+  .usmap__hq .usmap__hq-ring { fill: none; stroke: var(--gold); }
+  .usmap__hq text { font-family: var(--font); font-weight: 750; fill: var(--gold); paint-order: stroke; stroke: var(--ink); stroke-linejoin: round; }
+  .usmap__label { font-family: var(--font); font-weight: 700; letter-spacing: .02em; fill: rgba(247, 246, 242, .32); text-anchor: middle; pointer-events: none; text-transform: uppercase; }
+  @media (max-width: 720px) { .usmap__inset { position: static; width: 60%; margin: 1rem 0 0 auto; } }
+</style>
