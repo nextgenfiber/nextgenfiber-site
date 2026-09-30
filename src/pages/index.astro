@@ -49,12 +49,11 @@ const process = [
   <!-- STATS -->
   <section class="stats" aria-label="Track record">
     <div class="wrap">
-      <div class="ticks"></div>
       <div class="stats__row">
         {stats.map((s, i) => (
           <div class="stat" data-reveal data-reveal-delay={String(i)}>
             <p class="stat-num">
-              {s.suffix ? <span data-count={String(s.value)}>{s.value}</span> : <span>{s.value}</span>}{s.suffix && <span class="gold">{s.suffix}</span>}
+              {s.suffix ? <span data-count={String(s.value)}>{s.value}</span> : <span>{s.value}</span>}{s.suffix && <span>{s.suffix}</span>}
               {s.unit && <span class="stat__unit">{s.unit}</span>}
             </p>
             <p class="stat__label">{s.label}</p>
@@ -251,6 +250,7 @@ const process = [
   @media (prefers-reduced-motion: reduce) { .ticker__track { animation: none; } }
 
   /* STATS */
+  .stats { padding-top: clamp(3.5rem, 6vw, 5.5rem); }
   .stats__row { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
   .stat { padding: 2rem 1.5rem 2.2rem 0; display: grid; gap: .8rem; border-right: 1px solid var(--line); }
   .stat + .stat { padding-left: 1.5rem; }
