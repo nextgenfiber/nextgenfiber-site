@@ -14,7 +14,7 @@ must trace to a line here. No source, no claim.
 | Office in Knoxville, Sep 2026 | 1719 N Central St | Owner confirmation, 2026-09-29 | 2026-09-29 |
 | Vermeer D20x22 Series III drill | — | Owner confirmation (underground equipment) | 2026-09-29 |
 | Markets by state (`src/data/site.ts`) | TN, AL, NC, VA | Invoice ledger and Drive job folders | 2026-09-29 |
-| Falkville, AL photo, Apr 2026 | — | Closeout photo in Drive (Timemark overlay) | 2026-09-29 |
+| Crew photos (home, services) | — | Stills from the SPM Creative FiberLytic film V5 (NextGen crews) | 2026-09-30 |
 | Daily tailboard and JHA (safety) | — | Company's own statement on site v1 | — |
 
 ## Not on the site until documented
