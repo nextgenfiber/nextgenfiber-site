@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Arrow from '../components/Arrow.astro';
+import { stats, markets, clients } from '../data/site';
+
+// Program types measured in the invoice ledger (Apr 2023 – Jul 2026).
+// Figures are per line item and are never added together.
+const record = stats.filter((s) => s.unit);
+const approved = clients.filter((c) => c.approved);
+---
+<Base title="Projects" description="Fiber construction record of NextGen Fiber: millions of feet of aerial fiber built for prime contractor programs in Tennessee, Alabama, North Carolina and Virginia.">
+  <PageHead label="Projects" title="The record, in feet." lead="We report what was invoiced, not what was estimated. Program owners and prime contractors are named only with their written approval." marker={0.3} />
+
+  <section class="section pj">
+    <div class="wrap">
+      <div class="pj__record">
+        {record.map((s, i) => (
+          <article class="pj__row" data-reveal data-reveal-delay={String(i)}>
+            <span class="index"><b>0{i + 1}</b> / 0{record.length}</span>
+            <p class="stat-num"><span data-count={String(s.value)}>{s.value}</span><span class="gold">{s.suffix}</span><span class="pj__unit">{s.unit}</span></p>
+            <div class="pj__txt">
+              <h2 class="h3">{s.label}</h2>
+              <p class="annot">{s.source}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="annot pj__note">Invoiced production, April 2023 – July 2026. Some line items measure the same spans, so they are not summed.</p>
+    </div>
+  </section>
+
+  <section class="section bg-stone">
+    <div class="wrap grid pj__mk">
+      <div class="pj__mk-head">
+        <span class="label">Markets</span>
+        <h2 class="h2">Where our crews have built.</h2>
+        <p class="lead">FTTH, feeder and distribution programs for national and regional carriers, through prime contractors.</p>
+      </div>
+      <div class="pj__states">
+        {markets.map((m) => (
+          <div class="pj__state" data-reveal>
+            <span class="pj__abbr">{m.state}</span>
+            <span class="pj__count annot">{m.places.length} {m.places.length === 1 ? 'market' : 'markets'}</span>
+            <ul>{m.places.map((p) => <li>{p}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {approved.length > 0 && (
+    <section class="section--tight">
+      <div class="wrap pj__clients">
+        <span class="label">Worked with</span>
+        <ul>{approved.map((c) => <li>{c.logo ? <img src={c.logo} alt={c.name} height="40" /> : c.name}</li>)}</ul>
+      </div>
+    </section>
+  )}
+
+  <section class="section--tight">
+    <div class="wrap pj__cta">
+      <p class="h3">Have a route that needs crews? Send the prints and the schedule.</p>
+      <a class="btn" href="/contact">Get a quote <Arrow /></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .pj__record { border-top: 1px solid var(--line-strong); }
+  .pj__row { display: grid; grid-template-columns: 6rem minmax(0, 1.1fr) 1fr; gap: 1.5rem 2rem; align-items: center; padding: 2.25rem 0; border-bottom: 1px solid var(--line); }
+  .pj__unit { font-size: .3em; font-weight: 700; letter-spacing: .1em; color: var(--mid); margin-left: .4em; text-transform: uppercase; }
+  .pj__txt { display: grid; gap: .6rem; }
+  .pj__note { margin-top: 1rem; }
+  .pj__mk { row-gap: 3rem; }
+  .pj__mk-head { grid-column: 1 / span 5; display: grid; gap: 1.4rem; align-content: start; }
+  .pj__states { grid-column: 7 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; }
+  .pj__state { display: grid; grid-template-columns: auto 1fr; gap: .4rem 1rem; align-content: start; padding: 1.4rem 0 2rem; border-top: 1px solid var(--line-strong); }
+  .pj__abbr { font-size: 2rem; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .pj__count { align-self: center; justify-self: end; }
+  .pj__state ul { grid-column: 1 / -1; list-style: none; margin: .8rem 0 0; padding: 0; display: grid; gap: .3rem; font-weight: 600; }
+  .pj__clients ul { list-style: none; margin: 1.5rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2rem 3rem; align-items: center; font-weight: 700; }
+  .pj__cta { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 2.5rem; }
+  .pj__cta .h3 { max-width: 40ch; }
+  @media (max-width: 1080px) { .pj__mk-head, .pj__states { grid-column: 1 / -1; } }
+  @media (max-width: 720px) {
+    .pj__row { grid-template-columns: 1fr; gap: .8rem; }
+    .pj__states { grid-template-columns: 1fr; }
+  }
+</style>

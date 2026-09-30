@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { company, states } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  headerTone?: 'light' | 'dark';
+}
+const { title, description, headerTone = 'light' } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+const fullTitle = title.includes('NextGen') ? title : `${title} | NextGen Fiber`;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  name: company.legalName,
+  url: 'https://nextgenfiberllc.com/',
+  logo: 'https://nextgenfiberllc.com/img/brand/mark-dark-512.png',
+  image: 'https://nextgenfiberllc.com/img/og.png',
+  email: company.email,
+  telephone: '+1-551-245-1126',
+  foundingDate: String(company.founded),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.address.street,
+    addressLocality: company.address.city,
+    addressRegion: company.address.region,
+    postalCode: company.address.postal,
+    addressCountry: company.address.country,
+  },
+  areaServed: states.map((s) => ({ '@type': 'State', name: s })),
+  sameAs: [company.linkedin],
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="theme-color" content="#f7f6f2" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="NextGen Fiber" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content="https://nextgenfiberllc.com/img/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <Header tone={headerTone} />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+  <script>
+    // Reveal on scroll, line drawing and counters. Everything is static
+    // without JS and respects reduced motion (handled in CSS).
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        e.target.classList.add('is-in');
+        if (e.target instanceof HTMLElement && e.target.dataset.count && !reduce) countUp(e.target);
+        io.unobserve(e.target);
+      }
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+    document.querySelectorAll('[data-reveal], .draw, [data-count]').forEach((el) => io.observe(el));
+    document.querySelectorAll('.draw').forEach((svg) => {
+      svg.querySelectorAll('path, line, polyline').forEach((p) => {
+        if ('getTotalLength' in p) (p as SVGGeometryElement).style.setProperty('--len', String(Math.ceil((p as SVGGeometryElement).getTotalLength())));
+      });
+    });
+    function countUp(el: HTMLElement) {
+      const target = parseFloat(el.dataset.count || '0');
+      const decimals = (el.dataset.count || '').includes('.') ? 1 : 0;
+      const t0 = performance.now(), dur = 1400;
+      const tick = (t: number) => {
+        const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        el.textContent = (target * e).toFixed(decimals);
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  </script>
+</body>
+</html>

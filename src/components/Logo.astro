@@ -1,0 +1,25 @@
+---
+// The NextGen monogram is used exactly as supplied. Only the version changes
+// with the background: dark mark on light surfaces, light mark on dark ones.
+interface Props { tone?: 'dark' | 'light'; size?: number; wordmark?: boolean }
+const { tone = 'dark', size = 40, wordmark = true } = Astro.props;
+const src = `/img/brand/mark-${tone}-128.png`;
+const src2 = `/img/brand/mark-${tone}-256.png`;
+---
+<span class={`logo logo--${tone}`}>
+  <img src={src} srcset={`${src} 1x, ${src2} 2x`} width={size} height={size} alt={wordmark ? '' : 'NextGen Fiber'} />
+  {wordmark && (
+    <span class="logo__word" aria-label="NextGen Fiber">
+      <span>NEXTGEN</span><span class="logo__fiber">FIBER</span>
+    </span>
+  )}
+</span>
+<style>
+  .logo { display: inline-flex; align-items: center; gap: .8rem; }
+  .logo img { flex: none; }
+  .logo__word { display: inline-flex; gap: .45em; font-weight: 800; font-size: .98rem; letter-spacing: .22em; line-height: 1; }
+  .logo--dark .logo__word { color: var(--ink); }
+  .logo--light .logo__word { color: var(--ivory); }
+  .logo__fiber { color: var(--gold-text); font-weight: 600; }
+  .logo--light .logo__fiber { color: var(--gold); }
+</style>

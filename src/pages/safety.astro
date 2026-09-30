@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Arrow from '../components/Arrow.astro';
+import { company, safetyMetrics } from '../data/site';
+
+const practices = [
+  { t: 'Daily tailboard', d: 'Every crew starts the day with a tailboard briefing on the day’s scope, hazards and assignments.' },
+  { t: 'Job hazard analysis', d: 'Hazards are identified and documented for the work location before crews start.' },
+  { t: 'Locates before digging', d: 'Underground work starts only after utility locates are called in and confirmed.' },
+];
+// Only documents confirmed to exist. Add items here as they are confirmed.
+const prequal = ['W-9', 'Certificate of insurance', 'Other documents your platform requires, on request'];
+---
+<Base title="Safety & Prequalification" description="Safety practices and prequalification documents from NextGen Fiber: daily tailboard, job hazard analysis, locates and certificate of insurance on request.">
+  <PageHead label="Safety & prequalification" title="Safe crews finish on schedule." lead="Safety is part of production, not a separate program. Here is how our crews start every day and what we send for prequalification." marker={0.5} />
+
+  <section class="section sf">
+    <div class="wrap">
+      <ol class="sf__list">
+        {practices.map((p, i) => (
+          <li data-reveal data-reveal-delay={String(i)}>
+            <span class="index"><b>0{i + 1}</b> / 0{practices.length}</span>
+            <h2 class="h3">{p.t}</h2>
+            <p class="muted">{p.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {safetyMetrics.length > 0 && (
+    <section class="section--tight bg-ink">
+      <div class="wrap sf__metrics">
+        {safetyMetrics.map((m) => <div><p class="stat-num">{m.value}</p><p class="muted">{m.label}</p></div>)}
+      </div>
+    </section>
+  )}
+
+  <section class="section bg-stone">
+    <div class="wrap grid sf__pq">
+      <div class="sf__pq-head">
+        <span class="label">Prequalification</span>
+        <h2 class="h2">Onboarding us as a vendor.</h2>
+        <p class="lead">Tell us what your prequal platform or safety department needs, and we send it directly to your contact.</p>
+        <a class="btn" href={`mailto:${company.email}?subject=Prequalification%20documents%20request`}>Request documents <Arrow /></a>
+      </div>
+      <ul class="sf__docs">
+        {prequal.map((d) => <li><span class="sf__tick" aria-hidden="true"></span>{d}</li>)}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sf__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .sf__list li { display: grid; gap: 1rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--line-strong); position: relative; }
+  .sf__list li::before { content: ''; position: absolute; left: 0; top: -2px; width: 32px; height: 3px; background: var(--gold); }
+  .sf__metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+  .sf__pq { row-gap: 2.5rem; align-items: start; }
+  .sf__pq-head { grid-column: 1 / span 6; display: grid; gap: 1.4rem; justify-items: start; }
+  .sf__docs { grid-column: 8 / -1; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
+  .sf__docs li { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); font-weight: 600; font-size: 1.05rem; }
+  .sf__tick { width: 14px; height: 14px; border: 1.5px solid var(--ink); position: relative; flex: none; }
+  .sf__tick::after { content: ''; position: absolute; inset: 3px; background: var(--gold); }
+  @media (max-width: 1080px) {
+    .sf__list { grid-template-columns: 1fr 1fr; }
+    .sf__pq-head, .sf__docs { grid-column: 1 / -1; }
+  }
+  @media (max-width: 720px) { .sf__list { grid-template-columns: 1fr; } }
+</style>

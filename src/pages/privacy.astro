@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { company, addressLine } from '../data/site';
+---
+<Base title="Privacy" description="How NextGen Fiber handles information sent through this website.">
+  <PageHead label="Privacy" title="Privacy notice." lead="Last updated September 30, 2026." marker={0.98} />
+  <section class="section">
+    <div class="wrap grid">
+      <div class="pv">
+        <h2 class="h3">What we collect</h2>
+        <p>Only what you type into the bid or application forms: name, company, contact details and the project or job information you choose to share.</p>
+        <h2 class="h3">How it is processed</h2>
+        <p>Form submissions are delivered to our company email through Formspree, a form processing service. We use them only to answer your request or application. We do not sell or share them for marketing.</p>
+        <h2 class="h3">Cookies and tracking</h2>
+        <p>This site sets no advertising or analytics cookies.</p>
+        <h2 class="h3">Your requests</h2>
+        <p>To see, correct or delete information you sent us, email <a class="link" href={`mailto:${company.email}`}>{company.email}</a>.</p>
+        <p class="annot">{company.legalName} · {addressLine}</p>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .pv { grid-column: 3 / span 7; display: grid; gap: 1rem; }
+  .pv h2 { margin-top: 1.5rem; }
+  .pv h2:first-child { margin-top: 0; }
+  @media (max-width: 1080px) { .pv { grid-column: 1 / -1; } }
+</style>

@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Arrow from '../components/Arrow.astro';
+import { company, states } from '../data/site';
+
+// Dated facts only. Sources: Form 1065 (start date), invoice ledger (first
+// invoiced production), office lease/move (Sep 2026). See SOURCES.md.
+const timeline = [
+  { when: 'Mar 2023', what: 'NextGen Fiber LLC starts operating in Tennessee.' },
+  { when: 'Apr 2023', what: 'First invoiced production as a subcontractor to a national prime contractor.' },
+  { when: '2023 – 2026', what: 'More than 2.3 million feet of fiber lashed and 1.7 million feet of new aerial plant built on invoiced programs.' },
+  { when: 'To date', what: 'Markets in Tennessee, Alabama, North Carolina and Virginia.' },
+  { when: 'Sep 2026', what: 'Office moves to Knoxville, Tennessee.' },
+];
+const principles = [
+  { t: 'Build to print', d: 'Work follows the prints and the owner’s standards. Field changes are redlined on the prints, so closeout matches what was built.' },
+  { t: 'Document everything', d: 'Every location is photographed with time, date and GPS. The paperwork is part of the job, not a favor.' },
+  { t: 'Own the crew', d: 'Our foremen run their crews and answer for their production, so your PM deals with one accountable contact.' },
+];
+---
+<Base title="About" description="NextGen Fiber is a fiber optic construction subcontractor based in Knoxville, TN, building aerial, underground and splicing scopes for prime contractors since 2023.">
+  <PageHead label="About" title="A subcontractor built around the field." lead={`${company.legalName} builds fiber networks for prime contractors across ${states.slice(0, -1).join(', ')} and ${states.at(-1)}. Based in Knoxville since 2026, building since 2023.`} marker={0.72} />
+
+  <section class="section co">
+    <div class="wrap grid co__grid">
+      <div class="co__head">
+        <span class="label">Timeline</span>
+        <h2 class="h2">Three years of invoiced production.</h2>
+      </div>
+      <ol class="co__tl">
+        {timeline.map((t, i) => (
+          <li data-reveal data-reveal-delay={String(Math.min(i, 4))}>
+            <span class="co__when">{t.when}</span>
+            <span class="co__dot" aria-hidden="true"></span>
+            <p>{t.what}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section bg-ink co__dark">
+    <div class="wrap">
+      <span class="label">How we operate</span>
+      <div class="co__pr">
+        {principles.map((p, i) => (
+          <article data-reveal data-reveal-delay={String(i)}>
+            <span class="index"><b>0{i + 1}</b> / 0{principles.length}</span>
+            <h3 class="h3">{p.t}</h3>
+            <p class="muted">{p.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section co__eq">
+    <div class="wrap grid">
+      <div class="co__eq-head">
+        <span class="label">Equipment</span>
+        <h2 class="h2">Underground equipment in-house.</h2>
+      </div>
+      <div class="co__eq-body">
+        <p class="lead">Underground scopes run on our Vermeer D20x22 Series III directional drill, with missile crews for short crossings.</p>
+        <a class="link" href="/services/underground-hdd">Underground & HDD <Arrow /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .co__grid { row-gap: 3rem; }
+  .co__head { grid-column: 1 / span 4; display: grid; gap: 1.2rem; align-content: start; position: sticky; top: 110px; }
+  .co__tl { grid-column: 6 / -1; list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line-strong); }
+  .co__tl li { display: grid; grid-template-columns: 9rem 1fr; gap: 1.5rem; padding: 1.5rem 0 1.5rem 2rem; position: relative; border-bottom: 1px solid var(--line); }
+  .co__when { font-weight: 800; letter-spacing: .04em; color: var(--gold-text); font-variant-numeric: tabular-nums; }
+  .co__dot { position: absolute; left: -5px; top: 1.85rem; width: 9px; height: 9px; background: var(--ivory); border: 1.5px solid var(--ink); }
+  .co__tl li p { font-size: 1.1rem; font-weight: 600; }
+  .co__pr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 2.5rem; }
+  .co__pr article { display: grid; gap: 1rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--line-dark); }
+  .co__eq .grid { row-gap: 2rem; align-items: end; }
+  .co__eq-head { grid-column: 1 / span 6; display: grid; gap: 1.2rem; }
+  .co__eq-body { grid-column: 8 / -1; display: grid; gap: 1.4rem; justify-items: start; }
+  @media (max-width: 1080px) {
+    .co__head, .co__tl, .co__eq-head, .co__eq-body { grid-column: 1 / -1; }
+    .co__head { position: static; }
+    .co__pr { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) { .co__tl li { grid-template-columns: 1fr; gap: .4rem; } }
+</style>
