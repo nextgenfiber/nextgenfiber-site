@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Arrow from '../components/Arrow.astro';
 import RouteSchematic from '../components/RouteSchematic.astro';
+import Photo from '../components/Photo.astro';
 import { company, stats, markets } from '../data/site';
 import { services } from '../data/services';
 
@@ -12,27 +13,25 @@ const process = [
   { t: 'Closeout', d: 'Redlines, as-builts, photos and OTDR results handed over with the work, ready for your billing.' },
 ];
 ---
-<Base title="NextGen Fiber | Fiber Construction Subcontractor, Knoxville TN" description="Aerial, underground/HDD, fiber pulling and splicing crews for prime contractors across Tennessee and the Southeast. Knoxville, TN. Building fiber since 2023.">
+<Base headerTone="overlay" title="NextGen Fiber | Fiber Construction Subcontractor, Knoxville TN" description="Aerial, underground/HDD, fiber pulling and splicing crews for prime contractors across Tennessee and the Southeast. Knoxville, TN. Building fiber since 2023.">
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="wrap grid hero__grid">
-      <div class="hero__copy">
-        <span class="label" data-reveal>Fiber construction subcontractor · Knoxville, TN</span>
-        <h1 class="h1 hero__h1" data-reveal data-reveal-delay="1">Precision<br />infrastructure<br />for the next<br /><span class="gold">connection.</span></h1>
-        <p class="lead" data-reveal data-reveal-delay="2">We build and deploy fiber infrastructure designed for performance, reliability and scale.</p>
-        <div class="hero__act" data-reveal data-reveal-delay="3">
-          <a class="btn" href="/contact">Get a quote <Arrow /></a>
-          <a class="btn btn--ghost" href="/services">Our services</a>
-        </div>
-        <ul class="hero__caps annot" data-reveal data-reveal-delay="4">
-          <li>Aerial</li><li>Underground / HDD</li><li>Fiber pulling</li><li>Splicing & testing</li>
-        </ul>
-      </div>
-      <div class="hero__visual" data-reveal data-reveal-delay="2">
-        <RouteSchematic />
+  <section class="hero" aria-label="Introduction">
+    <div class="hero__media" aria-hidden="true">
+      <img class="hero__poster" src="/img/photos/hero-poster.webp" srcset="/img/photos/hero-poster-800.webp 800w, /img/photos/hero-poster.webp 1280w" sizes="100vw" width="1280" height="720" alt="" fetchpriority="high" decoding="async" />
+      <video class="hero__video" muted loop playsinline preload="none" width="1280" height="720" data-hero-video data-src="/video/hero-loop.mp4"></video>
+      <div class="hero__shade"></div>
+    </div>
+    <div class="wrap hero__inner">
+      <p class="hero__kicker">Fiber construction crews · Knoxville, Tennessee</p>
+      <h1 class="hero__h1" data-split data-hero-title>Aerial, underground and splicing crews. Out of Knoxville, Tennessee.</h1>
+      <p class="hero__lead">For prime contractors across the Southeast. Our own drill, our own crews, and closeout paperwork that doesn't hold up your billing.</p>
+      <div class="hero__act">
+        <a class="btn btn--light" href="/contact">Get a quote <Arrow /></a>
+        <a class="hero__call" href={company.phoneHref}>or call {company.phone}</a>
       </div>
     </div>
+    <p class="hero__cap">Filmed on NextGen Fiber job sites by SPM Creative</p>
   </section>
 
   <!-- STATS -->
@@ -42,7 +41,6 @@ const process = [
       <div class="stats__row">
         {stats.map((s, i) => (
           <div class="stat" data-reveal data-reveal-delay={String(i)}>
-            <span class="index"><b>0{i + 1}</b> / 04</span>
             <p class="stat-num">
               {s.suffix ? <span data-count={String(s.value)}>{s.value}</span> : <span>{s.value}</span>}{s.suffix && <span class="gold">{s.suffix}</span>}
               {s.unit && <span class="stat__unit">{s.unit}</span>}
@@ -60,7 +58,7 @@ const process = [
     <div class="wrap grid">
       <header class="svc__head">
         <span class="label">Capabilities</span>
-        <h2 class="h2">One subcontractor, from strand to splice.</h2>
+        <h2 class="h2" data-split>One subcontractor, from strand to splice.</h2>
         <p class="lead">Five crew types that cover a full fiber build. Hire one, or run the whole route with us.</p>
         <a class="link" href="/services">All services <Arrow /></a>
       </header>
@@ -79,16 +77,22 @@ const process = [
     </div>
   </section>
 
+  <!-- PHOTO BAND -->
+  <figure class="band" data-parallax>
+    <Photo src="/img/photos/hdd-crew-site.webp" width={1600} height={558} sizes="100vw" alt="NextGen Fiber drill crew and Vermeer directional drill on a roadside job site" />
+    <figcaption class="band__cap">Drill crew on a roadside bore. Truck, drill and locates set before the first push.</figcaption>
+  </figure>
+
   <!-- DARK: BUILT FOR THE FIELD -->
   <section class="section field bg-ink">
     <div class="wrap grid field__grid">
-      <div class="field__media" data-reveal>
-        <img src="/img/photos/crew-drill-vermeer.webp" width="1600" height="1184" loading="lazy" alt="NextGen Fiber drill operator checking the job on his phone next to the Vermeer directional drill" />
+      <div class="field__media">
+        <div data-clip><Photo src="/img/photos/crew-drill-vermeer.webp" width={1600} height={1184} alt="NextGen Fiber drill operator checking the job on his phone next to the Vermeer directional drill" /></div>
         <span class="annot field__tag">NextGen Fiber drill crew · Filmed by SPM Creative</span>
       </div>
       <div class="field__copy">
         <span class="label">In the field</span>
-        <h2 class="h2">Built for<br />the field.</h2>
+        <h2 class="h2" data-split>Built for the field.</h2>
         <p class="lead">Our crews run their own equipment and their own paperwork. Your project manager focuses on the build, not on chasing a subcontractor.</p>
         <dl class="field__facts">
           <div><dt class="label">Mobilization</dt><dd>Typically within 48 hours of award</dd></div>
@@ -105,17 +109,17 @@ const process = [
     <div class="wrap grid proof__grid">
       <div class="proof__copy">
         <span class="label">Closeout-ready</span>
-        <h2 class="h2">Documentation your PM can bill from.</h2>
+        <h2 class="h2" data-split>Documentation your PM can bill from.</h2>
         <p class="lead">Every enclosure, span and bore is photographed with time, date and GPS the moment the work is done. It is how our crews close out, not an extra step.</p>
         <ul class="proof__list">
-          <li><span class="index"><b>A</b></span>Time and GPS-stamped photo per location</li>
-          <li><span class="index"><b>B</b></span>Redlines and as-builts matched to prints</li>
-          <li><span class="index"><b>C</b></span>OTDR and power meter results per fiber</li>
-          <li><span class="index"><b>D</b></span>Daily production by span and footage</li>
+          <li>Time and GPS-stamped photo per location</li>
+          <li>Redlines and as-builts matched to prints</li>
+          <li>OTDR and power meter results per fiber</li>
+          <li>Daily production by span and footage</li>
         </ul>
       </div>
-      <figure class="proof__media" data-reveal>
-        <img src="/img/photos/route-map-tablet.webp" width="1600" height="900" loading="lazy" alt="Crew reviewing the route map and redlines on a tablet inside the truck" />
+      <figure class="proof__media">
+        <div data-clip><Photo src="/img/photos/route-map-tablet.webp" width={1600} height={900} alt="Crew reviewing the route map and redlines on a tablet inside the truck" /></div>
         <figcaption class="annot">Route map and redlines, reviewed in the truck before the work starts.</figcaption>
       </figure>
     </div>
@@ -127,7 +131,7 @@ const process = [
       <div class="grid fl__head">
         <div class="fl__title">
           <span class="label">Operations platform</span>
-          <h2 class="h2">Our crews run on <span class="gold">FiberLytic.</span></h2>
+          <h2 class="h2" data-split>Our crews run on FiberLytic.</h2>
         </div>
         <div class="fl__copy">
           <p class="lead">FiberLytic is the operating system for fiber construction. We use it to run our field operations: production by span, GPS-stamped photos, redlines and closeout in one place, from the bucket to the office.</p>
@@ -153,7 +157,8 @@ const process = [
   <section class="section process bg-stone">
     <div class="wrap">
       <header class="process__head grid">
-        <div><span class="label">How we work</span><h2 class="h2">From award to closeout.</h2></div>
+        <div class="process__title"><span class="label">How we work</span><h2 class="h2" data-split>From award to closeout.</h2></div>
+        <div class="process__fig"><RouteSchematic /></div>
       </header>
       <ol class="process__steps">
         {process.map((p, i) => (
@@ -168,12 +173,21 @@ const process = [
     </div>
   </section>
 
+  <!-- MARKETS TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      {[0, 1].map(() => (
+        <span class="ticker__set">{markets.flatMap((m) => m.places.map((p) => `${p}, ${m.state}`)).map((t) => <span>{t}</span>)}</span>
+      ))}
+    </div>
+  </div>
+
   <!-- WHERE WE BUILD -->
   <section class="section where">
     <div class="wrap grid where__grid">
       <div class="where__head">
         <span class="label">Where we've built</span>
-        <h2 class="h2">Markets across four states.</h2>
+        <h2 class="h2" data-split>Markets across four states.</h2>
         <p class="lead">Programs supported through prime contractors for national and regional carriers. Based in Knoxville, working wherever the route goes.</p>
         <a class="link" href="/projects">See project work <Arrow /></a>
       </div>
@@ -201,18 +215,38 @@ const process = [
 </Base>
 
 <style>
-  /* HERO */
-  .hero { padding-block: clamp(2.5rem, 6vw, 6rem) clamp(3rem, 6vw, 5rem); overflow: hidden; }
-  .hero__grid { align-items: center; row-gap: 3rem; }
-  .hero__copy { grid-column: 1 / span 6; display: grid; gap: 1.6rem; }
-  /* Sized so the longest line (INFRASTRUCTURE, ~8.4em wide) fits its column. */
-  .hero__h1 { text-transform: uppercase; font-size: min(4.9rem, 5.1vw); letter-spacing: -.035em; line-height: .95; }
-  @media (max-width: 1080px) { .hero__h1 { font-size: min(4.6rem, 9.8vw); } }
-  .hero__act { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .5rem; }
-  .hero__caps { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; list-style: none; padding: 0; margin: .5rem 0 0; }
-  .hero__caps li { display: inline-flex; align-items: center; gap: .5rem; }
-  .hero__caps li::before { content: ''; width: 5px; height: 5px; background: var(--gold); }
-  .hero__visual { grid-column: 7 / -1; padding-bottom: 1.5rem; }
+  /* HERO: full-bleed film loop under the overlay header */
+  .hero { position: relative; min-height: min(92svh, 980px); margin-top: -76px; display: grid; align-items: end; color: var(--ivory); background: #0d0d0c; overflow: hidden; isolation: isolate; }
+  .hero__media, .hero__poster, .hero__video, .hero__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero__media { z-index: -1; }
+  .hero__poster, .hero__video { object-fit: cover; }
+  .hero__video { opacity: 0; transition: opacity 1.2s var(--ease); }
+  .hero__video.is-playing { opacity: 1; }
+  .hero__shade { background: linear-gradient(90deg, rgba(13,13,12,.62) 0%, rgba(13,13,12,.25) 45%, rgba(13,13,12,0) 70%), linear-gradient(180deg, rgba(13,13,12,.55) 0%, rgba(13,13,12,.05) 26%, rgba(13,13,12,.1) 55%, rgba(13,13,12,.78) 100%); }
+  .hero__inner { padding-block: 9rem clamp(3.5rem, 7vw, 6rem); display: grid; gap: 1.4rem; justify-items: start; }
+  .hero__kicker { font-size: .95rem; font-weight: 500; color: rgba(247,246,242,.82); }
+  .hero__h1 { font-size: clamp(2.4rem, 1.1rem + 3.9vw, 5rem); line-height: 1; letter-spacing: -.04em; font-weight: 700; max-width: 19ch; text-wrap: balance; }
+  .hero__lead { font-size: var(--fs-lead); line-height: 1.5; max-width: 44ch; color: rgba(247,246,242,.86); }
+  .hero__act { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.6rem; margin-top: .6rem; }
+  .hero__call { color: var(--ivory); font-weight: 600; text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 2px; }
+  .hero__call:hover { color: #fff; }
+  .hero__cap { position: absolute; right: var(--gutter); bottom: 1.4rem; font-size: .8rem; color: rgba(247,246,242,.6); }
+
+  /* PHOTO BAND */
+  .band { margin: 0; position: relative; height: clamp(260px, 38vw, 560px); overflow: hidden; }
+  .band :global(img) { width: 100%; height: 116%; object-fit: cover; position: absolute; top: -8%; left: 0; }
+  .band::after { content: ''; position: absolute; inset: auto 0 0 0; height: 45%; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55)); pointer-events: none; }
+  .band__cap { z-index: 1; position: absolute; left: var(--gutter); bottom: 1.2rem; font-size: .85rem; color: #fff; text-shadow: 0 1px 12px rgba(0,0,0,.5); max-width: 46ch; }
+
+  /* MARKETS TICKER */
+  .ticker { overflow: hidden; border-block: 1px solid var(--line); padding-block: 1.2rem; }
+  .ticker__track { display: flex; width: max-content; animation: ticker 60s linear infinite; }
+  .ticker:hover .ticker__track { animation-play-state: paused; }
+  .ticker__set { display: flex; }
+  .ticker__set span { font-size: clamp(1.4rem, 1rem + 1.4vw, 2.2rem); font-weight: 650; letter-spacing: -.03em; padding-inline: 1.4rem; color: var(--ink-3); white-space: nowrap; }
+  .ticker__set span::after { content: '·'; margin-left: 2.8rem; color: var(--gold); }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .ticker__track { animation: none; } }
 
   /* STATS */
   .stats__row { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
@@ -238,7 +272,7 @@ const process = [
   /* FIELD (dark) */
   .field__grid { align-items: center; row-gap: 3rem; }
   .field__media { grid-column: 1 / span 6; position: relative; }
-  .field__media img { width: 100%; height: auto; aspect-ratio: 1600/1184; object-fit: cover; border-radius: var(--radius); }
+  .field__media :global(img) { width: 100%; height: auto; aspect-ratio: 1600/1184; object-fit: cover; border-radius: var(--radius); }
   .field__tag { position: absolute; left: 0; bottom: -1.9rem; color: rgba(247,246,242,.5); }
   .field__copy { grid-column: 9 / -1; display: grid; gap: 1.5rem; }
   .field__facts { margin: 1rem 0 0; display: grid; }
@@ -249,9 +283,10 @@ const process = [
   .proof__grid { align-items: center; row-gap: 3rem; }
   .proof__copy { grid-column: 1 / span 5; display: grid; gap: 1.5rem; }
   .proof__list { list-style: none; margin: .5rem 0 0; padding: 0; }
-  .proof__list li { display: flex; gap: 1rem; align-items: baseline; padding: .9rem 0; border-top: 1px solid var(--line); font-weight: 600; }
+  .proof__list li { padding: .9rem 0; border-top: 1px solid var(--line); font-weight: 600; }
   .proof__media { grid-column: 7 / -1; margin: 0; display: grid; gap: .8rem; }
-  .proof__media img { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
+  .proof__media :global(img) { width: 100%; height: auto; border-radius: var(--radius); }
+  .proof__media figcaption { font-size: .85rem; }
 
   /* FIBERLYTIC */
   .fl__head { row-gap: 1.5rem; align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
@@ -261,8 +296,8 @@ const process = [
   .fl__film { margin: 0; display: grid; gap: .9rem; }
   .fl__frame { position: relative; border-radius: var(--radius); overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
   .fl__frame video { width: 100%; height: 100%; object-fit: cover; }
-  .fl__play { position: absolute; left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); display: inline-flex; align-items: center; gap: 1rem; padding: .6rem 1.2rem .6rem .6rem; border: 0; border-radius: var(--radius); background: rgba(16, 16, 16, .78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: var(--ivory); font: inherit; font-weight: 700; cursor: pointer; }
-  .fl__play-ico { display: grid; place-items: center; width: 48px; height: 48px; background: var(--gold); color: var(--ink); border-radius: var(--radius); transition: transform var(--t-med) var(--ease); }
+  .fl__play { position: absolute; left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); display: inline-flex; align-items: center; gap: 1rem; padding: .5rem 1.4rem .5rem .5rem; border: 0; border-radius: var(--pill); background: rgba(16, 16, 16, .78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: var(--ivory); font: inherit; font-weight: 700; cursor: pointer; }
+  .fl__play-ico { display: grid; place-items: center; width: 48px; height: 48px; background: var(--gold); color: var(--ink); border-radius: 50%; transition: transform var(--t-med) var(--ease); }
   .fl__play-ico svg { width: 22px; height: 22px; }
   .fl__play:hover .fl__play-ico { transform: scale(1.06); }
   .fl__play-txt { display: grid; gap: .1rem; text-align: left; }
@@ -272,7 +307,9 @@ const process = [
 
   /* PROCESS */
   .process__head { margin-bottom: 3.5rem; }
-  .process__head > div { grid-column: 1 / span 7; display: grid; gap: 1.2rem; }
+  .process__head { align-items: end; row-gap: 2rem; }
+  .process__title { grid-column: 1 / span 6; display: grid; gap: 1.2rem; }
+  .process__fig { grid-column: 8 / -1; max-width: 460px; justify-self: end; width: 100%; }
   .process__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
   .process__steps li { display: grid; gap: 1rem; align-content: start; }
   .process__num { font-size: 3.2rem; font-weight: 750; letter-spacing: -.05em; line-height: 1; color: var(--ink); }
@@ -292,8 +329,7 @@ const process = [
   .safety-t__row > div { display: grid; gap: .8rem; max-width: 46rem; }
 
   @media (max-width: 1080px) {
-    .hero__copy, .hero__visual { grid-column: 1 / -1; }
-    .hero__visual { max-width: 640px; }
+    .process__title, .process__fig { grid-column: 1 / -1; justify-self: start; }
     .svc__head { grid-column: 1 / -1; position: static; }
     .svc__list { grid-column: 1 / -1; }
     .fl__title, .fl__copy,
@@ -316,10 +352,27 @@ const process = [
     .field__tag { position: static; display: block; margin-top: .75rem; }
     .fl__play { padding: .4rem; }
     .fl__play-txt { display: none; }
+    .hero { margin-top: -68px; min-height: 86svh; }
+    .hero__shade { background: linear-gradient(180deg, rgba(13,13,12,.6) 0%, rgba(13,13,12,.45) 40%, rgba(13,13,12,.85) 100%); }
+    .hero__cap { position: static; padding: 0 var(--gutter) 1.2rem; }
   }
 </style>
 
 <script>
+  // Hero loop: the poster paints first; the clip starts after load, never with
+  // reduced motion or Save-Data.
+  const hv = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  if (hv && !reduce && !saveData) {
+    const start = () => {
+      hv.src = hv.dataset.src || '';
+      hv.addEventListener('playing', () => hv.classList.add('is-playing'), { once: true });
+      hv.play().catch(() => {});
+    };
+    if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+  }
+
   // The film loads only when asked for; native controls take over after play.
   document.querySelectorAll<HTMLElement>('[data-film]').forEach((frame) => {
     const video = frame.querySelector('video') as HTMLVideoElement;

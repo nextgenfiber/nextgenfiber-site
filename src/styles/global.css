@@ -1,4 +1,5 @@
 @import '@fontsource-variable/manrope';
+@import 'lenis/dist/lenis.css';
 
 /* ─────────────────────────  TOKENS  ───────────────────────── */
 :root {
@@ -36,7 +37,8 @@
   --gutter: clamp(1.25rem, 0.6rem + 2.6vw, 3rem);
   --maxw: 1360px;
   --section: clamp(5rem, 3rem + 7vw, 9.5rem);
-  --radius: 4px;
+  --radius: 2px;
+  --pill: 999px;
 
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -84,10 +86,11 @@ p { margin: 0; }
 /* ─────────────────────────  BRAND DETAILS  ───────────────────────── */
 .label {
   display: inline-flex; align-items: center; gap: .6rem;
-  font-size: var(--fs-micro); font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  font-size: .88rem; font-weight: 600; letter-spacing: -.005em;
   color: var(--mid-2);
 }
-.label::before { content: ''; width: 3px; height: 14px; background: var(--gold); }
+/* A thin rule, used only where a section needs an anchor. */
+.label--rule::before { content: ''; width: 28px; height: 1px; background: currentColor; opacity: .6; }
 .bg-ink .label { color: rgba(247, 246, 242, .62); }
 .index {
   font-size: var(--fs-micro); font-weight: 700; letter-spacing: .14em; color: var(--mid);
@@ -97,7 +100,7 @@ p { margin: 0; }
 .bg-ink .index { color: rgba(247, 246, 242, .5); }
 .bg-ink .index b { color: var(--gold); }
 .annot {
-  font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mid);
+  font-size: .8rem; letter-spacing: .005em; color: var(--mid);
   font-variant-numeric: tabular-nums;
 }
 .gold { color: var(--gold-text); }
@@ -126,9 +129,9 @@ p { margin: 0; }
 .btn {
   --bg: var(--ink); --fg: var(--ivory); --bd: var(--ink);
   display: inline-flex; align-items: center; gap: .9rem;
-  min-height: 52px; padding: .95rem 1.4rem;
+  min-height: 52px; padding: .95rem 1.6rem .95rem 1.7rem;
   font: inherit; font-size: .95rem; font-weight: 700; letter-spacing: .01em;
-  color: var(--fg); background: var(--bg); border: 1px solid var(--bd); border-radius: var(--radius);
+  color: var(--fg); background: var(--bg); border: 1px solid var(--bd); border-radius: var(--pill);
   text-decoration: none; cursor: pointer;
   transition: background var(--t-med) var(--ease), color var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
 }
@@ -137,6 +140,8 @@ p { margin: 0; }
 .btn:hover { --bg: var(--ink-3); }
 .btn--gold { --bg: var(--gold); --fg: var(--ink); --bd: var(--gold); }
 .btn--gold:hover { --bg: #bb9d1f; }
+.btn--light { --bg: var(--ivory); --fg: var(--ink); --bd: var(--ivory); }
+.btn--light:hover { --bg: #fff; --bd: #fff; }
 .btn--ghost { --bg: transparent; --fg: var(--ink); --bd: var(--line-strong); }
 .btn--ghost:hover { --bg: transparent; --bd: var(--ink); }
 .bg-ink .btn--ghost { --fg: var(--ivory); --bd: var(--line-dark); }
@@ -153,10 +158,10 @@ p { margin: 0; }
 
 /* ─────────────────────────  FORMS  ───────────────────────── */
 .field { display: grid; gap: .45rem; }
-.field label { font-size: var(--fs-micro); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mid-2); }
+.field label { font-size: .88rem; font-weight: 600; color: var(--ink-3); }
 .field input, .field select, .field textarea {
   font: inherit; font-size: 1rem; color: var(--ink);
-  background: var(--paper); border: 1px solid var(--line-strong); border-radius: var(--radius);
+  background: var(--paper); border: 1px solid var(--line-strong); border-radius: 6px;
   padding: .9rem 1rem; min-height: 50px; width: 100%;
   transition: border-color var(--t-fast), box-shadow var(--t-fast);
 }
@@ -165,8 +170,10 @@ p { margin: 0; }
 .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
 
 /* ─────────────────────────  MOTION  ───────────────────────── */
-[data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease); }
-[data-reveal].is-in { opacity: 1; transform: none; }
+/* Hidden only when JS runs, so the page is complete without it. */
+.js [data-reveal] { opacity: 0; transition: opacity var(--t-slow) var(--ease); }
+.js [data-reveal].is-in { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
 [data-reveal-delay='1'] { transition-delay: 80ms; }
 [data-reveal-delay='2'] { transition-delay: 160ms; }
 [data-reveal-delay='3'] { transition-delay: 240ms; }
@@ -177,6 +184,6 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
-  [data-reveal] { opacity: 1; transform: none; }
+  .js [data-reveal] { opacity: 1; }
   .draw path, .draw line, .draw polyline { stroke-dashoffset: 0; }
 }

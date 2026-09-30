@@ -11,7 +11,7 @@ const { label, title, lead, index, total, marker = 0.2 } = Astro.props;
       {index && <span class="index" data-reveal><b>{index}</b>{total && ` / ${total}`}</span>}
     </div>
     <div class="grid ph__grid">
-      <h1 class="h1 ph__title" data-reveal data-reveal-delay="1">{title}</h1>
+      <h1 class="h1 ph__title" data-split>{title}</h1>
       {lead && <p class="lead ph__lead" data-reveal data-reveal-delay="2">{lead}</p>}
       <slot />
     </div>

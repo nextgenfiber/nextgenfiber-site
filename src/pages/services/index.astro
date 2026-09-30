@@ -37,8 +37,7 @@ import { services } from '../../data/services';
   .svcx__name a { text-decoration: none; background: linear-gradient(var(--gold), var(--gold)) 0 100% / 0 2px no-repeat; transition: background-size var(--t-med) var(--ease); }
   .svcx__name a:hover { background-size: 100% 2px; }
   .svcx__scope { grid-column: 9 / -1; list-style: none; margin: 0; padding: .9rem 0 0; display: grid; gap: .55rem; font-weight: 600; color: var(--ink-3); }
-  .svcx__scope li { display: flex; gap: .7rem; align-items: baseline; }
-  .svcx__scope li::before { content: ''; flex: none; width: 5px; height: 5px; background: var(--gold); transform: translateY(-2px); }
+  .svcx__scope li { padding-bottom: .55rem; border-bottom: 1px solid var(--line); }
   @media (max-width: 1080px) {
     .svcx__meta { grid-column: 1 / -1; padding-top: 0; }
     .svcx__main, .svcx__scope { grid-column: 1 / -1; }

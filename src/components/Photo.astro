@@ -1,0 +1,26 @@
+---
+// Responsive photo: every file in /img/photos has an -800 sibling for phones.
+interface Props {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  sizes?: string;
+  priority?: boolean;
+  class?: string;
+}
+const { src, width, height, alt, sizes = '(max-width: 1080px) 100vw, 50vw', priority = false, class: cls } = Astro.props;
+const small = src.replace(/\.webp$/, '-800.webp');
+---
+<img
+  class={cls}
+  src={src}
+  srcset={`${small} 800w, ${src} ${width}w`}
+  sizes={sizes}
+  width={width}
+  height={height}
+  alt={alt}
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : undefined}
+  decoding="async"
+/>

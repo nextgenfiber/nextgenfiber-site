@@ -3,11 +3,12 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { company, states } from '../data/site';
+import manropeLatin from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
   description: string;
-  headerTone?: 'light' | 'dark';
+  headerTone?: 'light' | 'overlay';
 }
 const { title, description, headerTone = 'light' } = Astro.props;
 // build.format 'file' makes pathname end in .html; canonical must match the
@@ -24,7 +25,7 @@ const schema = {
   logo: 'https://nextgenfiberllc.com/img/brand/mark-dark-512.png',
   image: 'https://nextgenfiberllc.com/img/og.png',
   email: company.email,
-  telephone: '+1-551-245-1126',
+  telephone: company.phoneHref.replace('tel:', ''),
   foundingDate: String(company.founded),
   address: {
     '@type': 'PostalAddress',
@@ -43,6 +44,8 @@ const schema = {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script is:inline>document.documentElement.classList.add('js')</script>
+  <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
@@ -55,6 +58,9 @@ const schema = {
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
   <meta property="og:image" content="https://nextgenfiberllc.com/img/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="NextGen Fiber, fiber construction crews in Knoxville, Tennessee" />
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </head>
@@ -66,6 +72,7 @@ const schema = {
   </main>
   <Footer />
   <script>
+    import '../scripts/motion';
     // Reveal on scroll, line drawing and counters. Everything is static
     // without JS and respects reduced motion (handled in CSS).
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

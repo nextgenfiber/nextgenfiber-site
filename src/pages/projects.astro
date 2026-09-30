@@ -17,7 +17,6 @@ const approved = clients.filter((c) => c.approved);
       <div class="pj__record">
         {record.map((s, i) => (
           <article class="pj__row" data-reveal data-reveal-delay={String(i)}>
-            <span class="index"><b>0{i + 1}</b> / 0{record.length}</span>
             <p class="stat-num"><span data-count={String(s.value)}>{s.value}</span><span class="gold">{s.suffix}</span><span class="pj__unit">{s.unit}</span></p>
             <div class="pj__txt">
               <h2 class="h3">{s.label}</h2>
@@ -68,7 +67,7 @@ const approved = clients.filter((c) => c.approved);
 
 <style>
   .pj__record { border-top: 1px solid var(--line-strong); }
-  .pj__row { display: grid; grid-template-columns: 6rem minmax(0, 1.1fr) 1fr; gap: 1.5rem 2rem; align-items: center; padding: 2.25rem 0; border-bottom: 1px solid var(--line); }
+  .pj__row { display: grid; grid-template-columns: minmax(0, 1.1fr) 1fr; gap: 1.5rem 2rem; align-items: center; padding: 2.25rem 0; border-bottom: 1px solid var(--line); }
   .pj__unit { font-size: .3em; font-weight: 700; letter-spacing: .1em; color: var(--mid); margin-left: .4em; text-transform: uppercase; }
   .pj__txt { display: grid; gap: .6rem; }
   .pj__note { margin-top: 1rem; }
