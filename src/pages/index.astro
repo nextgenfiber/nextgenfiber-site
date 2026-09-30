@@ -49,12 +49,11 @@ const process = [
   <!-- STATS -->
   <section class="stats" aria-label="Track record">
     <div class="wrap">
-      <div class="ticks"></div>
       <div class="stats__row">
         {stats.map((s, i) => (
           <div class="stat" data-reveal data-reveal-delay={String(i)}>
             <p class="stat-num">
-              {s.suffix ? <span data-count={String(s.value)}>{s.value}</span> : <span>{s.value}</span>}{s.suffix && <span class="gold">{s.suffix}</span>}
+              {s.suffix ? <span data-count={String(s.value)}>{s.value}</span> : <span>{s.value}</span>}{s.suffix && <span>{s.suffix}</span>}
               {s.unit && <span class="stat__unit">{s.unit}</span>}
             </p>
             <p class="stat__label">{s.label}</p>
@@ -89,52 +88,48 @@ const process = [
     </div>
   </section>
 
-  <!-- PHOTO BAND -->
-  <figure class="band" data-parallax>
-    <Photo src="/img/photos/hdd-crew-site.webp" width={1600} height={558} sizes="100vw" alt="NextGen Fiber drill crew and Vermeer directional drill on a roadside job site" />
-    <figcaption class="band__cap">Drill crew on a roadside bore. Truck, drill and locates set before the first push.</figcaption>
-  </figure>
-
-  <!-- DARK: BUILT FOR THE FIELD -->
-  <section class="section field bg-ink">
-    <div class="wrap grid field__grid">
-      <div class="field__media">
-        <div data-clip><Photo src="/img/photos/crew-drill-vermeer.webp" width={1600} height={1184} alt="NextGen Fiber drill operator checking the job on his phone next to the Vermeer directional drill" /></div>
-        <span class="annot field__tag">NextGen Fiber drill crew · Filmed by SPM Creative</span>
-      </div>
-      <div class="field__copy">
+  <!-- CINEMA: BUILT FOR THE FIELD -->
+  <section class="cine cine--left">
+    <div class="cine__media" data-parallax>
+      <Photo src="/img/photos/field-bucket-line.webp" width={2400} height={1350} sizes="100vw" alt="NextGen Fiber lineman in the bucket at a pole line with aerial splice enclosures, rural road in the background" />
+    </div>
+    <div class="cine__shade" aria-hidden="true"></div>
+    <div class="wrap cine__inner">
+      <div class="cine__copy">
         <span class="label">In the field</span>
         <h2 class="h2" data-split>Built for the field.</h2>
         <p class="lead">Our crews run their own equipment and their own paperwork. Your project manager focuses on the build, not on chasing a subcontractor.</p>
-        <dl class="field__facts">
-          <div><dt class="label">Mobilization</dt><dd>Typically within 48 hours of award</dd></div>
-          <div><dt class="label">Underground</dt><dd>Own directional drill (Vermeer D20x22) and missile crews</dd></div>
-          <div><dt class="label">Documentation</dt><dd>GPS-stamped photos, redlines, as-builts and OTDR results</dd></div>
-          <div><dt class="label">Coverage</dt><dd>{states.length} states, from Alabama to Wisconsin</dd></div>
-        </dl>
       </div>
+      <dl class="cine__facts">
+        <div><dt>Mobilization</dt><dd>Typically within 48 hours of award</dd></div>
+        <div><dt>Underground</dt><dd>Own Vermeer D20x22 drill and missile crews</dd></div>
+        <div><dt>Documentation</dt><dd>GPS-stamped photos, redlines, as-builts, OTDR</dd></div>
+        <div><dt>Coverage</dt><dd>{states.length} states, from Alabama to Wisconsin</dd></div>
+      </dl>
     </div>
+    <p class="cine__cap">Aerial crew at the pole line · Filmed by SPM Creative</p>
   </section>
 
-  <!-- CLOSEOUT PROOF -->
-  <section class="section proof">
-    <div class="wrap grid proof__grid">
-      <div class="proof__copy">
+  <!-- CINEMA: CLOSEOUT PROOF -->
+  <section class="cine cine--right">
+    <div class="cine__media" data-parallax>
+      <Photo src="/img/photos/route-map-tablet-wide.webp" width={2400} height={1350} sizes="100vw" alt="Crew reviewing the route map and redlines on a tablet inside the truck" />
+    </div>
+    <div class="cine__shade" aria-hidden="true"></div>
+    <div class="wrap cine__inner">
+      <div class="cine__copy">
         <span class="label">Closeout-ready</span>
         <h2 class="h2" data-split>Documentation your PM can bill from.</h2>
         <p class="lead">Every enclosure, span and bore is photographed with time, date and GPS the moment the work is done. It is how our crews close out, not an extra step.</p>
-        <ul class="proof__list">
+        <ul class="cine__list">
           <li>Time and GPS-stamped photo per location</li>
           <li>Redlines and as-builts matched to prints</li>
           <li>OTDR and power meter results per fiber</li>
           <li>Daily production by span and footage</li>
         </ul>
       </div>
-      <figure class="proof__media">
-        <div data-clip><Photo src="/img/photos/route-map-tablet.webp" width={1600} height={900} alt="Crew reviewing the route map and redlines on a tablet inside the truck" /></div>
-        <figcaption class="annot">Route map and redlines, reviewed in the truck before the work starts.</figcaption>
-      </figure>
     </div>
+    <p class="cine__cap">Route map and redlines, reviewed in the truck</p>
   </section>
 
   <!-- FIBERLYTIC -->
@@ -244,12 +239,6 @@ const process = [
   .hero__call:hover { color: #fff; }
   .hero__cap { position: absolute; right: var(--gutter); bottom: 1.4rem; font-size: .8rem; color: rgba(247,246,242,.6); }
 
-  /* PHOTO BAND */
-  .band { margin: 0; position: relative; height: clamp(260px, 38vw, 560px); overflow: hidden; }
-  .band :global(img) { width: 100%; height: 116%; object-fit: cover; position: absolute; top: -8%; left: 0; }
-  .band::after { content: ''; position: absolute; inset: auto 0 0 0; height: 45%; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55)); pointer-events: none; }
-  .band__cap { z-index: 1; position: absolute; left: var(--gutter); bottom: 1.2rem; font-size: .85rem; color: #fff; text-shadow: 0 1px 12px rgba(0,0,0,.5); max-width: 46ch; }
-
   /* MARKETS TICKER */
   .ticker { overflow: hidden; border-block: 1px solid var(--line); padding-block: 1.2rem; }
   .ticker__track { display: flex; width: max-content; animation: ticker 60s linear infinite; }
@@ -261,6 +250,7 @@ const process = [
   @media (prefers-reduced-motion: reduce) { .ticker__track { animation: none; } }
 
   /* STATS */
+  .stats { padding-top: clamp(3.5rem, 6vw, 5.5rem); }
   .stats__row { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
   .stat { padding: 2rem 1.5rem 2.2rem 0; display: grid; gap: .8rem; border-right: 1px solid var(--line); }
   .stat + .stat { padding-left: 1.5rem; }
@@ -281,24 +271,25 @@ const process = [
   .svc__go { justify-self: end; transition: transform var(--t-med) var(--ease); }
   .svc__row:hover .svc__go { transform: translateX(4px); color: var(--gold-text); }
 
-  /* FIELD (dark) */
-  .field__grid { align-items: center; row-gap: 3rem; }
-  .field__media { grid-column: 1 / span 6; position: relative; }
-  .field__media :global(img) { width: 100%; height: auto; aspect-ratio: 1600/1184; object-fit: cover; border-radius: var(--radius); }
-  .field__tag { position: absolute; left: 0; bottom: -1.9rem; color: rgba(247,246,242,.5); }
-  .field__copy { grid-column: 9 / -1; display: grid; gap: 1.5rem; }
-  .field__facts { margin: 1rem 0 0; display: grid; }
-  .field__facts div { display: grid; gap: .4rem; padding: 1.1rem 0; border-top: 1px solid var(--line-dark); }
-  .field__facts dd { margin: 0; color: rgba(247,246,242,.86); }
-
-  /* PROOF */
-  .proof__grid { align-items: center; row-gap: 3rem; }
-  .proof__copy { grid-column: 1 / span 5; display: grid; gap: 1.5rem; }
-  .proof__list { list-style: none; margin: .5rem 0 0; padding: 0; }
-  .proof__list li { padding: .9rem 0; border-top: 1px solid var(--line); font-weight: 600; }
-  .proof__media { grid-column: 7 / -1; margin: 0; display: grid; gap: .8rem; }
-  .proof__media :global(img) { width: 100%; height: auto; border-radius: var(--radius); }
-  .proof__media figcaption { font-size: .85rem; }
+  /* CINEMA SECTIONS: full-bleed photo, copy on a graded shade */
+  .cine { position: relative; min-height: clamp(620px, 56.25vw, 980px); display: grid; align-items: end; color: var(--ivory); background: #0d0d0c; overflow: hidden; isolation: isolate; }
+  .cine__media { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+  .cine__media :global(img) { position: absolute; left: 0; top: -7%; width: 100%; height: 114%; object-fit: cover; }
+  .cine__shade { position: absolute; inset: 0; z-index: -1; }
+  .cine--left .cine__shade { background: linear-gradient(90deg, rgba(13,13,12,.78) 0%, rgba(13,13,12,.45) 38%, rgba(13,13,12,0) 62%), linear-gradient(180deg, rgba(13,13,12,0) 55%, rgba(13,13,12,.85) 100%); }
+  .cine--right .cine__shade { background: linear-gradient(270deg, rgba(13,13,12,.85) 0%, rgba(13,13,12,.55) 40%, rgba(13,13,12,.05) 68%); }
+  .cine__inner { padding-block: clamp(4rem, 8vw, 7rem) clamp(3rem, 5vw, 4.5rem); display: grid; gap: clamp(2rem, 4vw, 3.5rem); }
+  .cine__copy { display: grid; gap: 1.3rem; max-width: 34rem; }
+  .cine--right .cine__inner { justify-items: end; }
+  .cine .label { color: rgba(247,246,242,.78); }
+  .cine .lead { color: rgba(247,246,242,.88); }
+  .cine__facts { margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; border-top: 1px solid rgba(247,246,242,.28); padding-top: 1.4rem; }
+  .cine__facts dt { font-size: .85rem; color: rgba(247,246,242,.66); margin-bottom: .35rem; }
+  .cine__facts dd { margin: 0; font-weight: 600; }
+  .cine__list { list-style: none; margin: .4rem 0 0; padding: 0; }
+  .cine__list li { padding: .75rem 0; border-top: 1px solid rgba(247,246,242,.22); font-weight: 600; }
+  .cine__cap { position: absolute; right: var(--gutter); top: 1.4rem; font-size: .8rem; color: rgba(247,246,242,.7); text-shadow: 0 1px 8px rgba(0,0,0,.5); }
+  .cine--right .cine__cap { right: auto; left: var(--gutter); }
 
   /* FIBERLYTIC */
   .fl__head { row-gap: 1.5rem; align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
@@ -343,7 +334,8 @@ const process = [
     .svc__head { grid-column: 1 / -1; position: static; }
     .svc__list { grid-column: 1 / -1; }
     .fl__title, .fl__copy,
-    .field__media, .field__copy, .proof__copy, .proof__media, .where__head, .where__list { grid-column: 1 / -1; }
+    .where__head, .where__list { grid-column: 1 / -1; }
+    .cine__facts { grid-template-columns: 1fr 1fr; }
     .process__steps { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 1080px) {
@@ -359,7 +351,11 @@ const process = [
     .svc__go { grid-row: 1; grid-column: 3; }
     .process__steps { grid-template-columns: 1fr; gap: 2.5rem; }
     .where__list { grid-template-columns: 1fr; }
-    .field__tag { position: static; display: block; margin-top: .75rem; }
+    .cine { min-height: 92svh; }
+    .cine--left .cine__shade, .cine--right .cine__shade { background: linear-gradient(180deg, rgba(13,13,12,.35) 0%, rgba(13,13,12,.55) 40%, rgba(13,13,12,.9) 100%); }
+    .cine--left .cine__media :global(img) { object-position: 72% center; }
+    .cine--right .cine__inner { justify-items: start; }
+    .cine__facts { grid-template-columns: 1fr; gap: .9rem; }
     .hero { margin-top: -68px; min-height: 86svh; }
     .hero__shade { background: linear-gradient(180deg, rgba(13,13,12,.6) 0%, rgba(13,13,12,.45) 40%, rgba(13,13,12,.85) 100%); }
     .hero__cap { position: static; padding: 0 var(--gutter) 1.2rem; }
