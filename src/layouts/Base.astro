@@ -10,7 +10,10 @@ interface Props {
   headerTone?: 'light' | 'dark';
 }
 const { title, description, headerTone = 'light' } = Astro.props;
-const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+// build.format 'file' makes pathname end in .html; canonical must match the
+// clean URLs Netlify serves and the sitemap lists (/, /services, ...).
+const cleanPath = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '').replace(/\/$/, '') || '/';
+const canonical = new URL(cleanPath, Astro.site);
 const fullTitle = title.includes('NextGen') ? title : `${title} | NextGen Fiber`;
 
 const schema = {
