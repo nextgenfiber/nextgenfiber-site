@@ -19,7 +19,7 @@ export const services: Service[] = [
     lead: 'Most of our footage is aerial. Our crews place strand, lash new fiber and overlash existing plant on FTTH, feeder and distribution builds across the Southeast.',
     scope: ['Strand placement and tensioning', 'New fiber lash and overlash', 'Anchors, down guys and bonding', 'Pole transfers and make-ready support', 'Riser and slack loop installation', 'Storm and damage repair'],
     deliverables: ['GPS-stamped photos per pole', 'Redlines and as-builts', 'Daily production report'],
-    photo: { src: '/img/photos/closeout-photo-sample.webp', w: 1280, h: 960, alt: 'Closeout photo of aerial plant with time, date and map code overlay; address and GPS blurred', caption: 'Actual closeout photo. Address, coordinates and technician blurred.' },
+    photo: { src: '/img/photos/aerial-bucket-line.webp', w: 1600, h: 900, alt: 'NextGen Fiber lineman in the bucket at a pole line with splice enclosures on strand', caption: 'NextGen Fiber aerial crew · Filmed by SPM Creative' },
   },
   {
     slug: 'underground-hdd',
@@ -30,6 +30,7 @@ export const services: Service[] = [
     scope: ['Horizontal directional drilling', 'Missile boring for short crossings', 'Conduit and innerduct placement', 'Handhole and vault setting', 'Locate coordination', 'Full restoration and cleanup'],
     deliverables: ['Bore logs and depth records', 'Restoration photos', 'Redlines and as-builts'],
     equipment: ['Vermeer D20x22 Series III directional drill'],
+    photo: { src: '/img/photos/hdd-crew-site.webp', w: 1600, h: 558, alt: 'NextGen Fiber drill crew and Vermeer directional drill on a roadside job site', caption: 'NextGen Fiber drill crew · Filmed by SPM Creative' },
   },
   {
     slug: 'fiber-pulling',
@@ -48,7 +49,7 @@ export const services: Service[] = [
     lead: 'Our splicers build enclosures, terminals and jumpers in the bucket and on the ground, and hand over test results with every closeout.',
     scope: ['Fusion splicing and enclosure assembly', 'Terminals, taps and jumpers', 'OTDR and power meter testing', 'Troubleshooting and repair', 'Emergency restoration splicing'],
     deliverables: ['OTDR traces per fiber', 'Splice and port maps', 'Enclosure photos, open and closed'],
-    photo: { src: '/img/photos/splice-enclosure-closeup.webp', w: 711, h: 626, alt: 'Aerial fiber splice enclosure on strand, photographed from the bucket truck', caption: 'Falkville, AL · Aerial splice enclosure · Apr 2026' },
+    photo: { src: '/img/photos/splicer-bucket.webp', w: 1600, h: 900, alt: 'NextGen Fiber splicer working at aerial splice enclosures from the bucket', caption: 'NextGen Fiber splicer · Filmed by SPM Creative' },
   },
   {
     slug: 'storm-restoration',
