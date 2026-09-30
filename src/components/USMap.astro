@@ -7,15 +7,15 @@ import { geoAlbersUsa, geoPath } from 'd3-geo';
 import us from 'us-atlas/states-albers-10m.json';
 import type { JobSite } from '../data/jobsites';
 
-interface Props { sites: JobSite[]; hq: { name: string; lat: number; lon: number } }
-const { sites, hq } = Astro.props;
+interface Props { sites: JobSite[]; hq: { name: string; lat: number; lon: number }; extraStates?: string[] }
+const { sites, hq, extraStates = [] } = Astro.props;
 
 const projection = geoAlbersUsa().scale(1300).translate([487.5, 305]);
 const path = geoPath();
 const topo = us as any;
 const states = (feature(topo, topo.objects.states) as any).features as any[];
 const borders = path(mesh(topo, topo.objects.states, (a: any, b: any) => a !== b)) || '';
-const worked = new Set(sites.map((s) => s.stateName));
+const worked = new Set([...sites.map((s) => s.stateName), ...extraStates]);
 
 const pt = (lon: number, lat: number) => projection([lon, lat]) as [number, number];
 const [hx, hy] = pt(hq.lon, hq.lat);
@@ -30,7 +30,9 @@ const arc = ([x, y]: [number, number]) => {
 };
 // Region view: bounding box of every site plus the office, padded, at the
 // frame's aspect ratio. The full US map becomes a small locator inset.
-const xs = [hx, ...placed.map((s) => s.xy[0])], ys = [hy, ...placed.map((s) => s.xy[1])];
+// States with no recorded city still count toward the frame.
+const extraBounds = states.filter((f) => extraStates.includes(f.properties.name)).map((f) => path.bounds(f)).flat();
+const xs = [hx, ...placed.map((s) => s.xy[0]), ...extraBounds.map((b) => b[0])], ys = [hy, ...placed.map((s) => s.xy[1]), ...extraBounds.map((b) => b[1])];
 let [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
 const padX = (x1 - x0) * 0.22 + 20, padY = (y1 - y0) * 0.18 + 20;
 x0 -= padX; x1 += padX; y0 -= padY; y1 += padY;

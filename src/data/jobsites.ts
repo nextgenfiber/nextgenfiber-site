@@ -59,4 +59,13 @@ export const jobsites: JobSite[] = [
   { name: "Pembroke", state: 'VA', stateName: 'Virginia', lat: 37.3219, lon: -80.6365, work: "Aerial", label: true }, // Pembroke town (5161336)
   { name: "Suffolk", state: 'VA', stateName: 'Virginia', lat: 36.6972, lon: -76.6348, work: "Aerial", label: true }, // Suffolk city (5176432)
   { name: "Branchville", state: 'VA', stateName: 'Virginia', lat: 36.5698, lon: -77.2501, work: "Aerial" }, // Branchville town (5109208)
+  { name: "Parsons", state: 'TN', stateName: 'Tennessee', lat: 35.6512, lon: -88.1231, work: "Aerial" }, // Parsons city (4757080)
+  { name: "Carthage", state: 'NC', stateName: 'North Carolina', lat: 35.3223, lon: -79.4109, work: "Aerial" }, // Carthage town (3710680)
+  { name: "Louisburg", state: 'NC', stateName: 'North Carolina', lat: 36.0983, lon: -78.3001, work: "Aerial" }, // Louisburg town (3739360)
+  { name: "Hanover County", state: 'VA', stateName: 'Virginia', lat: 37.7602, lon: -77.4913, work: "Aerial" }, // Hanover County (51085)
+  { name: "Augusta County", state: 'VA', stateName: 'Virginia', lat: 38.1726, lon: -79.141, work: "Aerial" }, // Augusta County (51015)
+  { name: "Carrollton", state: 'GA', stateName: 'Georgia', lat: 33.5818, lon: -85.0833, work: "Rural build", label: true }, // Carrollton city (1313492)
+  { name: "Fond du Lac", state: 'WI', stateName: 'Wisconsin', lat: 43.7722, lon: -88.4403, work: "Aerial", label: true }, // Fond du Lac city (5526275)
 ];
+// States worked with no recorded city (owner-confirmed): shaded, no dot.
+export const extraStates: string[] = ['Illinois'];

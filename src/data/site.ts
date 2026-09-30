@@ -1,4 +1,4 @@
-import { jobsites } from './jobsites';
+import { jobsites, extraStates } from './jobsites';
 // Single source of truth for company facts.
 // Every figure here must have a source. Anything without one stays `null`
 // and is not rendered. See SOURCES.md for where each number comes from.
@@ -34,7 +34,8 @@ export const stats = [
   { value: 2023, suffix: '', unit: '', label: 'Building fiber since', source: 'Form 1065 2024, date business started' },
 ];
 
-export const states = ['Tennessee', 'Alabama', 'North Carolina', 'South Carolina', 'Virginia'];
+// Every state worked, ordered by number of job sites.
+export const states = [...new Set([...Object.entries(Object.groupBy(jobsites, (j) => j.stateName)).sort((a, b) => (b[1]?.length ?? 0) - (a[1]?.length ?? 0)).map(([s]) => s), ...extraStates])];
 
 // Markets by state, derived from the evidence-backed job site list that also
 // drives the Projects map (src/data/jobsites.ts).

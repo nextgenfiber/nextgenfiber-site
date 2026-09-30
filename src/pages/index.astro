@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Arrow from '../components/Arrow.astro';
 import RouteSchematic from '../components/RouteSchematic.astro';
 import Photo from '../components/Photo.astro';
-import { company, stats, markets } from '../data/site';
+import { company, stats, markets, states } from '../data/site';
 import { services } from '../data/services';
 
 const process = [
@@ -98,7 +98,7 @@ const process = [
           <div><dt class="label">Mobilization</dt><dd>Typically within 48 hours of award</dd></div>
           <div><dt class="label">Underground</dt><dd>Own directional drill (Vermeer D20x22) and missile crews</dd></div>
           <div><dt class="label">Documentation</dt><dd>GPS-stamped photos, redlines, as-builts and OTDR results</dd></div>
-          <div><dt class="label">Coverage</dt><dd>Tennessee, Alabama, the Carolinas and Virginia</dd></div>
+          <div><dt class="label">Coverage</dt><dd>{states.length} states, from Alabama to Wisconsin</dd></div>
         </dl>
       </div>
     </div>
@@ -187,7 +187,7 @@ const process = [
     <div class="wrap grid where__grid">
       <div class="where__head">
         <span class="label">Where we've built</span>
-        <h2 class="h2" data-split>{markets.reduce((n, m) => n + m.places.length, 0)} markets across five states.</h2>
+        <h2 class="h2" data-split>{markets.reduce((n, m) => n + m.places.length, 0)} markets across {states.length} states.</h2>
         <p class="lead">Programs supported through prime contractors for national and regional carriers. Based in Knoxville, working wherever the route goes.</p>
         <a class="link" href="/projects">See project work <Arrow /></a>
       </div>
