@@ -7,8 +7,8 @@ export const company = {
   name: 'NextGen Fiber',
   legalName: 'NextGen Fiber LLC',
   founded: 2023,
-  phone: '551-245-1126',
-  phoneHref: 'tel:+15512451126',
+  phone: '551-274-9008',
+  phoneHref: 'tel:+15512749008',
   email: 'ngf@nextgenfiberllc.com',
   address: {
     street: '1719 N Central St',
