@@ -43,4 +43,10 @@ import { services } from '../../data/services';
     .svcx__main, .svcx__scope { grid-column: 1 / -1; }
     .svcx__scope { padding-top: 0; }
   }
+  @media (max-width: 720px) {
+    .svcx__item { padding-block: 2rem; row-gap: 1rem; }
+    .svcx__scope { display: block; line-height: 1.55; font-size: .95rem; font-weight: 500; }
+    .svcx__scope li { display: inline; padding: 0; border: 0; }
+    .svcx__scope li:not(:last-child)::after { content: ' · '; color: var(--mid); }
+  }
 </style>
