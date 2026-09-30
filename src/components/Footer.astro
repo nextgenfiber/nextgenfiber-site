@@ -1,0 +1,79 @@
+---
+import Logo from './Logo.astro';
+import Arrow from './Arrow.astro';
+import { company, addressLine, nav, states } from '../data/site';
+import { services } from '../data/services';
+const year = new Date().getFullYear();
+---
+<footer class="ftr bg-ink">
+  <div class="wrap">
+    <div class="ftr__cta grid">
+      <div class="ftr__cta-text">
+        <span class="label">Next build</span>
+        <p class="h2">Crews for your next<br /> fiber build. <span class="gold">Start here.</span></p>
+      </div>
+      <div class="ftr__cta-act">
+        <a class="btn btn--gold" href="/contact">Request a bid <Arrow /></a>
+        <a class="btn btn--ghost" href={company.phoneHref}>{company.phone}</a>
+      </div>
+    </div>
+    <div class="ticks"></div>
+    <div class="ftr__cols grid">
+      <div class="ftr__brand">
+        <Logo tone="light" size={48} />
+        <p class="muted">Fiber optic construction subcontractor. Aerial, underground, fiber pulling and splicing crews for prime contractors across the Southeast.</p>
+      </div>
+      <nav class="ftr__col" aria-label="Services">
+        <span class="label">Services</span>
+        <ul>{services.map((s) => <li><a href={`/services/${s.slug}`}>{s.name}</a></li>)}</ul>
+      </nav>
+      <nav class="ftr__col" aria-label="Company">
+        <span class="label">Company</span>
+        <ul>
+          {nav.filter((n) => n.href !== '/services').map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="ftr__col">
+        <span class="label">Office</span>
+        <address>
+          {company.legalName}<br />
+          {company.address.street}<br />
+          {company.address.city}, {company.address.region} {company.address.postal}<br />
+          <a href={company.phoneHref}>{company.phone}</a><br />
+          <a href={`mailto:${company.email}`}>{company.email}</a>
+        </address>
+        <p class="annot ftr__coords">{company.coords.lat} · {company.coords.lng}</p>
+      </div>
+    </div>
+    <div class="ftr__base">
+      <span>© {year} {company.legalName}</span>
+      <span>Serving {states.join(' · ')}</span>
+      <span class="ftr__legal"><a href="/privacy">Privacy</a><a href={company.linkedin} rel="noopener" target="_blank">LinkedIn</a></span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr { padding-top: clamp(4rem, 8vw, 7rem); }
+  .ftr__cta { align-items: end; row-gap: 2rem; padding-bottom: clamp(3rem, 6vw, 5rem); }
+  .ftr__cta-text { grid-column: 1 / span 8; display: grid; gap: 1.25rem; }
+  .ftr__cta-act { grid-column: 9 / -1; display: flex; flex-wrap: wrap; gap: .75rem; justify-content: flex-end; }
+  .ftr__cols { row-gap: 2.5rem; padding-block: clamp(3rem, 6vw, 4.5rem); }
+  .ftr__brand { grid-column: 1 / span 4; display: grid; gap: 1.5rem; align-content: start; max-width: 36ch; }
+  .ftr__col { grid-column: span 2; display: grid; gap: 1rem; align-content: start; }
+  .ftr__col:last-child { grid-column: 10 / -1; }
+  .ftr ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+  .ftr a { text-decoration: none; color: rgba(247, 246, 242, .82); transition: color var(--t-fast); }
+  .ftr a:hover { color: var(--gold); }
+  .ftr address { font-style: normal; line-height: 1.75; color: rgba(247, 246, 242, .82); }
+  .ftr__coords { color: rgba(247, 246, 242, .42); margin-top: .5rem; }
+  .ftr__base { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; padding-block: 1.75rem 2.25rem; border-top: 1px solid var(--line-dark); font-size: var(--fs-small); color: rgba(247, 246, 242, .5); }
+  .ftr__legal { display: flex; gap: 1.5rem; }
+  @media (max-width: 960px) {
+    .ftr__cta-text, .ftr__cta-act { grid-column: 1 / -1; justify-content: flex-start; }
+    .ftr__brand { grid-column: 1 / -1; }
+    .ftr__col { grid-column: span 6; }
+    .ftr__col:last-child { grid-column: 1 / -1; }
+  }
+</style>

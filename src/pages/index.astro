@@ -1,0 +1,268 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import RouteSchematic from '../components/RouteSchematic.astro';
+import { company, stats, markets } from '../data/site';
+import { services } from '../data/services';
+
+const process = [
+  { t: 'Scope & prints', d: 'Send us the prints, footage and schedule. We confirm scope, rate and crew mix before we commit.' },
+  { t: 'Mobilize', d: 'Crews and equipment on site, typically within 48 hours of award, with locates and traffic control lined up.' },
+  { t: 'Build & report', d: 'Daily production reports and GPS-stamped photos, so your PM sees progress without chasing us.' },
+  { t: 'Closeout', d: 'Redlines, as-builts, photos and OTDR results handed over with the work, ready for your billing.' },
+];
+---
+<Base title="NextGen Fiber | Fiber Construction Subcontractor, Knoxville TN" description="Aerial, underground/HDD, fiber pulling and splicing crews for prime contractors across Tennessee and the Southeast. Knoxville, TN. Building fiber since 2023.">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap grid hero__grid">
+      <div class="hero__copy">
+        <span class="label" data-reveal>Fiber construction subcontractor · Knoxville, TN</span>
+        <h1 class="h1" data-reveal data-reveal-delay="1">The crews behind the fiber networks of the Southeast.</h1>
+        <p class="lead" data-reveal data-reveal-delay="2">Aerial, underground and splicing crews for prime contractors. We build to print, document every span and hand over closeout packages that don't hold up your billing.</p>
+        <div class="hero__act" data-reveal data-reveal-delay="3">
+          <a class="btn" href="/contact">Request a bid <Arrow /></a>
+          <a class="btn btn--ghost" href="/services">Our capabilities</a>
+        </div>
+        <ul class="hero__caps annot" data-reveal data-reveal-delay="4">
+          <li>Aerial</li><li>Underground / HDD</li><li>Fiber pulling</li><li>Splicing & testing</li>
+        </ul>
+      </div>
+      <div class="hero__visual" data-reveal data-reveal-delay="2">
+        <RouteSchematic />
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" aria-label="Track record">
+    <div class="wrap">
+      <div class="ticks"></div>
+      <div class="stats__row">
+        {stats.map((s, i) => (
+          <div class="stat" data-reveal data-reveal-delay={String(i)}>
+            <span class="index"><b>0{i + 1}</b> / 04</span>
+            <p class="stat-num">
+              {s.suffix ? <span data-count={String(s.value)}>{s.value}</span> : <span>{s.value}</span>}{s.suffix && <span class="gold">{s.suffix}</span>}
+              {s.unit && <span class="stat__unit">{s.unit}</span>}
+            </p>
+            <p class="stat__label">{s.label}</p>
+          </div>
+        ))}
+      </div>
+      <p class="annot stats__note">Figures from invoiced production, April 2023 – July 2026. Line items are not added together.</p>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section svc">
+    <div class="wrap grid">
+      <header class="svc__head">
+        <span class="label">Capabilities</span>
+        <h2 class="h2">One subcontractor, from strand to splice.</h2>
+        <p class="lead">Five crew types that cover a full fiber build. Hire one, or run the whole route with us.</p>
+        <a class="link" href="/services">All services <Arrow /></a>
+      </header>
+      <ol class="svc__list">
+        {services.map((s, i) => (
+          <li data-reveal data-reveal-delay={String(Math.min(i, 4))}>
+            <a href={`/services/${s.slug}`} class="svc__row">
+              <span class="svc__num">{s.index}</span>
+              <span class="svc__name">{s.name}</span>
+              <span class="svc__short">{s.short}</span>
+              <span class="svc__go"><Arrow /></span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- DARK: BUILT FOR THE FIELD -->
+  <section class="section field bg-ink">
+    <div class="wrap grid field__grid">
+      <div class="field__media" data-reveal>
+        <img src="/img/photos/splice-enclosure-closeup.webp" width="711" height="626" loading="lazy" alt="Aerial fiber splice enclosure on strand in Falkville, Alabama, photographed from the bucket truck" />
+        <span class="annot field__tag">Falkville, AL · Aerial splice enclosure · Apr 2026</span>
+      </div>
+      <div class="field__copy">
+        <span class="label">In the field</span>
+        <h2 class="h2">Built for<br />the field.</h2>
+        <p class="lead">Our crews run their own equipment and their own paperwork. Your project manager focuses on the build, not on chasing a subcontractor.</p>
+        <dl class="field__facts">
+          <div><dt class="label">Mobilization</dt><dd>Typically within 48 hours of award</dd></div>
+          <div><dt class="label">Underground</dt><dd>Own directional drill (Vermeer D20x22) and missile crews</dd></div>
+          <div><dt class="label">Documentation</dt><dd>GPS-stamped photos, redlines, as-builts and OTDR results</dd></div>
+          <div><dt class="label">Coverage</dt><dd>Tennessee, Alabama, North Carolina and Virginia</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSEOUT PROOF -->
+  <section class="section proof">
+    <div class="wrap grid proof__grid">
+      <div class="proof__copy">
+        <span class="label">Closeout-ready</span>
+        <h2 class="h2">Documentation your PM can bill from.</h2>
+        <p class="lead">Every enclosure, span and bore is photographed with time, date and GPS the moment the work is done. It is how our crews close out, not an extra step.</p>
+        <ul class="proof__list">
+          <li><span class="index"><b>A</b></span>Time and GPS-stamped photo per location</li>
+          <li><span class="index"><b>B</b></span>Redlines and as-builts matched to prints</li>
+          <li><span class="index"><b>C</b></span>OTDR and power meter results per fiber</li>
+          <li><span class="index"><b>D</b></span>Daily production by span and footage</li>
+        </ul>
+      </div>
+      <figure class="proof__media" data-reveal>
+        <img src="/img/photos/closeout-photo-sample.webp" width="1280" height="960" loading="lazy" alt="Closeout photo of an aerial splice enclosure with time, date and map code overlay; address and GPS blurred" />
+        <figcaption class="annot">Actual closeout photo. Address, coordinates and technician blurred.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section process bg-stone">
+    <div class="wrap">
+      <header class="process__head grid">
+        <div><span class="label">How we work</span><h2 class="h2">From award to closeout.</h2></div>
+      </header>
+      <ol class="process__steps">
+        {process.map((p, i) => (
+          <li data-reveal data-reveal-delay={String(i)}>
+            <span class="process__num">0{i + 1}</span>
+            <span class="process__line" aria-hidden="true"></span>
+            <h3 class="h3">{p.t}</h3>
+            <p class="muted">{p.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- WHERE WE BUILD -->
+  <section class="section where">
+    <div class="wrap grid where__grid">
+      <div class="where__head">
+        <span class="label">Where we've built</span>
+        <h2 class="h2">Markets across four states.</h2>
+        <p class="lead">Programs supported through prime contractors for national and regional carriers. Based in Knoxville, working wherever the route goes.</p>
+        <a class="link" href="/projects">See project work <Arrow /></a>
+      </div>
+      <div class="where__list">
+        {markets.map((m) => (
+          <div class="where__state" data-reveal>
+            <span class="where__abbr">{m.state}</span>
+            <ul>{m.places.map((p) => <li>{p}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SAFETY TEASER -->
+  <section class="section--tight safety-t bg-paper">
+    <div class="wrap safety-t__row">
+      <div>
+        <span class="label">Safety & prequalification</span>
+        <p class="h3">Daily tailboard, documented JHA and a certificate of insurance on request.</p>
+      </div>
+      <a class="btn btn--ghost" href="/safety">Safety & prequal <Arrow /></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* HERO */
+  .hero { padding-block: clamp(2.5rem, 6vw, 6rem) clamp(3rem, 6vw, 5rem); overflow: hidden; }
+  .hero__grid { align-items: center; row-gap: 3rem; }
+  .hero__copy { grid-column: 1 / span 6; display: grid; gap: 1.6rem; }
+  .hero__copy .h1 { max-width: 13ch; }
+  .hero__act { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .5rem; }
+  .hero__caps { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; list-style: none; padding: 0; margin: .5rem 0 0; }
+  .hero__caps li { display: inline-flex; align-items: center; gap: .5rem; }
+  .hero__caps li::before { content: ''; width: 5px; height: 5px; background: var(--gold); }
+  .hero__visual { grid-column: 7 / -1; padding-bottom: 1.5rem; }
+
+  /* STATS */
+  .stats__row { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+  .stat { padding: 2rem 1.5rem 2.2rem 0; display: grid; gap: .8rem; border-right: 1px solid var(--line); }
+  .stat + .stat { padding-left: 1.5rem; }
+  .stat:last-child { border-right: 0; }
+  .stat__unit { font-size: .32em; font-weight: 700; letter-spacing: .1em; color: var(--mid); margin-left: .35em; text-transform: uppercase; }
+  .stat__label { font-weight: 600; color: var(--ink-3); }
+  .stats__note { margin-top: 1rem; }
+
+  /* SERVICES */
+  .svc__head { grid-column: 1 / span 4; display: grid; gap: 1.4rem; align-content: start; position: sticky; top: 110px; }
+  .svc__list { grid-column: 6 / -1; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
+  .svc__row { display: grid; grid-template-columns: 4.5rem 1fr 1.4fr 2rem; gap: 1.5rem; align-items: baseline; padding: 2rem 0; border-bottom: 1px solid var(--line); text-decoration: none; position: relative; }
+  .svc__row::before { content: ''; position: absolute; left: 0; top: -1px; height: 2px; width: 0; background: var(--gold); transition: width var(--t-med) var(--ease); }
+  .svc__row:hover::before { width: 100%; }
+  .svc__num { font-size: .8rem; font-weight: 800; letter-spacing: .12em; color: var(--gold-text); }
+  .svc__name { font-size: var(--fs-h3); font-weight: 700; letter-spacing: -.025em; line-height: 1.1; }
+  .svc__short { color: var(--mid-2); }
+  .svc__go { justify-self: end; transition: transform var(--t-med) var(--ease); }
+  .svc__row:hover .svc__go { transform: translateX(4px); color: var(--gold-text); }
+
+  /* FIELD (dark) */
+  .field__grid { align-items: center; row-gap: 3rem; }
+  .field__media { grid-column: 1 / span 6; position: relative; }
+  .field__media img { width: 100%; height: auto; aspect-ratio: 711/626; object-fit: cover; border-radius: var(--radius); }
+  .field__tag { position: absolute; left: 0; bottom: -1.9rem; color: rgba(247,246,242,.5); }
+  .field__copy { grid-column: 9 / -1; display: grid; gap: 1.5rem; }
+  .field__facts { margin: 1rem 0 0; display: grid; }
+  .field__facts div { display: grid; gap: .4rem; padding: 1.1rem 0; border-top: 1px solid var(--line-dark); }
+  .field__facts dd { margin: 0; color: rgba(247,246,242,.86); }
+
+  /* PROOF */
+  .proof__grid { align-items: center; row-gap: 3rem; }
+  .proof__copy { grid-column: 1 / span 5; display: grid; gap: 1.5rem; }
+  .proof__list { list-style: none; margin: .5rem 0 0; padding: 0; }
+  .proof__list li { display: flex; gap: 1rem; align-items: baseline; padding: .9rem 0; border-top: 1px solid var(--line); font-weight: 600; }
+  .proof__media { grid-column: 7 / -1; margin: 0; display: grid; gap: .8rem; }
+  .proof__media img { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
+
+  /* PROCESS */
+  .process__head { margin-bottom: 3.5rem; }
+  .process__head > div { grid-column: 1 / span 7; display: grid; gap: 1.2rem; }
+  .process__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .process__steps li { display: grid; gap: 1rem; align-content: start; }
+  .process__num { font-size: 3.2rem; font-weight: 750; letter-spacing: -.05em; line-height: 1; color: var(--ink); }
+  .process__line { height: 1px; background: var(--line-strong); position: relative; }
+  .process__line::after { content: ''; position: absolute; left: 0; top: -1px; width: 32px; height: 3px; background: var(--gold); }
+
+  /* WHERE */
+  .where__grid { row-gap: 3rem; }
+  .where__head { grid-column: 1 / span 5; display: grid; gap: 1.4rem; align-content: start; }
+  .where__list { grid-column: 7 / -1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 2rem; }
+  .where__state { padding: 1.4rem 0; border-top: 1px solid var(--line-strong); display: grid; grid-template-columns: 3.5rem 1fr; }
+  .where__abbr { font-weight: 800; letter-spacing: .08em; color: var(--gold-text); }
+  .where__state { align-items: start; }
+  .where__state ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; font-weight: 600; align-content: start; }
+
+  .safety-t__row { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; align-items: center; justify-content: space-between; }
+  .safety-t__row > div { display: grid; gap: .8rem; max-width: 46rem; }
+
+  @media (max-width: 1080px) {
+    .hero__copy, .hero__visual { grid-column: 1 / -1; }
+    .hero__visual { max-width: 640px; }
+    .svc__head { grid-column: 1 / -1; position: static; }
+    .svc__list { grid-column: 1 / -1; }
+    .field__media, .field__copy, .proof__copy, .proof__media, .where__head, .where__list { grid-column: 1 / -1; }
+    .process__steps { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .stats__row { grid-template-columns: 1fr 1fr; }
+    .stat { padding: 1.5rem 1rem 1.6rem 0; }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(3) { padding-left: 0; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .svc__row { grid-template-columns: 2.6rem 1fr 1.5rem; gap: .5rem 1rem; padding: 1.5rem 0; }
+    .svc__short { grid-column: 2 / 3; font-size: .95rem; }
+    .svc__go { grid-row: 1; grid-column: 3; }
+    .process__steps { grid-template-columns: 1fr; gap: 2.5rem; }
+    .where__list { grid-template-columns: 1fr; }
+    .field__tag { position: static; display: block; margin-top: .75rem; }
+  }
+</style>

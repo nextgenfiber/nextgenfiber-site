@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import ServiceFigure from '../../components/ServiceFigure.astro';
+import Arrow from '../../components/Arrow.astro';
+import { services, type Service } from '../../data/services';
+
+export function getStaticPaths() {
+  return services.map((s, i) => ({ params: { slug: s.slug }, props: { s, i } }));
+}
+const { s, i } = Astro.props as { s: Service; i: number };
+const next = services[(i + 1) % services.length];
+const total = `0${services.length}`;
+---
+<Base title={`${s.name} Subcontractor`} description={`${s.name} crews for fiber prime contractors in Tennessee and the Southeast. ${s.short}`}>
+  <PageHead label={`Services · ${s.name}`} title={s.name} lead={s.lead} index={s.index} total={total} marker={(i + 0.5) / services.length} />
+
+  <section class="section sd">
+    <div class="wrap grid sd__grid">
+      <div class="sd__fig" data-reveal>
+        <ServiceFigure slug={s.slug} />
+        {s.photo && (
+          <figure class="sd__photo">
+            <img src={s.photo.src} width={s.photo.w} height={s.photo.h} loading="lazy" alt={s.photo.alt} />
+            <figcaption class="annot">{s.photo.caption}</figcaption>
+          </figure>
+        )}
+      </div>
+      <div class="sd__body">
+        <div class="sd__block">
+          <span class="label">Scope</span>
+          <ol class="sd__scope">
+            {s.scope.map((x, k) => <li><span class="index"><b>{String(k + 1).padStart(2, '0')}</b></span>{x}</li>)}
+          </ol>
+        </div>
+        <div class="sd__block sd__deliv">
+          <span class="label">Handed over with the work</span>
+          <ul>{s.deliverables.map((d) => <li>{d}</li>)}</ul>
+        </div>
+        {s.equipment && (
+          <div class="sd__block">
+            <span class="label">Equipment</span>
+            <ul class="sd__equip">{s.equipment.map((e) => <li>{e}</li>)}</ul>
+          </div>
+        )}
+        <div class="sd__act">
+          <a class="btn" href={`/contact?service=${s.slug}`}>Request a bid <Arrow /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="sd__next bg-stone" aria-label="Next service">
+    <a class="wrap sd__next-row" href={`/services/${next.slug}`}>
+      <span class="index">Next · <b>{next.index}</b> / {total}</span>
+      <span class="h2">{next.name}</span>
+      <Arrow />
+    </a>
+  </nav>
+</Base>
+
+<style>
+  .sd { padding-top: clamp(3rem, 5vw, 4.5rem); }
+  .sd__grid { row-gap: 3rem; align-items: start; }
+  .sd__fig { grid-column: 1 / span 6; display: grid; gap: 1.5rem; position: sticky; top: 110px; }
+  .sd__photo { margin: 0; display: grid; gap: .7rem; }
+  .sd__photo img { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
+  .sd__body { grid-column: 8 / -1; display: grid; gap: 2.75rem; }
+  .sd__block { display: grid; gap: 1.1rem; }
+  .sd__scope { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
+  .sd__scope li { display: flex; gap: 1.1rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid var(--line); font-size: 1.1rem; font-weight: 600; }
+  .sd__deliv { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: var(--radius); padding: 1.6rem 1.75rem; }
+  .sd__deliv ul, .sd__equip { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+  .sd__deliv li, .sd__equip li { font-weight: 600; }
+  .sd__next { border-top: 1px solid var(--line); }
+  .sd__next-row { display: flex; align-items: center; gap: 1.5rem 2.5rem; flex-wrap: wrap; padding-block: clamp(2.5rem, 5vw, 4rem); text-decoration: none; }
+  .sd__next-row .h2 { flex: 1; font-weight: 700; }
+  .sd__next-row :global(.arrow) { width: 40px; height: 40px; transition: transform var(--t-med) var(--ease); }
+  .sd__next-row:hover :global(.arrow) { transform: translateX(8px); color: var(--gold-text); }
+  @media (max-width: 1080px) {
+    .sd__fig { grid-column: 1 / -1; position: static; }
+    .sd__body { grid-column: 1 / -1; }
+  }
+</style>

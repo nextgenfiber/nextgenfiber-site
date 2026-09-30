@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Arrow from '../components/Arrow.astro';
+import { company } from '../data/site';
+
+// Crew roles we hire for. No dated openings are listed until there are real
+// ones (JobPosting schema must match a real opening).
+const roles = [
+  { t: 'Aerial lineman', d: 'Strand, lash and overlash from the bucket and the pole.' },
+  { t: 'Fiber splicer', d: 'Fusion splicing, enclosures, terminals and OTDR testing.' },
+  { t: 'HDD operator', d: 'Directional drill operation, locating and bore logs.' },
+  { t: 'Foreman', d: 'Runs a crew, production and daily documentation.' },
+  { t: 'Laborer / groundman', d: 'Supports aerial and underground crews on site.' },
+];
+---
+<Base title="Careers" description="Fiber construction jobs at NextGen Fiber, Knoxville TN: aerial linemen, fiber splicers, HDD operators, foremen and laborers.">
+  <PageHead label="Careers" title="Build the network. Get paid for the footage." lead="We hire linemen, splicers, drill operators, foremen and laborers for fiber builds across Tennessee and the Southeast." marker={0.85} />
+
+  <section class="section cr">
+    <div class="wrap grid cr__grid">
+      <div class="cr__roles">
+        <span class="label">Crew roles</span>
+        <ol>
+          {roles.map((r, i) => (
+            <li data-reveal data-reveal-delay={String(Math.min(i, 4))}>
+              <span class="index"><b>0{i + 1}</b></span>
+              <div><h2 class="h3">{r.t}</h2><p class="muted">{r.d}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <form class="cr__form" action={company.formEndpoint} method="POST" data-form>
+        <span class="label">Apply</span>
+        <input type="hidden" name="_subject" value="Job application from nextgenfiberllc.com" />
+        <input type="hidden" name="form" value="careers" />
+        <div class="hp" aria-hidden="true">
+          <label for="c-gotcha">Leave this empty</label>
+          <input id="c-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+        </div>
+        <div class="field"><label for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required /></div>
+        <div class="field"><label for="c-phone">Phone</label><input id="c-phone" type="tel" name="phone" autocomplete="tel" required /></div>
+        <div class="field"><label for="c-email">Email</label><input id="c-email" type="email" name="email" autocomplete="email" /></div>
+        <div class="field">
+          <label for="c-role">Role</label>
+          <select id="c-role" name="role" required>
+            <option value="">Select one</option>
+            {roles.map((r) => <option>{r.t}</option>)}
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label for="c-exp">Years in fiber or telecom</label><input id="c-exp" name="experience" inputmode="numeric" /></div>
+        <div class="field"><label for="c-loc">Where do you live?</label><input id="c-loc" name="location" placeholder="City, state" /></div>
+        <div class="field"><label for="c-msg">Certifications, CDL, travel availability</label><textarea id="c-msg" name="message"></textarea></div>
+        <div class="cr__submit">
+          <button class="btn btn--gold" type="submit">Send application <Arrow /></button>
+          <p class="annot cr__status" role="status" aria-live="polite" data-status></p>
+        </div>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cr__grid { row-gap: 3rem; align-items: start; }
+  .cr__roles { grid-column: 1 / span 6; display: grid; gap: 1.5rem; }
+  .cr__roles ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
+  .cr__roles li { display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  .cr__roles li > div { display: grid; gap: .4rem; }
+  .cr__form { grid-column: 8 / -1; display: grid; gap: 1.1rem; padding: 2rem; background: var(--paper); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: var(--radius); position: sticky; top: 100px; }
+  .cr__submit { display: grid; gap: .8rem; justify-items: start; margin-top: .5rem; }
+  .cr__status { text-transform: none; letter-spacing: .02em; font-size: .9rem; }
+  .cr__status[data-state] { color: var(--ink); font-weight: 700; }
+  @media (max-width: 1080px) {
+    .cr__roles, .cr__form { grid-column: 1 / -1; }
+    .cr__form { position: static; }
+  }
+  @media (max-width: 720px) { .cr__form { padding: 1.4rem; } }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    btn.disabled = true;
+    status.textContent = 'Sending…';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      status.dataset.state = 'ok';
+      status.textContent = 'Application received. We will call you if there is a fit.';
+    } catch {
+      status.dataset.state = 'err';
+      status.textContent = 'Could not send. Please call the office.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>

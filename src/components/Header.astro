@@ -1,0 +1,87 @@
+---
+import Logo from './Logo.astro';
+import Arrow from './Arrow.astro';
+import { nav, company } from '../data/site';
+interface Props { tone?: 'light' | 'dark' }
+const { tone = 'light' } = Astro.props;
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class={`hdr hdr--${tone}`} data-hdr>
+  <div class="wrap hdr__row">
+    <a href="/" class="hdr__brand" aria-label="NextGen Fiber home">
+      <Logo tone="dark" size={40} />
+    </a>
+    <nav class="hdr__nav" aria-label="Main">
+      <ul>
+        {nav.map((n) => (
+          <li><a href={n.href} class:list={['hdr__link', { 'is-active': isActive(n.href) }]} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div class="hdr__cta">
+      <a class="hdr__phone" href={company.phoneHref}>{company.phone}</a>
+      <a class="btn btn--small" href="/contact">Request a bid <Arrow /></a>
+    </div>
+    <button class="hdr__menu" type="button" aria-expanded="false" aria-controls="mnav" data-menu>
+      <span class="sr-only">Menu</span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mnav" id="mnav" hidden>
+    <div class="wrap mnav__inner">
+      <ul>
+        {nav.map((n, i) => (
+          <li><a href={n.href}><span class="index"><b>0{i + 1}</b></span>{n.label}</a></li>
+        ))}
+        <li><a href="/contact"><span class="index"><b>0{nav.length + 1}</b></span>Request a bid</a></li>
+      </ul>
+      <div class="mnav__foot">
+        <a class="btn btn--gold" href={company.phoneHref}>Call {company.phone} <Arrow /></a>
+        <a class="link" href={`mailto:${company.email}`}>{company.email}</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .hdr { position: sticky; top: 0; z-index: 50; background: rgba(247, 246, 242, 0); border-bottom: 1px solid transparent; transition: background var(--t-med) var(--ease), border-color var(--t-med) var(--ease), backdrop-filter var(--t-med); }
+  .hdr.is-scrolled { background: rgba(247, 246, 242, .86); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom-color: var(--line); }
+  .hdr__row { display: flex; align-items: center; gap: 2rem; height: 76px; }
+  .hdr__brand { text-decoration: none; margin-right: auto; }
+  .hdr__nav ul { display: flex; gap: clamp(1.2rem, 2.2vw, 2.4rem); list-style: none; margin: 0; padding: 0; }
+  .hdr__link { position: relative; font-size: .92rem; font-weight: 600; text-decoration: none; color: var(--ink-3); padding-block: .5rem; }
+  .hdr__link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform var(--t-med) var(--ease); }
+  .hdr__link:hover::after, .hdr__link.is-active::after { transform: scaleX(1); }
+  .hdr__link.is-active { color: var(--ink); }
+  .hdr__cta { display: flex; align-items: center; gap: 1.25rem; }
+  .hdr__phone { font-size: .9rem; font-weight: 700; text-decoration: none; font-variant-numeric: tabular-nums; }
+  .hdr__phone:hover { color: var(--gold-text); }
+  :global(.btn--small) { min-height: 44px; padding: .65rem 1.05rem; font-size: .88rem; }
+  .hdr__menu { display: none; width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: transparent; position: relative; cursor: pointer; }
+  .hdr__menu span:not(.sr-only) { position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--ink); transition: transform var(--t-med) var(--ease); }
+  .hdr__menu span:nth-of-type(2) { top: 17px; } .hdr__menu span:nth-of-type(3) { top: 25px; }
+  .hdr__menu[aria-expanded='true'] span:nth-of-type(2) { transform: translateY(4px) rotate(45deg); }
+  .hdr__menu[aria-expanded='true'] span:nth-of-type(3) { transform: translateY(-4px) rotate(-45deg); }
+  .mnav { position: fixed; inset: 76px 0 0; background: var(--ivory); border-top: 1px solid var(--line); overflow-y: auto; }
+  .mnav__inner { padding-block: 2rem 3rem; display: grid; gap: 2.5rem; }
+  .mnav ul { list-style: none; margin: 0; padding: 0; }
+  .mnav li a { display: flex; align-items: baseline; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); font-size: 1.9rem; font-weight: 700; letter-spacing: -.03em; text-decoration: none; }
+  .mnav__foot { display: grid; gap: 1.25rem; justify-items: start; }
+  @media (max-width: 1080px) { .hdr__nav, .hdr__phone { display: none; } }
+  @media (max-width: 720px) { .hdr__cta { display: none; } .hdr__menu { display: block; } .hdr__row { height: 68px; } .mnav { inset: 68px 0 0; } }
+</style>
+
+<script>
+  const hdr = document.querySelector('[data-hdr]') as HTMLElement;
+  const onScroll = () => hdr.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+  const btn = document.querySelector('[data-menu]') as HTMLButtonElement;
+  const panel = document.getElementById('mnav') as HTMLElement;
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    panel.hidden = open;
+    document.body.style.overflow = open ? '' : 'hidden';
+    hdr.classList.add('is-scrolled');
+  });
+</script>

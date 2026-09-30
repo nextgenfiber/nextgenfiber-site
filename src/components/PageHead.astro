@@ -1,0 +1,34 @@
+---
+// Light page header shared by inner pages: section index, oversized title,
+// lead, and a ruler with a gold marker at this page's position.
+interface Props { label: string; title: string; lead?: string; index?: string; total?: string; marker?: number }
+const { label, title, lead, index, total, marker = 0.2 } = Astro.props;
+---
+<section class="ph">
+  <div class="wrap">
+    <div class="ph__top">
+      <span class="label" data-reveal>{label}</span>
+      {index && <span class="index" data-reveal><b>{index}</b>{total && ` / ${total}`}</span>}
+    </div>
+    <div class="grid ph__grid">
+      <h1 class="h1 ph__title" data-reveal data-reveal-delay="1">{title}</h1>
+      {lead && <p class="lead ph__lead" data-reveal data-reveal-delay="2">{lead}</p>}
+      <slot />
+    </div>
+    <div class="ph__ruler" aria-hidden="true">
+      <div class="ticks"></div>
+      <span class="ph__marker" style={`left:${marker * 100}%`}></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ph { padding-block: clamp(3rem, 7vw, 6.5rem) 0; }
+  .ph__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+  .ph__grid { row-gap: 1.75rem; align-items: end; }
+  .ph__title { grid-column: 1 / span 8; max-width: 15ch; }
+  .ph__lead { grid-column: 9 / -1; }
+  .ph__ruler { position: relative; margin-top: clamp(2.5rem, 5vw, 4.5rem); }
+  .ph__marker { position: absolute; top: -3px; width: 48px; height: 3px; background: var(--gold); transform: translateX(-50%); }
+  @media (max-width: 1080px) { .ph__title, .ph__lead { grid-column: 1 / -1; } }
+</style>

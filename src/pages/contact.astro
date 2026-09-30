@@ -1,0 +1,150 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Arrow from '../components/Arrow.astro';
+import { company } from '../data/site';
+import { services } from '../data/services';
+---
+<Base title="Request a Bid" description="Send prints, footage and schedule for your fiber build. NextGen Fiber, Knoxville, TN: aerial, underground/HDD, fiber pulling and splicing crews.">
+  <PageHead label="Request a bid" title="Send us the route." lead="Prints, footage, location and schedule are enough to start. We reply with scope questions, a rate and a crew plan." marker={0.92} />
+
+  <section class="section ct">
+    <div class="wrap grid ct__grid">
+      <form class="ct__form" action={company.formEndpoint} method="POST" data-form>
+        <input type="hidden" name="_subject" value="Bid request from nextgenfiberllc.com" />
+        <input type="hidden" name="form" value="bid" />
+        <div class="hp" aria-hidden="true">
+          <label for="f-gotcha">Leave this empty</label>
+          <input id="f-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <fieldset class="ct__set">
+          <legend class="index"><b>01</b> / 03 · Contact</legend>
+          <div class="ct__row">
+            <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required /></div>
+            <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" autocomplete="organization" required /></div>
+          </div>
+          <div class="ct__row">
+            <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" name="email" autocomplete="email" required /></div>
+            <div class="field"><label for="f-phone">Phone</label><input id="f-phone" type="tel" name="phone" autocomplete="tel" /></div>
+          </div>
+          <div class="field">
+            <label for="f-role">You are</label>
+            <select id="f-role" name="role" required>
+              <option value="">Select one</option>
+              <option>Prime contractor / GC</option>
+              <option>Network owner / utility / ISP</option>
+              <option>Engineering firm</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="ct__set">
+          <legend class="index"><b>02</b> / 03 · Scope</legend>
+          <div class="ct__checks" role="group" aria-label="Work needed">
+            {services.map((s) => (
+              <label class="ct__check"><input type="checkbox" name="work" value={s.name} data-slug={s.slug} /><span>{s.name}</span></label>
+            ))}
+          </div>
+          <div class="ct__row">
+            <div class="field"><label for="f-location">Location (city, state)</label><input id="f-location" name="location" required /></div>
+            <div class="field"><label for="f-footage">Approx. footage</label><input id="f-footage" name="footage" inputmode="numeric" placeholder="e.g. 40,000 ft" /></div>
+          </div>
+          <div class="field"><label for="f-start">Target start</label><input id="f-start" name="start" placeholder="e.g. November 2026" /></div>
+        </fieldset>
+
+        <fieldset class="ct__set">
+          <legend class="index"><b>03</b> / 03 · Details</legend>
+          <div class="field"><label for="f-msg">Anything else we should know</label><textarea id="f-msg" name="message" placeholder="Rate structure, crew size, links to prints, permits or make-ready status"></textarea></div>
+        </fieldset>
+
+        <div class="ct__submit">
+          <button class="btn btn--gold" type="submit">Send request <Arrow /></button>
+          <p class="annot ct__status" role="status" aria-live="polite" data-status></p>
+        </div>
+      </form>
+
+      <aside class="ct__side">
+        <div class="ct__card bg-ink">
+          <span class="label">Direct</span>
+          <a class="ct__big" href={company.phoneHref}>{company.phone}</a>
+          <a class="link ct__mail" href={`mailto:${company.email}`}>{company.email}</a>
+        </div>
+        <div class="ct__card">
+          <span class="label">Office</span>
+          <address>{company.legalName}<br />{company.address.street}<br />{company.address.city}, {company.address.region} {company.address.postal}</address>
+          <span class="annot">{company.coords.lat} · {company.coords.lng}</span>
+        </div>
+        <div class="ct__card">
+          <span class="label">Looking for work?</span>
+          <p class="muted">Linemen, splicers, drill operators and laborers: apply on the careers page.</p>
+          <a class="link" href="/careers">Careers <Arrow /></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ct { padding-top: clamp(3rem, 5vw, 4.5rem); }
+  .ct__grid { row-gap: 3rem; align-items: start; }
+  .ct__form { grid-column: 1 / span 7; display: grid; gap: 2.5rem; position: relative; }
+  .ct__set { border: 0; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
+  .ct__set legend { padding: 0 0 1rem; margin-bottom: .25rem; width: 100%; border-bottom: 1px solid var(--line-strong); }
+  .ct__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .ct__checks { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .ct__check { display: flex; align-items: center; gap: .75rem; min-height: 50px; padding: .7rem 1rem; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--paper); font-weight: 600; cursor: pointer; transition: border-color var(--t-fast); }
+  .ct__check:hover { border-color: var(--ink); }
+  .ct__check input { width: 18px; height: 18px; accent-color: var(--ink); }
+  .ct__check:has(input:checked) { border-color: var(--ink); box-shadow: inset 3px 0 0 var(--gold); }
+  .ct__submit { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+  .ct__status { text-transform: none; letter-spacing: .02em; font-size: .9rem; }
+  .ct__status[data-state='ok'] { color: var(--ink); font-weight: 700; }
+  .ct__status[data-state='err'] { color: var(--ink); font-weight: 700; }
+  .ct__side { grid-column: 9 / -1; display: grid; gap: 1rem; position: sticky; top: 110px; }
+  .ct__card { display: grid; gap: .9rem; padding: 1.6rem 1.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
+  .ct__card.bg-ink { background: var(--ink); border-color: var(--ink); }
+  .ct__card address { font-style: normal; line-height: 1.7; }
+  .ct__big { font-size: clamp(1.7rem, 1.2rem + 1.4vw, 2.3rem); font-weight: 750; letter-spacing: -.03em; text-decoration: none; font-variant-numeric: tabular-nums; }
+  .ct__big:hover { color: var(--gold); }
+  .ct__mail { color: rgba(247, 246, 242, .82); font-weight: 600; }
+  @media (max-width: 1080px) {
+    .ct__form, .ct__side { grid-column: 1 / -1; }
+    .ct__side { position: static; }
+  }
+  @media (max-width: 720px) { .ct__row, .ct__checks { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  // Preselect the service when arriving from a service page (?service=slug).
+  const slug = new URLSearchParams(location.search).get('service');
+  if (slug) {
+    const box = document.querySelector<HTMLInputElement>(`input[data-slug="${CSS.escape(slug)}"]`);
+    if (box) box.checked = true;
+  }
+
+  // Submit in place; without JS the form still posts to Formspree normally.
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    btn.disabled = true;
+    status.dataset.state = '';
+    status.textContent = 'Sending…';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      status.dataset.state = 'ok';
+      status.textContent = 'Received. We will reply by email.';
+    } catch {
+      status.dataset.state = 'err';
+      status.textContent = 'Could not send. Please call or email us directly.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
