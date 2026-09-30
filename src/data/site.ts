@@ -1,3 +1,4 @@
+import { jobsites, extraStates } from './jobsites';
 // Single source of truth for company facts.
 // Every figure here must have a source. Anything without one stays `null`
 // and is not rendered. See SOURCES.md for where each number comes from.
@@ -33,16 +34,14 @@ export const stats = [
   { value: 2023, suffix: '', unit: '', label: 'Building fiber since', source: 'Form 1065 2024, date business started' },
 ];
 
-export const states = ['Tennessee', 'Alabama', 'North Carolina', 'Virginia'];
+// Every state worked, ordered by number of job sites.
+export const states = [...new Set([...Object.entries(Object.groupBy(jobsites, (j) => j.stateName)).sort((a, b) => (b[1]?.length ?? 0) - (a[1]?.length ?? 0)).map(([s]) => s), ...extraStates])];
 
-// Markets where crews have built, grouped by state. Program owners are named
-// only as "programs supported through prime contractors".
-export const markets = [
-  { state: 'TN', places: ['Knoxville', 'Cleveland', 'Elizabethton', 'Greeneville', 'Johnson City', 'Kingsport', 'Oak Ridge', 'Monroe County', 'Linden', 'Collinwood'] },
-  { state: 'AL', places: ['Pell City', 'Falkville', 'Bon Secour', 'Grand Bay', 'Foley'] },
-  { state: 'NC', places: ['Highlands'] },
-  { state: 'VA', places: ['Charlottesville'] },
-];
+// Markets by state, derived from the evidence-backed job site list that also
+// drives the Projects map (src/data/jobsites.ts).
+export const markets = Object.entries(Object.groupBy(jobsites, (j) => j.state))
+  .map(([state, list]) => ({ state, places: (list ?? []).map((j) => j.name) }))
+  .sort((a, b) => b.places.length - a.places.length);
 
 // Pending written approval. Leave `logo: null` until a signed OK exists.
 export const clients: { name: string; logo: string | null; approved: boolean }[] = [];

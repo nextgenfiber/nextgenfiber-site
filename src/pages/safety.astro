@@ -20,7 +20,6 @@ const prequal = ['W-9', 'Certificate of insurance', 'Other documents your platfo
       <ol class="sf__list">
         {practices.map((p, i) => (
           <li data-reveal data-reveal-delay={String(i)}>
-            <span class="index"><b>0{i + 1}</b> / 0{practices.length}</span>
             <h2 class="h3">{p.t}</h2>
             <p class="muted">{p.d}</p>
           </li>
@@ -55,7 +54,6 @@ const prequal = ['W-9', 'Certificate of insurance', 'Other documents your platfo
 <style>
   .sf__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
   .sf__list li { display: grid; gap: 1rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--line-strong); position: relative; }
-  .sf__list li::before { content: ''; position: absolute; left: 0; top: -2px; width: 32px; height: 3px; background: var(--gold); }
   .sf__metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
   .sf__pq { row-gap: 2.5rem; align-items: start; }
   .sf__pq-head { grid-column: 1 / span 6; display: grid; gap: 1.4rem; justify-items: start; }

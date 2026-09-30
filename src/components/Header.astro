@@ -2,7 +2,9 @@
 import Logo from './Logo.astro';
 import Arrow from './Arrow.astro';
 import { nav, company } from '../data/site';
-interface Props { tone?: 'light' | 'dark' }
+// 'overlay' sits on top of the home video: transparent with light type until
+// the page scrolls, then it turns into the regular ivory bar.
+interface Props { tone?: 'light' | 'overlay' }
 const { tone = 'light' } = Astro.props;
 const path = Astro.url.pathname.replace(/\.html$/, '');
 const isActive = (href: string) => path === href || path.startsWith(href + '/');
@@ -10,7 +12,8 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 <header class={`hdr hdr--${tone}`} data-hdr>
   <div class="wrap hdr__row">
     <a href="/" class="hdr__brand" aria-label="NextGen Fiber home">
-      <Logo tone="dark" size={40} />
+      <span class="hdr__logo hdr__logo--dark"><Logo tone="dark" size={40} /></span>
+      <span class="hdr__logo hdr__logo--light" aria-hidden="true"><Logo tone="light" size={40} /></span>
     </a>
     <nav class="hdr__nav" aria-label="Main">
       <ul>
@@ -19,6 +22,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
         ))}
       </ul>
     </nav>
+    <a class="hdr__phone" href={company.phoneHref}>{company.phone}</a>
     <button class="hdr__menu" type="button" aria-expanded="false" aria-controls="mnav" data-menu>
       <span class="sr-only">Menu</span><span></span><span></span>
     </button>
@@ -26,12 +30,12 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
   <div class="mnav" id="mnav" hidden>
     <div class="wrap mnav__inner">
       <ul>
-        {nav.map((n, i) => (
-          <li><a href={n.href}><span class="index"><b>0{i + 1}</b></span>{n.label}</a></li>
-        ))}
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        <li><a href="/safety">Safety</a></li>
+        <li><a href="/careers">Careers</a></li>
       </ul>
       <div class="mnav__foot">
-        <a class="btn btn--gold" href={company.phoneHref}>Call {company.phone} <Arrow /></a>
+        <a class="btn" href={company.phoneHref}>Call {company.phone} <Arrow /></a>
         <a class="link" href={`mailto:${company.email}`}>{company.email}</a>
       </div>
     </div>
@@ -39,43 +43,68 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 </header>
 
 <style>
-  .hdr { position: sticky; top: 0; z-index: 50; background: rgba(247, 246, 242, 0); border-bottom: 1px solid transparent; transition: background var(--t-med) var(--ease), border-color var(--t-med) var(--ease), backdrop-filter var(--t-med); }
-  .hdr.is-scrolled { background: rgba(247, 246, 242, .86); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom-color: var(--line); }
-  .hdr__row { display: flex; align-items: center; gap: 2rem; height: 76px; }
-  .hdr__brand { text-decoration: none; margin-right: auto; }
-  .hdr__nav ul { display: flex; gap: clamp(1.6rem, 3vw, 3.2rem); list-style: none; margin: 0; padding: 0; }
-  .hdr__link { position: relative; font-size: .74rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; text-decoration: none; color: var(--ink-3); padding-block: .5rem; }
-  .hdr__link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform var(--t-med) var(--ease); }
+  .hdr { position: sticky; top: 0; z-index: 50; background: rgba(247, 246, 242, 0); border-bottom: 1px solid transparent; transition: background var(--t-med) var(--ease), border-color var(--t-med) var(--ease), color var(--t-med) var(--ease); }
+  .hdr.is-scrolled { background: rgba(247, 246, 242, .9); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom-color: var(--line); }
+  .hdr__row { display: flex; align-items: center; gap: clamp(1.5rem, 3vw, 3rem); height: 76px; }
+  .hdr__brand { text-decoration: none; margin-right: auto; display: grid; }
+  .hdr__logo { grid-area: 1 / 1; transition: opacity var(--t-med) var(--ease); }
+  .hdr__logo--light { opacity: 0; }
+  .hdr__nav ul { display: flex; gap: clamp(1.4rem, 2.6vw, 2.6rem); list-style: none; margin: 0; padding: 0; }
+  .hdr__link { position: relative; font-size: .98rem; font-weight: 500; text-decoration: none; color: var(--ink-3); padding-block: .5rem; }
+  .hdr__link::after { content: ''; position: absolute; left: 0; right: 0; bottom: .1rem; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform var(--t-med) var(--ease); }
   .hdr__link:hover::after, .hdr__link.is-active::after { transform: scaleX(1); }
   .hdr__link.is-active { color: var(--ink); }
-  .hdr__cta { display: flex; align-items: center; gap: 1.25rem; }
-  .hdr__phone { font-size: .9rem; font-weight: 700; text-decoration: none; font-variant-numeric: tabular-nums; }
-  .hdr__phone:hover { color: var(--gold-text); }
-  :global(.btn--small) { min-height: 44px; padding: .65rem 1.05rem; font-size: .88rem; }
-  .hdr__menu { display: none; width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: transparent; position: relative; cursor: pointer; }
-  .hdr__menu span:not(.sr-only) { position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--ink); transition: transform var(--t-med) var(--ease); }
-  .hdr__menu span:nth-of-type(2) { top: 17px; } .hdr__menu span:nth-of-type(3) { top: 25px; }
-  .hdr__menu[aria-expanded='true'] span:nth-of-type(2) { transform: translateY(4px) rotate(45deg); }
-  .hdr__menu[aria-expanded='true'] span:nth-of-type(3) { transform: translateY(-4px) rotate(-45deg); }
-  .mnav { position: fixed; inset: 76px 0 0; background: var(--ivory); border-top: 1px solid var(--line); overflow-y: auto; }
-  .mnav__inner { padding-block: 2rem 3rem; display: grid; gap: 2.5rem; }
+  .hdr__phone { font-size: .98rem; font-weight: 600; text-decoration: none; font-variant-numeric: tabular-nums; padding: .55rem 1.1rem; border: 1px solid var(--line-strong); border-radius: var(--pill); transition: border-color var(--t-fast); }
+  .hdr__phone:hover { border-color: currentColor; }
+
+  /* Over the home video: light type until scrolled. */
+  .hdr--overlay:not(.is-scrolled):not(.is-open) { color: var(--ivory); }
+  .hdr--overlay:not(.is-scrolled):not(.is-open) .hdr__link { color: rgba(247, 246, 242, .88); }
+  .hdr--overlay:not(.is-scrolled):not(.is-open) .hdr__link.is-active { color: var(--ivory); }
+  .hdr--overlay:not(.is-scrolled):not(.is-open) .hdr__phone { border-color: rgba(247, 246, 242, .45); }
+  .hdr--overlay:not(.is-scrolled):not(.is-open) .hdr__logo--light { opacity: 1; }
+  .hdr--overlay:not(.is-scrolled):not(.is-open) .hdr__logo--dark { opacity: 0; }
+  .hdr--overlay:not(.is-scrolled):not(.is-open) .hdr__menu { border-color: rgba(247, 246, 242, .45); }
+  .hdr--overlay:not(.is-scrolled):not(.is-open) .hdr__menu span:not(.sr-only) { background: var(--ivory); }
+
+  .hdr__menu { display: none; width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: var(--pill); background: transparent; position: relative; cursor: pointer; }
+  .hdr__menu span:not(.sr-only) { position: absolute; left: 13px; right: 13px; height: 1.5px; background: var(--ink); transition: transform var(--t-med) var(--ease); }
+  .hdr__menu span:nth-of-type(2) { top: 18px; } .hdr__menu span:nth-of-type(3) { top: 24px; }
+  .hdr__menu[aria-expanded='true'] span:nth-of-type(2) { transform: translateY(3px) rotate(45deg); }
+  .hdr__menu[aria-expanded='true'] span:nth-of-type(3) { transform: translateY(-3px) rotate(-45deg); }
+  .mnav { position: fixed; inset: 68px 0 0; background: var(--ivory); color: var(--ink); border-top: 1px solid var(--line); overflow-y: auto; }
+  .mnav__inner { padding-block: 1.5rem 3rem; display: grid; gap: 2.5rem; }
   .mnav ul { list-style: none; margin: 0; padding: 0; }
-  .mnav li a { display: flex; align-items: baseline; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); font-size: 1.9rem; font-weight: 700; letter-spacing: -.03em; text-decoration: none; }
+  .mnav li a { display: block; padding: .9rem 0; border-bottom: 1px solid var(--line); font-size: 2rem; font-weight: 650; letter-spacing: -.03em; text-decoration: none; }
   .mnav__foot { display: grid; gap: 1.25rem; justify-items: start; }
-  @media (max-width: 720px) { .hdr__nav { display: none; } .hdr__menu { display: block; } .hdr__row { height: 68px; } .mnav { inset: 68px 0 0; } }
+  @media (max-width: 1080px) { .hdr__phone { display: none; } }
+  @media (max-width: 820px) { .hdr__nav { display: none; } .hdr__menu { display: block; } .hdr__row { height: 68px; } }
 </style>
 
 <script>
   const hdr = document.querySelector('[data-hdr]') as HTMLElement;
-  const onScroll = () => hdr.classList.toggle('is-scrolled', window.scrollY > 8);
+  const onScroll = () => hdr.classList.toggle('is-scrolled', window.scrollY > 24);
   onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
   const btn = document.querySelector('[data-menu]') as HTMLButtonElement;
   const panel = document.getElementById('mnav') as HTMLElement;
-  btn?.addEventListener('click', () => {
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!open));
-    panel.hidden = open;
-    document.body.style.overflow = open ? '' : 'hidden';
-    hdr.classList.add('is-scrolled');
+  const links = () => Array.from(panel.querySelectorAll<HTMLElement>('a'));
+  const setOpen = (open: boolean) => {
+    btn.setAttribute('aria-expanded', String(open));
+    panel.hidden = !open;
+    hdr.classList.toggle('is-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) links()[0]?.focus(); else btn.focus();
+  };
+  btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (panel.hidden) return;
+    if (e.key === 'Escape') { setOpen(false); return; }
+    if (e.key !== 'Tab') return;
+    // Keep focus inside the menu and its toggle while it is open.
+    const items = [btn, ...links()];
+    const i = items.indexOf(document.activeElement as HTMLElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); items[items.length - 1].focus(); }
+    else if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
   });
 </script>

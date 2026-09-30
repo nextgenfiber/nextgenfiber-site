@@ -10,7 +10,7 @@ const timeline = [
   { when: 'Mar 2023', what: 'NextGen Fiber LLC starts operating in Tennessee.' },
   { when: 'Apr 2023', what: 'First invoiced production as a subcontractor to a national prime contractor.' },
   { when: '2023 – 2026', what: 'More than 2.3 million feet of fiber lashed and 1.7 million feet of new aerial plant built on invoiced programs.' },
-  { when: 'To date', what: 'Markets in Tennessee, Alabama, North Carolina and Virginia.' },
+  { when: 'To date', what: `Job sites in ${states.length} states: ${states.join(', ')}.` },
   { when: 'Sep 2026', what: 'Office moves to Knoxville, Tennessee.' },
 ];
 const principles = [
@@ -46,7 +46,6 @@ const principles = [
       <div class="co__pr">
         {principles.map((p, i) => (
           <article data-reveal data-reveal-delay={String(i)}>
-            <span class="index"><b>0{i + 1}</b> / 0{principles.length}</span>
             <h3 class="h3">{p.t}</h3>
             <p class="muted">{p.d}</p>
           </article>

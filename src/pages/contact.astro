@@ -19,7 +19,7 @@ import { services } from '../data/services';
         </div>
 
         <fieldset class="ct__set">
-          <legend class="index"><b>01</b> / 03 · Contact</legend>
+          <legend>Your details</legend>
           <div class="ct__row">
             <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required /></div>
             <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" autocomplete="organization" required /></div>
@@ -41,7 +41,7 @@ import { services } from '../data/services';
         </fieldset>
 
         <fieldset class="ct__set">
-          <legend class="index"><b>02</b> / 03 · Scope</legend>
+          <legend>The work</legend>
           <div class="ct__checks" role="group" aria-label="Work needed">
             {services.map((s) => (
               <label class="ct__check"><input type="checkbox" name="work" value={s.name} data-slug={s.slug} /><span>{s.name}</span></label>
@@ -55,7 +55,7 @@ import { services } from '../data/services';
         </fieldset>
 
         <fieldset class="ct__set">
-          <legend class="index"><b>03</b> / 03 · Details</legend>
+          <legend>Anything else</legend>
           <div class="field"><label for="f-msg">Anything else we should know</label><textarea id="f-msg" name="message" placeholder="Rate structure, crew size, links to prints, permits or make-ready status"></textarea></div>
         </fieldset>
 
@@ -91,7 +91,7 @@ import { services } from '../data/services';
   .ct__grid { row-gap: 3rem; align-items: start; }
   .ct__form { grid-column: 1 / span 7; display: grid; gap: 2.5rem; position: relative; }
   .ct__set { border: 0; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
-  .ct__set legend { padding: 0 0 1rem; margin-bottom: .25rem; width: 100%; border-bottom: 1px solid var(--line-strong); }
+  .ct__set legend { padding: 0 0 .9rem; margin-bottom: .25rem; width: 100%; border-bottom: 1px solid var(--line-strong); font-size: 1.15rem; font-weight: 650; letter-spacing: -.02em; }
   .ct__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
   .ct__checks { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
   .ct__check { display: flex; align-items: center; gap: .75rem; min-height: 50px; padding: .7rem 1rem; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--paper); font-weight: 600; cursor: pointer; transition: border-color var(--t-fast); }

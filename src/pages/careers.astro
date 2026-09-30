@@ -24,7 +24,6 @@ const roles = [
         <ol>
           {roles.map((r, i) => (
             <li data-reveal data-reveal-delay={String(Math.min(i, 4))}>
-              <span class="index"><b>0{i + 1}</b></span>
               <div><h2 class="h3">{r.t}</h2><p class="muted">{r.d}</p></div>
             </li>
           ))}
@@ -66,9 +65,9 @@ const roles = [
   .cr__grid { row-gap: 3rem; align-items: start; }
   .cr__roles { grid-column: 1 / span 6; display: grid; gap: 1.5rem; }
   .cr__roles ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
-  .cr__roles li { display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  .cr__roles li { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
   .cr__roles li > div { display: grid; gap: .4rem; }
-  .cr__form { grid-column: 8 / -1; display: grid; gap: 1.1rem; padding: 2rem; background: var(--paper); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: var(--radius); position: sticky; top: 100px; }
+  .cr__form { grid-column: 8 / -1; display: grid; gap: 1.1rem; padding: 2rem; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; position: sticky; top: 100px; }
   .cr__submit { display: grid; gap: .8rem; justify-items: start; margin-top: .5rem; }
   .cr__status { text-transform: none; letter-spacing: .02em; font-size: .9rem; }
   .cr__status[data-state] { color: var(--ink); font-weight: 700; }

@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
 import ServiceFigure from '../../components/ServiceFigure.astro';
+import Photo from '../../components/Photo.astro';
 import Arrow from '../../components/Arrow.astro';
 import { services, type Service } from '../../data/services';
 
@@ -21,7 +22,7 @@ const total = `0${services.length}`;
         <ServiceFigure slug={s.slug} />
         {s.photo && (
           <figure class="sd__photo">
-            <img src={s.photo.src} width={s.photo.w} height={s.photo.h} loading="lazy" alt={s.photo.alt} />
+            <div data-clip><Photo src={s.photo.src} width={s.photo.w} height={s.photo.h} alt={s.photo.alt} /></div>
             <figcaption class="annot">{s.photo.caption}</figcaption>
           </figure>
         )}
@@ -64,12 +65,12 @@ const total = `0${services.length}`;
   .sd__grid { row-gap: 3rem; align-items: start; }
   .sd__fig { grid-column: 1 / span 6; display: grid; gap: 1.5rem; position: sticky; top: 110px; }
   .sd__photo { margin: 0; display: grid; gap: .7rem; }
-  .sd__photo img { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
+  .sd__photo :global(img) { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
   .sd__body { grid-column: 8 / -1; display: grid; gap: 2.75rem; }
   .sd__block { display: grid; gap: 1.1rem; }
   .sd__scope { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
   .sd__scope li { display: flex; gap: 1.1rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid var(--line); font-size: 1.1rem; font-weight: 600; }
-  .sd__deliv { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: var(--radius); padding: 1.6rem 1.75rem; }
+  .sd__deliv { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 1.6rem 1.75rem; }
   .sd__deliv ul, .sd__equip { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
   .sd__deliv li, .sd__equip li { font-weight: 600; }
   .sd__next { border-top: 1px solid var(--line); }
