@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import Arrow from '../components/Arrow.astro';
 import RouteSchematic from '../components/RouteSchematic.astro';
 import Photo from '../components/Photo.astro';
+import USMap from '../components/USMap.astro';
+import { jobsites, hq, extraStates } from '../data/jobsites';
 import { company, stats, markets, states } from '../data/site';
 import { services } from '../data/services';
 
@@ -163,16 +165,21 @@ const process = [
 
   <!-- WHERE WE BUILD -->
   <section class="section where">
-    <div class="wrap grid where__grid">
-      <div class="where__head">
-        <span class="label">Where we've built</span>
-        <h2 class="h2" data-split>{markets.reduce((n, m) => n + m.places.length, 0)} markets across {states.length} states.</h2>
-        <p class="lead">Programs supported through prime contractors for national and regional carriers. Based in Knoxville, working wherever the route goes.</p>
-        <a class="link" href="/projects">See project work <Arrow /></a>
+    <div class="wrap">
+      <div class="grid where__head">
+        <div class="where__title">
+          <span class="label">Where we've built</span>
+          <h2 class="h2" data-split>{markets.reduce((n, m) => n + m.places.length, 0)} markets across {states.length} states.</h2>
+        </div>
+        <div class="where__intro">
+          <p class="lead">Programs supported through prime contractors for national and regional carriers. Based in Knoxville, working wherever the route goes.</p>
+          <a class="link" href="/projects">See project work <Arrow /></a>
+        </div>
       </div>
+      <div class="where__map" data-reveal><USMap sites={jobsites} hq={hq} extraStates={extraStates} /></div>
       <div class="where__list">
         {markets.map((m) => (
-          <div class="where__state" data-reveal>
+          <div class="where__state">
             <span class="where__abbr">{m.state}</span>
             <ul>{m.places.map((p) => <li>{p}</li>)}</ul>
           </div>
@@ -317,14 +324,17 @@ const process = [
   .process__line { height: 1px; background: var(--line-strong); position: relative; }
   .process__line::after { content: ''; position: absolute; left: 0; top: -1px; width: 32px; height: 3px; background: var(--gold); }
 
-  /* WHERE */
-  .where__grid { row-gap: 3rem; }
-  .where__head { grid-column: 1 / span 5; display: grid; gap: 1.4rem; align-content: start; }
-  .where__list { grid-column: 7 / -1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 2rem; }
-  .where__state { padding: 1.4rem 0; border-top: 1px solid var(--line-strong); display: grid; grid-template-columns: 3.5rem 1fr; }
+  /* WHERE: title and intro side by side, map full width, markets as inline text in columns */
+  .where__head { row-gap: 1.2rem; align-items: end; }
+  .where__title { grid-column: 1 / span 6; display: grid; gap: 1.2rem; }
+  .where__intro { grid-column: 8 / -1; display: grid; gap: 1.1rem; justify-items: start; }
+  .where__map { margin-block: clamp(2rem, 4vw, 3rem); }
+  .where__list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 2.2rem; }
+  .where__state { padding: 1.1rem 0; border-top: 1px solid var(--line-strong); display: grid; grid-template-columns: 2.6rem 1fr; align-items: start; }
   .where__abbr { font-weight: 800; letter-spacing: .08em; color: var(--gold-text); }
-  .where__state { align-items: start; }
-  .where__state ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; font-weight: 600; align-content: start; }
+  .where__state ul { list-style: none; margin: 0; padding: 0; line-height: 1.6; font-size: .95rem; font-weight: 500; color: var(--ink-3); }
+  .where__state li { display: inline; }
+  .where__state li:not(:last-child)::after { content: ' · '; color: var(--mid); }
 
   .safety-t__row { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; align-items: center; justify-content: space-between; }
   .safety-t__row > div { display: grid; gap: .8rem; max-width: 46rem; }
@@ -334,7 +344,8 @@ const process = [
     .svc__head { grid-column: 1 / -1; position: static; }
     .svc__list { grid-column: 1 / -1; }
     .fl__title, .fl__copy,
-    .where__head, .where__list { grid-column: 1 / -1; }
+    .where__title, .where__intro { grid-column: 1 / -1; }
+    .where__list { grid-template-columns: 1fr 1fr; }
     .cine__facts { grid-template-columns: 1fr 1fr; }
     .process__steps { grid-template-columns: repeat(2, 1fr); }
   }
