@@ -110,6 +110,26 @@ const process = [
     <p class="cine__cap">Aerial crew at the pole line · Filmed by SPM Creative</p>
   </section>
 
+  <!-- PROCESS -->
+  <section class="section process bg-stone">
+    <div class="wrap">
+      <header class="process__head grid">
+        <div class="process__title"><span class="label">How we work</span><h2 class="h2" data-split>From award to closeout.</h2></div>
+        <div class="process__fig"><RouteSchematic /></div>
+      </header>
+      <ol class="process__steps">
+        {process.map((p, i) => (
+          <li data-reveal data-reveal-delay={String(i)}>
+            <span class="process__num">0{i + 1}</span>
+            <span class="process__line" aria-hidden="true"></span>
+            <h3 class="h3">{p.t}</h3>
+            <p class="muted">{p.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
   <!-- CINEMA: CLOSEOUT PROOF -->
   <section class="cine cine--right">
     <div class="cine__media" data-parallax>
@@ -130,54 +150,6 @@ const process = [
       </div>
     </div>
     <p class="cine__cap">Route map and redlines, reviewed in the truck</p>
-  </section>
-
-  <!-- FIBERLYTIC -->
-  <section class="section fl bg-ink" id="fiberlytic">
-    <div class="wrap">
-      <div class="grid fl__head">
-        <div class="fl__title">
-          <span class="label">Technology partner</span>
-          <img class="fl__logo" src="/img/partners/fiberlytic-lockup.png" width="443" height="104" alt="FiberLytic" />
-          <h2 class="h2" data-split>Our crews run on FiberLytic.</h2>
-        </div>
-        <div class="fl__copy">
-          <p class="lead">FiberLytic is the operating system for fiber construction, and NextGen Fiber runs its field operations on it: production by span, GPS-stamped photos, redlines and closeout in one place, from the bucket to the office.</p>
-          <a class="link" href="https://fiberlytic.com" rel="noopener" target="_blank">fiberlytic.com <Arrow /></a>
-        </div>
-      </div>
-      <figure class="fl__film">
-        <div class="fl__frame" data-film>
-          <video muted loop playsinline preload="none" poster="/img/photos/fiberlytic-film-poster.webp" width="1920" height="1080" aria-label="NextGen Fiber crews in the field using FiberLytic" data-src="/video/nextgen-fiberlytic.mp4" data-src-small="/video/nextgen-fiberlytic-720.mp4"></video>
-          <button class="fl__sound" type="button" data-sound aria-pressed="false">
-            <svg class="fl__ico fl__ico--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
-            <svg class="fl__ico fl__ico--on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
-            <span data-sound-label>Sound on</span>
-          </button>
-        </div>
-        <figcaption class="annot fl__cap">NextGen Fiber crews in the field, filmed by SPM Creative for FiberLytic</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- PROCESS -->
-  <section class="section process bg-stone">
-    <div class="wrap">
-      <header class="process__head grid">
-        <div class="process__title"><span class="label">How we work</span><h2 class="h2" data-split>From award to closeout.</h2></div>
-        <div class="process__fig"><RouteSchematic /></div>
-      </header>
-      <ol class="process__steps">
-        {process.map((p, i) => (
-          <li data-reveal data-reveal-delay={String(i)}>
-            <span class="process__num">0{i + 1}</span>
-            <span class="process__line" aria-hidden="true"></span>
-            <h3 class="h3">{p.t}</h3>
-            <p class="muted">{p.d}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
   </section>
 
   <!-- MARKETS TICKER -->
@@ -206,6 +178,34 @@ const process = [
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- FIBERLYTIC -->
+  <section class="section fl bg-ink" id="fiberlytic">
+    <div class="wrap">
+      <div class="grid fl__head">
+        <div class="fl__title">
+          <span class="label">Technology partner</span>
+          <img class="fl__logo" src="/img/partners/fiberlytic-lockup.png" width="443" height="104" alt="FiberLytic" />
+          <h2 class="h2" data-split>Our crews run on FiberLytic.</h2>
+        </div>
+        <div class="fl__copy">
+          <p class="lead">FiberLytic is the operating system for fiber construction, and NextGen Fiber runs its field operations on it: production by span, GPS-stamped photos, redlines and closeout in one place, from the bucket to the office.</p>
+          <a class="link" href="https://fiberlytic.com" rel="noopener" target="_blank">fiberlytic.com <Arrow /></a>
+        </div>
+      </div>
+      <figure class="fl__film">
+        <div class="fl__frame" data-film>
+          <video muted loop playsinline preload="none" poster="/img/photos/fiberlytic-film-poster.webp" width="1920" height="1080" aria-label="NextGen Fiber crews in the field using FiberLytic" data-src="/video/nextgen-fiberlytic.mp4" data-src-small="/video/nextgen-fiberlytic-720.mp4"></video>
+          <button class="fl__sound" type="button" data-sound aria-pressed="false">
+            <svg class="fl__ico fl__ico--off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+            <svg class="fl__ico fl__ico--on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+            <span data-sound-label>Sound on</span>
+          </button>
+        </div>
+        <figcaption class="annot fl__cap">NextGen Fiber crews in the field, filmed by SPM Creative for FiberLytic</figcaption>
+      </figure>
     </div>
   </section>
 
