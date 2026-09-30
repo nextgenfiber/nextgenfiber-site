@@ -22,4 +22,4 @@ must trace to a line here. No source, no claim.
 - Underground volume: only ~72k ft documented; shown as capability, not volume.
 - Safety metrics (EMR, TRIR, lost-time incidents): need OSHA 300A or carrier EMR letter.
 - Client names and logos: written consent required (`clients` in `src/data/site.ts`).
-- 48-hour mobilization, traffic control: company statements; confirm before launch.
+- 48-hour mobilization: owner-approved statement (lead email template, 2026-09-29). Traffic control: removed until confirmed.
