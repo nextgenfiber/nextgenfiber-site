@@ -18,8 +18,8 @@ const process = [
   <!-- HERO -->
   <section class="hero" aria-label="Introduction">
     <div class="hero__media" aria-hidden="true">
-      <img class="hero__poster" src="/img/photos/hero-poster.webp" srcset="/img/photos/hero-poster-800.webp 800w, /img/photos/hero-poster.webp 1280w" sizes="100vw" width="1280" height="720" alt="" fetchpriority="high" decoding="async" />
-      <video class="hero__video" muted loop playsinline preload="none" width="1280" height="720" data-hero-video data-src="/video/hero-loop.mp4"></video>
+      <img class="hero__poster" src="/img/photos/hero-poster.webp" srcset="/img/photos/hero-poster-800.webp 800w, /img/photos/hero-poster-1280.webp 1280w, /img/photos/hero-poster.webp 1920w" sizes="100vw" width="1920" height="1080" alt="" fetchpriority="high" decoding="async" />
+      <video class="hero__video" muted loop playsinline preload="none" width="1920" height="1080" data-hero-video data-src="/video/hero-loop-1080.mp4" data-src-small="/video/hero-loop-720.mp4"></video>
       <div class="hero__shade"></div>
     </div>
     <div class="wrap hero__inner">
@@ -363,10 +363,12 @@ const process = [
   // reduced motion or Save-Data.
   const hv = document.querySelector<HTMLVideoElement>('[data-hero-video]');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const saveData = conn?.saveData || /(^|-)2g|3g/.test(conn?.effectiveType || '');
   if (hv && !reduce && !saveData) {
     const start = () => {
-      hv.src = hv.dataset.src || '';
+      // Full HD on wide screens; a lighter 720p cut on phones.
+      hv.src = (innerWidth >= 900 ? hv.dataset.src : hv.dataset.srcSmall) || '';
       hv.addEventListener('playing', () => hv.classList.add('is-playing'), { once: true });
       hv.play().catch(() => {});
     };
