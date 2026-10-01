@@ -88,6 +88,20 @@ const process = [
     </div>
   </section>
 
+  <!-- CULTURE -->
+  <section class="section--tight cult bg-paper">
+    <div class="wrap grid cult__grid">
+      <div class="cult__head">
+        <span class="label">Our culture</span>
+        <h2 class="h2" data-split>Treat people the way you want to be treated.</h2>
+      </div>
+      <div class="cult__body">
+        <p class="lead">That’s how we treat our crews, and how our crews treat your job: honest work, respect on site, and people who stay.</p>
+        <a class="link" href="/culture">How we work together <Arrow /></a>
+      </div>
+    </div>
+  </section>
+
   <!-- CINEMA: BUILT FOR THE FIELD -->
   <section class="cine cine--left">
     <div class="cine__media" data-parallax>
@@ -393,6 +407,10 @@ const process = [
     .hero__shade { background: linear-gradient(180deg, rgba(13,13,12,.6) 0%, rgba(13,13,12,.45) 40%, rgba(13,13,12,.85) 100%); }
     .hero__cap { position: static; padding: 0 var(--gutter) 1.2rem; }
   }
+  .cult__grid { row-gap: 1.6rem; align-items: end; }
+  .cult__head { grid-column: 1 / span 7; display: grid; gap: 1.2rem; }
+  .cult__body { grid-column: 9 / -1; display: grid; gap: 1.2rem; justify-items: start; }
+  @media (max-width: 1080px) { .cult__head, .cult__body { grid-column: 1 / -1; } }
 </style>
 
 <script>

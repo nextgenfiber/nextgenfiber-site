@@ -53,5 +53,6 @@ export const nav = [
   { href: '/services', label: 'Services' },
   { href: '/projects', label: 'Projects' },
   { href: '/about', label: 'About' },
+  { href: '/culture', label: 'Culture' },
   { href: '/contact', label: 'Contact' },
 ];

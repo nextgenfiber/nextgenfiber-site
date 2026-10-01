@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import Arrow from '../components/Arrow.astro';
+
+// Values and commitments only. Do not list a program here (mentorship,
+// counseling, etc.) until it exists; say "we're building" until then.
+const values = [
+  { t: 'Honesty', d: 'We say what we’ll do and invoice what we built. If something goes wrong in the field, you hear it from us first.' },
+  { t: 'Integrity', d: 'We do the job right when nobody is watching: on the pole, in the bore pit, in the closeout.' },
+  { t: 'Respect', d: 'Every person on a crew matters, from the groundman to the foreman. We listen, we know names, and we look out for each other.' },
+];
+---
+<Base title="Culture" description="How NextGen Fiber works: treat people the way you want to be treated. Honest, respectful crews and a better culture for the fiber industry.">
+  <PageHead label="Culture" title="Good people build good networks." lead="Fiber work is hard on people. We believe the way a company treats its crews shows up in every span, every bore and every splice." marker={0.6} />
+
+  <section class="section cu">
+    <div class="wrap grid cu__grid">
+      <div class="cu__head">
+        <span class="label">What we believe</span>
+        <h2 class="h2" data-split>Treat people the way you want to be treated.</h2>
+      </div>
+      <p class="lead cu__body" data-reveal>It’s the rule we run the company by: with our crews, with the people we build for, and with the communities we work in. Simple to say, and it takes work every day.</p>
+    </div>
+  </section>
+
+  <section class="section bg-ink cu__dark">
+    <div class="wrap">
+      <span class="label">How we work together</span>
+      <div class="cu__vals">
+        {values.map((v, i) => (
+          <article data-reveal data-reveal-delay={String(i)}>
+            <h3 class="h3">{v.t}</h3>
+            <p class="muted">{v.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cu__grow">
+    <div class="wrap grid cu__grow-grid">
+      <figure class="cu__photo" data-reveal>
+        <Photo src="/img/photos/field-bucket-line.webp" width={2400} height={1350} alt="NextGen Fiber crew working together on an aerial line" sizes="(max-width: 1080px) 100vw, 55vw" />
+      </figure>
+      <div class="cu__grow-body">
+        <span class="label">Growing our people</span>
+        <h2 class="h2" data-split>A better culture for the fiber industry.</h2>
+        <p class="lead">Field crews deserve more than a paycheck. We’re building a company where people learn new skills, move up when they’re ready, and have someone to talk to when life gets heavy.</p>
+        <a class="link" href="/careers">Work with us <Arrow /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-stone cu__you">
+    <div class="wrap grid">
+      <div class="cu__you-head">
+        <span class="label">What it means for your job</span>
+        <h2 class="h2" data-split>Steady crews. Straight answers.</h2>
+      </div>
+      <div class="cu__you-body">
+        <p class="lead">People who are treated right stay, and crews that stay together work better. You get the same faces and the same standards from the first bore to the closeout.</p>
+        <a class="btn btn--gold" href="/contact">Get a quote <Arrow /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cu__grid { row-gap: 2rem; align-items: end; }
+  .cu__head { grid-column: 1 / span 7; display: grid; gap: 1.2rem; }
+  .cu__body { grid-column: 9 / -1; }
+  .cu__vals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 2.5rem; }
+  .cu__vals article { display: grid; gap: 1rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--line-dark); }
+  .cu__grow-grid { row-gap: 2.5rem; align-items: center; }
+  .cu__photo { grid-column: 1 / span 7; margin: 0; }
+  .cu__photo :global(img) { width: 100%; height: auto; border-radius: var(--radius); }
+  .cu__grow-body { grid-column: 9 / -1; display: grid; gap: 1.2rem; justify-items: start; }
+  .cu__you .grid { row-gap: 2rem; align-items: end; }
+  .cu__you-head { grid-column: 1 / span 6; display: grid; gap: 1.2rem; }
+  .cu__you-body { grid-column: 8 / -1; display: grid; gap: 1.6rem; justify-items: start; }
+  @media (max-width: 1080px) {
+    .cu__head, .cu__body, .cu__photo, .cu__grow-body, .cu__you-head, .cu__you-body { grid-column: 1 / -1; }
+    .cu__vals { grid-template-columns: 1fr; }
+  }
+</style>
