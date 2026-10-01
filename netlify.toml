@@ -4,3 +4,5 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# Production deploys run on every merge to main. Previews run per PR.
