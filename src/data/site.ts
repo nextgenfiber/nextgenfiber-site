@@ -25,17 +25,25 @@ export const company = {
 
 export const addressLine = `${company.address.street}, ${company.address.city}, ${company.address.region} ${company.address.postal}`;
 
-// Sourced from the prime contractor invoice ledger, Apr 2023 – Jul 2026.
-// Do not add these together: some line items measure the same spans.
+// Company-wide footage across all prime contractors, confirmed by the owner
+// on 2026-10-01. The ledger figures below cover one prime contractor only.
 export const stats = [
-  { value: 2.3, suffix: 'M+', unit: 'ft', label: 'Fiber lashed to strand', source: 'Invoice ledger, lash line items 2023–2026' },
-  { value: 1.7, suffix: 'M+', unit: 'ft', label: 'New aerial plant built', source: 'Invoice ledger, new aerial construction 2023–2026' },
-  { value: 1.0, suffix: 'M+', unit: 'ft', label: 'Overlash completed', source: 'Invoice ledger, overlash line items 2023–2026' },
+  { value: 15, suffix: 'M+', unit: 'ft', label: 'Fiber, strand and overlash placed', source: 'Company-wide, all prime contractors, 2023–2026 (owner-reported)' },
+  { value: jobsites.length, suffix: '', unit: '', label: 'Markets worked', source: 'Job sites on the Projects map' },
+  { value: 0, suffix: '', unit: '', label: 'States', source: 'Job sites on the Projects map' },
   { value: 2023, suffix: '', unit: '', label: 'Building fiber since', source: 'Form 1065 2024, date business started' },
 ];
 
+// One prime contractor's invoice ledger, Apr 2023 – Jul 2026. Line items
+// measure overlapping spans, so they are never added together.
+export const ledgerStats = [
+  { value: 2.3, suffix: 'M+', unit: 'ft', label: 'Fiber lashed to strand', source: 'Single prime contractor invoice ledger, lash line items' },
+  { value: 1.7, suffix: 'M+', unit: 'ft', label: 'New aerial plant built', source: 'Single prime contractor invoice ledger, new aerial construction' },
+  { value: 1.0, suffix: 'M+', unit: 'ft', label: 'Overlash completed', source: 'Single prime contractor invoice ledger, overlash line items' },
+];
+
 // Every state worked, ordered by number of job sites.
-export const states = [...new Set([...Object.entries(Object.groupBy(jobsites, (j) => j.stateName)).sort((a, b) => (b[1]?.length ?? 0) - (a[1]?.length ?? 0)).map(([s]) => s), ...extraStates])];
+export const states: string[] = [...new Set([...Object.entries(Object.groupBy(jobsites, (j) => j.stateName)).sort((a, b) => (b[1]?.length ?? 0) - (a[1]?.length ?? 0)).map(([s]) => s), ...extraStates])];
 
 // Markets by state, derived from the evidence-backed job site list that also
 // drives the Projects map (src/data/jobsites.ts).
@@ -56,3 +64,6 @@ export const nav = [
   { href: '/culture', label: 'Culture' },
   { href: '/contact', label: 'Contact' },
 ];
+
+// The state count stat is filled from the job site data.
+stats[2].value = states.length;

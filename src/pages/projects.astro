@@ -2,19 +2,19 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Arrow from '../components/Arrow.astro';
-import { stats, clients } from '../data/site';
+import { stats, ledgerStats, clients } from '../data/site';
 import USMap from '../components/USMap.astro';
 import { jobsites, hq, extraStates } from '../data/jobsites';
 
 // Program types measured in the invoice ledger (Apr 2023 – Jul 2026).
 // Figures are per line item and are never added together.
-const record = stats.filter((s) => s.unit);
+const record = [stats[0], ...ledgerStats];
 const approved = clients.filter((c) => c.approved);
 const byState = Object.entries(Object.groupBy(jobsites, (j) => j.state)) as [string, typeof jobsites][];
 byState.sort((a, b) => b[1].length - a[1].length);
 ---
 <Base title="Projects" description="Fiber construction record of NextGen Fiber: millions of feet of aerial fiber built for prime contractor programs across the Southeast and Midwest.">
-  <PageHead label="Projects" title="The record, in feet." lead="We report what was invoiced, not what was estimated. Program owners and prime contractors are named only with their written approval." marker={0.3} />
+  <PageHead label="Projects" title="The record, in feet." lead="Footage our crews have placed for prime contractor programs since 2023. Program owners and prime contractors are named only with their written approval." marker={0.3} />
 
   <section class="section pj">
     <div class="wrap">
@@ -29,7 +29,7 @@ byState.sort((a, b) => b[1].length - a[1].length);
           </article>
         ))}
       </div>
-      <p class="annot pj__note">Invoiced production, April 2023 – July 2026. Some line items measure the same spans, so they are not summed.</p>
+      <p class="annot pj__note">The first figure covers every prime contractor program. The three below come from a single prime contractor's invoice ledger, April 2023 – July 2026; those line items measure overlapping spans, so they are not summed.</p>
     </div>
   </section>
 
