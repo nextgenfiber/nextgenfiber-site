@@ -65,7 +65,8 @@ export const jobsites: JobSite[] = [
   { name: "Hanover County", state: 'VA', stateName: 'Virginia', lat: 37.7602, lon: -77.4913, work: "Aerial" }, // Hanover County (51085)
   { name: "Augusta County", state: 'VA', stateName: 'Virginia', lat: 38.1726, lon: -79.141, work: "Aerial" }, // Augusta County (51015)
   { name: "Carrollton", state: 'GA', stateName: 'Georgia', lat: 33.5818, lon: -85.0833, work: "Rural build", label: true }, // Carrollton city (1313492)
-  { name: "Fond du Lac", state: 'WI', stateName: 'Wisconsin', lat: 43.7722, lon: -88.4403, work: "Aerial", label: true }, // Fond du Lac city (5526275)
+  { name: "Green Bay", state: 'WI', stateName: 'Wisconsin', lat: 44.5215, lon: -87.9866, work: "Aerial", label: true }, // Green Bay city (5531000)
+  { name: "Wichita Falls", state: 'TX', stateName: 'Texas', lat: 33.9067, lon: -98.5258, work: "Fiber construction", label: true }, // Wichita Falls city (4879000)
 ];
 // States worked with no recorded city (owner-confirmed): shaded, no dot.
 export const extraStates: string[] = ['Illinois'];
