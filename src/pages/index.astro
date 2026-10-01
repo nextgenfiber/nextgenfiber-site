@@ -1,8 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import Arrow from '../components/Arrow.astro';
-import RouteSchematic from '../components/RouteSchematic.astro';
 import Photo from '../components/Photo.astro';
+import USMap from '../components/USMap.astro';
+import { jobsites, hq, extraStates } from '../data/jobsites';
 import { company, stats, markets, states } from '../data/site';
 import { services } from '../data/services';
 
@@ -110,6 +111,25 @@ const process = [
     <p class="cine__cap">Aerial crew at the pole line · Filmed by SPM Creative</p>
   </section>
 
+  <!-- PROCESS -->
+  <section class="section process bg-stone">
+    <div class="wrap">
+      <header class="process__head grid">
+        <div class="process__title"><span class="label">How we work</span><h2 class="h2" data-split>From award to closeout.</h2></div>
+      </header>
+      <ol class="process__steps">
+        {process.map((p, i) => (
+          <li data-reveal data-reveal-delay={String(i)}>
+            <span class="process__num">0{i + 1}</span>
+            <span class="process__line" aria-hidden="true"></span>
+            <h3 class="h3">{p.t}</h3>
+            <p class="muted">{p.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
   <!-- CINEMA: CLOSEOUT PROOF -->
   <section class="cine cine--right">
     <div class="cine__media" data-parallax>
@@ -130,6 +150,40 @@ const process = [
       </div>
     </div>
     <p class="cine__cap">Route map and redlines, reviewed in the truck</p>
+  </section>
+
+  <!-- MARKETS TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      {[0, 1].map(() => (
+        <span class="ticker__set">{markets.flatMap((m) => m.places.map((p) => `${p}, ${m.state}`)).map((t) => <span>{t}</span>)}</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- WHERE WE BUILD -->
+  <section class="section where">
+    <div class="wrap">
+      <div class="grid where__head">
+        <div class="where__title">
+          <span class="label">Where we've built</span>
+          <h2 class="h2" data-split>{markets.reduce((n, m) => n + m.places.length, 0)} markets across {states.length} states.</h2>
+        </div>
+        <div class="where__intro">
+          <p class="lead">Programs supported through prime contractors for national and regional carriers. Based in Knoxville, working wherever the route goes.</p>
+          <a class="link" href="/projects">See project work <Arrow /></a>
+        </div>
+      </div>
+      <div class="where__map" data-reveal><USMap sites={jobsites} hq={hq} extraStates={extraStates} /></div>
+      <div class="where__list">
+        {markets.map((m) => (
+          <div class="where__state">
+            <span class="where__abbr">{m.state}</span>
+            <ul>{m.places.map((p) => <li>{p}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
   </section>
 
   <!-- FIBERLYTIC -->
@@ -157,55 +211,6 @@ const process = [
         </div>
         <figcaption class="annot fl__cap">NextGen Fiber crews in the field, filmed by SPM Creative for FiberLytic</figcaption>
       </figure>
-    </div>
-  </section>
-
-  <!-- PROCESS -->
-  <section class="section process bg-stone">
-    <div class="wrap">
-      <header class="process__head grid">
-        <div class="process__title"><span class="label">How we work</span><h2 class="h2" data-split>From award to closeout.</h2></div>
-        <div class="process__fig"><RouteSchematic /></div>
-      </header>
-      <ol class="process__steps">
-        {process.map((p, i) => (
-          <li data-reveal data-reveal-delay={String(i)}>
-            <span class="process__num">0{i + 1}</span>
-            <span class="process__line" aria-hidden="true"></span>
-            <h3 class="h3">{p.t}</h3>
-            <p class="muted">{p.d}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- MARKETS TICKER -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker__track">
-      {[0, 1].map(() => (
-        <span class="ticker__set">{markets.flatMap((m) => m.places.map((p) => `${p}, ${m.state}`)).map((t) => <span>{t}</span>)}</span>
-      ))}
-    </div>
-  </div>
-
-  <!-- WHERE WE BUILD -->
-  <section class="section where">
-    <div class="wrap grid where__grid">
-      <div class="where__head">
-        <span class="label">Where we've built</span>
-        <h2 class="h2" data-split>{markets.reduce((n, m) => n + m.places.length, 0)} markets across {states.length} states.</h2>
-        <p class="lead">Programs supported through prime contractors for national and regional carriers. Based in Knoxville, working wherever the route goes.</p>
-        <a class="link" href="/projects">See project work <Arrow /></a>
-      </div>
-      <div class="where__list">
-        {markets.map((m) => (
-          <div class="where__state" data-reveal>
-            <span class="where__abbr">{m.state}</span>
-            <ul>{m.places.map((p) => <li>{p}</li>)}</ul>
-          </div>
-        ))}
-      </div>
     </div>
   </section>
 
@@ -317,14 +322,17 @@ const process = [
   .process__line { height: 1px; background: var(--line-strong); position: relative; }
   .process__line::after { content: ''; position: absolute; left: 0; top: -1px; width: 32px; height: 3px; background: var(--gold); }
 
-  /* WHERE */
-  .where__grid { row-gap: 3rem; }
-  .where__head { grid-column: 1 / span 5; display: grid; gap: 1.4rem; align-content: start; }
-  .where__list { grid-column: 7 / -1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 2rem; }
-  .where__state { padding: 1.4rem 0; border-top: 1px solid var(--line-strong); display: grid; grid-template-columns: 3.5rem 1fr; }
+  /* WHERE: title and intro side by side, map full width, markets as inline text in columns */
+  .where__head { row-gap: 1.2rem; align-items: end; }
+  .where__title { grid-column: 1 / span 6; display: grid; gap: 1.2rem; }
+  .where__intro { grid-column: 8 / -1; display: grid; gap: 1.1rem; justify-items: start; }
+  .where__map { margin-block: clamp(2rem, 4vw, 3rem); }
+  .where__list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 2.2rem; }
+  .where__state { padding: 1.1rem 0; border-top: 1px solid var(--line-strong); display: grid; grid-template-columns: 2.6rem 1fr; align-items: start; }
   .where__abbr { font-weight: 800; letter-spacing: .08em; color: var(--gold-text); }
-  .where__state { align-items: start; }
-  .where__state ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; font-weight: 600; align-content: start; }
+  .where__state ul { list-style: none; margin: 0; padding: 0; line-height: 1.6; font-size: .95rem; font-weight: 500; color: var(--ink-3); }
+  .where__state li { display: inline; }
+  .where__state li:not(:last-child)::after { content: ' · '; color: var(--mid); }
 
   .safety-t__row { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; align-items: center; justify-content: space-between; }
   .safety-t__row > div { display: grid; gap: .8rem; max-width: 46rem; }
@@ -334,7 +342,8 @@ const process = [
     .svc__head { grid-column: 1 / -1; position: static; }
     .svc__list { grid-column: 1 / -1; }
     .fl__title, .fl__copy,
-    .where__head, .where__list { grid-column: 1 / -1; }
+    .where__title, .where__intro { grid-column: 1 / -1; }
+    .where__list { grid-template-columns: 1fr 1fr; }
     .cine__facts { grid-template-columns: 1fr 1fr; }
     .process__steps { grid-template-columns: repeat(2, 1fr); }
   }
@@ -346,10 +355,27 @@ const process = [
     .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
   }
   @media (max-width: 720px) {
+    /* Mobile: lay content out horizontally so the page stays short. */
+    .section { padding-block: 3.5rem; }
+    .svc__head { gap: 1rem; }
+    .svc__row { padding: 1.05rem 0; }
+    .svc__short { display: none; }
+    .process__head { margin-bottom: 1.8rem; }
+    .process__fig { display: none; }
+    .process__steps { grid-template-columns: 1fr 1fr; gap: 1.6rem 1.1rem; }
+    .process__num { font-size: 2rem; }
+    .process__steps .h3 { font-size: 1.1rem; }
+    .process__steps .muted { font-size: .9rem; line-height: 1.45; }
+    .where__head { gap: 1rem; }
+    .where__state { grid-template-columns: 2.6rem 1fr; padding: 1rem 0; }
+    .where__state ul { display: block; font-weight: 500; line-height: 1.55; font-size: .95rem; }
+    .where__state li { display: inline; }
+    .where__state li:not(:last-child)::after { content: ' · '; color: var(--mid); }
+    .fl__head { margin-bottom: 1.6rem; }
+
     .svc__row { grid-template-columns: 2.6rem 1fr 1.5rem; gap: .5rem 1rem; padding: 1.5rem 0; }
     .svc__short { grid-column: 2 / 3; font-size: .95rem; }
     .svc__go { grid-row: 1; grid-column: 3; }
-    .process__steps { grid-template-columns: 1fr; gap: 2.5rem; }
     .where__list { grid-template-columns: 1fr; }
     .cine { min-height: 92svh; }
     .cine--left .cine__shade, .cine--right .cine__shade { background: linear-gradient(180deg, rgba(13,13,12,.35) 0%, rgba(13,13,12,.55) 40%, rgba(13,13,12,.9) 100%); }
@@ -357,6 +383,15 @@ const process = [
     .cine--right .cine__inner { justify-items: start; }
     .cine__facts { grid-template-columns: 1fr; gap: .9rem; }
     .hero { margin-top: -68px; min-height: 86svh; }
+    .hero__h1 { font-size: 2.35rem; }
+    .hero__lead { font-size: 1rem; }
+    .cine { min-height: 0; }
+    .cine__inner { padding-block: 8rem 2.5rem; }
+    .cine .lead { font-size: 1rem; }
+    .cine__facts dd, .cine__list li { font-size: .95rem; }
+    .cine__list li { padding: .55rem 0; }
+    .svc__name { font-size: 1.1rem; }
+    .ticker__set span { font-size: 1.15rem; }
     .hero__shade { background: linear-gradient(180deg, rgba(13,13,12,.6) 0%, rgba(13,13,12,.45) 40%, rgba(13,13,12,.85) 100%); }
     .hero__cap { position: static; padding: 0 var(--gutter) 1.2rem; }
   }

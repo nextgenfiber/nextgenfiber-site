@@ -6,20 +6,20 @@ const { tone = 'dark', size = 40, wordmark = true } = Astro.props;
 const src = `/img/brand/mark-${tone}-128.png`;
 const src2 = `/img/brand/mark-${tone}-256.png`;
 ---
-<span class={`logo logo--${tone}`}>
+<span class={`logo logo--${tone}`} style={`--s:${size}px`}>
   <img src={src} srcset={`${src} 1x, ${src2} 2x`} width={size} height={size} alt={wordmark ? '' : 'NextGen Fiber'} />
   {wordmark && (
     <span class="logo__word" aria-label="NextGen Fiber">
-      <span>NEXTGEN</span><span class="logo__fiber">FIBER</span>
+      <span>NEXTGEN</span><span>FIBER</span>
     </span>
   )}
 </span>
 <style>
-  .logo { display: inline-flex; align-items: center; gap: .8rem; }
+  /* Wordmark matches the email signature lockup: two stacked lines, regular
+     weight, very wide tracking, gold offset shadow like the mark's double stroke. */
+  .logo { display: inline-flex; align-items: center; gap: calc(var(--s) * .3); }
   .logo img { flex: none; }
-  .logo__word { display: inline-flex; gap: .45em; font-weight: 800; font-size: .98rem; letter-spacing: .22em; line-height: 1; }
-  .logo--dark .logo__word { color: var(--ink); }
-  .logo--light .logo__word { color: var(--ivory); }
-  .logo__fiber { color: var(--gold-text); font-weight: 600; }
-  .logo--light .logo__fiber { color: var(--gold); }
+  .logo__word { display: grid; gap: calc(var(--s) * .06); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 400; font-size: calc(var(--s) * .36); letter-spacing: .42em; line-height: 1; }
+  .logo--dark .logo__word { color: var(--ink); text-shadow: .07em .07em 0 var(--gold); }
+  .logo--light .logo__word { color: var(--ivory); text-shadow: .07em .07em 0 var(--gold); }
 </style>

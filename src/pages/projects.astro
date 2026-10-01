@@ -99,6 +99,11 @@ byState.sort((a, b) => b[1].length - a[1].length);
   .pj__cta .h3 { max-width: 40ch; }
   @media (max-width: 1080px) { .pj__mk-head, .pj__mk-lead { grid-column: 1 / -1; } .pj__states { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 720px) {
+    .pj__state { padding: 1rem 0 1.2rem; }
+    .pj__state ul { display: block; font-weight: 500; line-height: 1.55; font-size: .95rem; margin-top: .5rem; }
+    .pj__state li { display: inline; }
+    .pj__state li:not(:last-child)::after { content: ' · '; color: var(--mid); }
+
     .pj__row { grid-template-columns: 1fr; gap: .8rem; }
     .pj__states { grid-template-columns: 1fr; }
   }
