@@ -11,10 +11,9 @@ export function getStaticPaths() {
 }
 const { s, i } = Astro.props as { s: Service; i: number };
 const next = services[(i + 1) % services.length];
-const total = `0${services.length}`;
 ---
 <Base title={`${s.name} Subcontractor`} description={`${s.name} crews for fiber prime contractors in Tennessee and the Southeast. ${s.short}`}>
-  <PageHead label={`Services · ${s.name}`} title={s.name} lead={s.lead} index={s.index} total={total} marker={(i + 0.5) / services.length} />
+  <PageHead label={`Services · ${s.name}`} title={s.name} lead={s.lead} marker={(i + 0.5) / services.length} />
 
   <section class="section sd">
     <div class="wrap grid sd__grid">
@@ -31,7 +30,7 @@ const total = `0${services.length}`;
         <div class="sd__block">
           <span class="label">Scope</span>
           <ol class="sd__scope">
-            {s.scope.map((x, k) => <li><span class="index"><b>{String(k + 1).padStart(2, '0')}</b></span>{x}</li>)}
+            {s.scope.map((x) => <li>{x}</li>)}
           </ol>
         </div>
         <div class="sd__block sd__deliv">
@@ -53,7 +52,7 @@ const total = `0${services.length}`;
 
   <nav class="sd__next bg-stone" aria-label="Next service">
     <a class="wrap sd__next-row" href={`/services/${next.slug}`}>
-      <span class="index">Next · <b>{next.index}</b> / {total}</span>
+      <span class="sd__next-label">Next service</span>
       <span class="h2">{next.name}</span>
       <Arrow />
     </a>
@@ -73,6 +72,7 @@ const total = `0${services.length}`;
   .sd__deliv { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 1.6rem 1.75rem; }
   .sd__deliv ul, .sd__equip { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
   .sd__deliv li, .sd__equip li { font-weight: 600; }
+  .sd__next-label { font-size: .9rem; color: var(--mid-2); }
   .sd__next { border-top: 1px solid var(--line); }
   .sd__next-row { display: flex; align-items: center; gap: 1.5rem 2.5rem; flex-wrap: wrap; padding-block: clamp(2.5rem, 5vw, 4rem); text-decoration: none; }
   .sd__next-row .h2 { flex: 1; font-weight: 700; }

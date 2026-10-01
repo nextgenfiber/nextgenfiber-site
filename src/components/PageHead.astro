@@ -8,7 +8,6 @@ const { label, title, lead, index, total, marker = 0.2 } = Astro.props;
   <div class="wrap">
     <div class="ph__top">
       <span class="label" data-reveal>{label}</span>
-      {index && <span class="index" data-reveal><b>{index}</b>{total && ` / ${total}`}</span>}
     </div>
     <div class="grid ph__grid">
       <h1 class="h1 ph__title" data-split>{title}</h1>
