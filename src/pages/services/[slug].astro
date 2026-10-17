@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
-import ServiceFigure from '../../components/ServiceFigure.astro';
+import PrintSheet from '../../components/PrintSheet.astro';
 import Photo from '../../components/Photo.astro';
 import Arrow from '../../components/Arrow.astro';
 import { services, type Service } from '../../data/services';
@@ -18,7 +18,7 @@ const next = services[(i + 1) % services.length];
   <section class="section sd">
     <div class="wrap grid sd__grid">
       <div class="sd__fig" data-reveal>
-        <ServiceFigure slug={s.slug} />
+        <PrintSheet focus={({ 'aerial-construction': 'aerial', 'underground-hdd': 'underground', 'fiber-pulling': 'pulling', 'splicing-testing': 'splicing', 'storm-restoration': 'storm' } as const)[s.slug as 'aerial-construction']} />
         {s.photo && (
           <figure class="sd__photo">
             <div data-clip><Photo src={s.photo.src} width={s.photo.w} height={s.photo.h} alt={s.photo.alt} /></div>

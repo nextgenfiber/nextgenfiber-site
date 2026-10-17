@@ -1,0 +1,205 @@
+---
+// Plan-view construction print, drawn like the prints crews work from:
+// streets and lots, numbered poles with span footage, aerial and underground
+// routes, bore crossing, handholes, splice case, terminals and drops, legend,
+// scale, north arrow and title block. Illustrative only (fictional streets).
+// `focus` highlights the part of the print that matches the service.
+interface Props { focus: 'aerial' | 'underground' | 'pulling' | 'splicing' | 'storm' }
+const { focus } = Astro.props;
+
+// Poles along the north side of Ridge Rd, then down the west side of Mill Creek Ln.
+// Scale 0.6 px = 1 ft. Poles sit in the right-of-way strip, not in the lots.
+const PY = 244;
+const spans = [214, 205, 213, 207];
+const xs = spans.reduce((a, ft) => [...a, a[a.length - 1] + Math.round(ft * 0.6)], [70]);
+const poles = xs.map((x, i) => ({ id: `P-${101 + i}`, x, y: PY }));
+const houses = [60, 150, 240, 330, 420, 510];
+const on = (k: string) => (k === focus ? 'is-on' : '');
+const title: Record<string, string> = {
+  aerial: 'AERIAL PLACEMENT · STRAND + LASH',
+  underground: 'UNDERGROUND · HDD ROAD CROSSING',
+  pulling: 'FIBER PLACEMENT · CONDUIT PULL',
+  splicing: 'SPLICING · ENCLOSURE + TERMINALS',
+  storm: 'STORM RESTORATION · REPLACE SPANS',
+};
+---
+<figure class="ps" aria-hidden="true">
+  <svg viewBox="0 0 900 560" fill="none">
+    <defs>
+      <pattern id="ps-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" stroke="#e4e1d8" stroke-width=".6" /></pattern>
+      <marker id="ps-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#111" /></marker>
+    </defs>
+    <rect width="900" height="560" fill="#fbfaf6" />
+    <rect x="12" y="12" width="876" height="456" fill="url(#ps-grid)" />
+
+    <!-- Streets -->
+    <g class="ps__road">
+      <rect x="12" y="252" width="640" height="54" />
+      <rect x="652" y="12" width="58" height="456" />
+      <rect x="652" y="252" width="58" height="54" />
+    </g>
+    <g class="ps__cl">
+      <line x1="12" y1="279" x2="652" y2="279" />
+      <line x1="681" y1="12" x2="681" y2="468" />
+    </g>
+    <g class="ps__row">
+      <line x1="12" y1="236" x2="646" y2="236" /><line x1="12" y1="322" x2="646" y2="322" />
+      <line x1="646" y1="12" x2="646" y2="236" /><line x1="716" y1="12" x2="716" y2="468" />
+      <line x1="646" y1="322" x2="646" y2="468" />
+    </g>
+    <text class="ps__street" x="300" y="284">RIDGE RD</text>
+    <text class="ps__street" x="689" y="150" transform="rotate(90 689 150)">MILL CREEK LN</text>
+
+    <!-- Lots and houses -->
+    <g class="ps__lot">
+      {houses.map((x) => <rect x={x} y="40" width="84" height="188" />)}
+      {houses.map((x) => <rect x={x} y="330" width="84" height="138" />)}
+      <rect x="730" y="40" width="150" height="188" /><rect x="730" y="330" width="150" height="138" />
+    </g>
+    <g class="ps__house">
+      {houses.map((x) => <rect x={x + 22} y="96" width="40" height="34" />)}
+      {houses.map((x) => <rect x={x + 22} y="386" width="40" height="34" />)}
+      <rect x="772" y="110" width="66" height="44" /><rect x="772" y="380" width="66" height="44" />
+    </g>
+    <g class="ps__addr">
+      {houses.map((x, i) => <text x={x + 42} y="86">{101 + i * 2}</text>)}
+      {houses.map((x, i) => <text x={x + 42} y="438">{100 + i * 2}</text>)}
+    </g>
+
+    <!-- AERIAL: strand + lash along the pole line, with span footage -->
+    <g class={`ps__layer ps__aerial ${on('aerial')} ${on('storm')}`}>
+      <polyline class="ps__route" points={poles.map((p) => `${p.x},${p.y}`).join(' ')} />
+      {spans.map((ft, i) => (
+        <text class="ps__ft" x={(poles[i].x + poles[i + 1].x) / 2} y={PY - 7}>{ft}'</text>
+      ))}
+    </g>
+
+    <!-- Down guy at the dead-end pole P-101: pulls opposite the span (west); anchor ~30 ft out -->
+    <g class={`ps__layer ps__guy ${on('aerial')}`}>
+      <line x1={poles[0].x} y1={PY} x2={poles[0].x - 20} y2={PY} />
+      <path d={`M${poles[0].x - 30} ${PY} l5 -5 l5 5 l-5 5 z`} />
+      <text class="ps__tag" x={poles[0].x - 44} y={PY - 10}>DG + ANCHOR</text>
+    </g>
+
+    <!-- UNDERGROUND: riser at P-105 to HH-01, HDD bore under Ridge Rd to HH-02,
+         conduit west in the south right-of-way (no second road crossing) -->
+    <g class={`ps__layer ps__ug ${on('underground')} ${on('pulling')}`}>
+      <line class="ps__ugline" x1={poles[4].x} y1={PY} x2="606" y2={PY} />
+      <path class="ps__bore" d={`M614 ${PY + 7} L 614 308`} />
+      <line class="ps__ugline" x1="606" y1="315" x2="236" y2="315" />
+      <rect class="ps__hh" x="606" y={PY - 7} width="16" height="14" />
+      <rect class="ps__hh" x="606" y="308" width="16" height="14" />
+      <rect class="ps__hh" x="420" y="308" width="16" height="14" />
+      <rect class="ps__hh" x="220" y="308" width="16" height="14" />
+      <text class="ps__tag" x="560" y={PY - 22}>RISER</text>
+      <text class="ps__tag" x="620" y="286">HDD 1.25" · 118'</text>
+      <text class="ps__tag" x="586" y="340">HH-02</text>
+      <text class="ps__tag" x="410" y="340">HH-03</text>
+      <text class="ps__tag" x="210" y="340">HH-04</text>
+      <text class="ps__tag" x="300" y="300">2" CONDUIT · 310'</text>
+    </g>
+
+    <!-- SPLICING: splice case at P-103, terminals at P-102 and P-104 with drops -->
+    <g class={`ps__layer ps__splice ${on('splicing')}`}>
+      <g class="ps__drop">
+        <path d={`M${poles[1].x} ${PY - 6} L 192 130`} /><path d={`M${poles[1].x} ${PY - 6} L 282 130`} />
+        <path d={`M${poles[3].x} ${PY - 6} L 372 130`} /><path d={`M${poles[3].x} ${PY - 6} L 462 130`} />
+      </g>
+      <rect class="ps__sc" x={poles[2].x - 8} y={PY - 8} width="16" height="16" transform={`rotate(45 ${poles[2].x} ${PY})`} />
+      <rect class="ps__term" x={poles[1].x - 6} y={PY - 18} width="12" height="10" />
+      <rect class="ps__term" x={poles[3].x - 6} y={PY - 18} width="12" height="10" />
+      <text class="ps__tag" x={poles[2].x - 34} y={PY - 26}>SC-04 · 48F</text>
+      <text class="ps__tag" x={poles[1].x + 10} y={PY - 24}>T-12</text>
+      <text class="ps__tag" x={poles[3].x + 10} y={PY - 24}>T-14</text>
+    </g>
+
+    <!-- STORM: damaged spans flagged for replacement -->
+    <g class={`ps__layer ps__storm ${on('storm')}`}>
+      <g class="ps__x">
+        {[1, 2].map((k) => { const m = poles[k].x + (poles[k + 1].x - poles[k].x) * 0.7; return <path d={`M${m - 7} ${PY - 9} l14 18 M${m + 7} ${PY - 9} l-14 18`} />; })}
+      </g>
+      <text class="ps__tag" x={poles[1].x + 20} y={PY - 30}>REPLACE 2 SPANS · LOC 07</text>
+    </g>
+
+    <!-- Poles always on top -->
+    <g class="ps__poles">
+      {poles.map((p) => (
+        <g>
+          <circle cx={p.x} cy={p.y} r="6" />
+          <text class="ps__pid" x={p.x} y={p.y + 22}>{p.id}</text>
+        </g>
+      ))}
+    </g>
+
+    <!-- North arrow + scale -->
+    <g class="ps__north" transform="translate(846 52)">
+      <path d="M0 -26 L 9 8 L 0 2 L -9 8 Z" />
+      <text x="0" y="24">N</text>
+    </g>
+    <g class="ps__scale" transform="translate(748 456)">
+      <rect x="0" y="0" width="60" height="5" /><rect class="ps__scale-w" x="60" y="0" width="60" height="5" />
+      <text x="0" y="-5">0</text><text x="52" y="-5">100'</text><text x="112" y="-5">200'</text>
+    </g>
+
+    <!-- Title block -->
+    <g class="ps__tb">
+      <rect x="12" y="476" width="876" height="72" />
+      <line x1="300" y1="476" x2="300" y2="548" /><line x1="640" y1="476" x2="640" y2="548" /><line x1="780" y1="476" x2="780" y2="548" />
+      <text class="ps__tb-k" x="26" y="498">PROJECT</text><text class="ps__tb-v" x="26" y="526">{title[focus]}</text>
+      <text class="ps__tb-k" x="314" y="498">LEGEND</text>
+      <line class="ps__leg-a" x1="314" y1="522" x2="344" y2="522" /><text class="ps__tb-s" x="350" y="526">AERIAL</text>
+      <line class="ps__leg-u" x1="410" y1="522" x2="440" y2="522" /><text class="ps__tb-s" x="446" y="526">UNDERGROUND</text>
+      <circle class="ps__leg-p" cx="544" cy="522" r="5" /><text class="ps__tb-s" x="554" y="526">POLE</text>
+      <rect class="ps__leg-h" x="592" y="516" width="12" height="11" /><text class="ps__tb-s" x="609" y="526">HH</text>
+      <text class="ps__tb-k" x="654" y="498">SHEET</text><text class="ps__tb-v" x="654" y="526">1 OF 1</text>
+      <text class="ps__tb-k" x="794" y="498">NEXTGEN FIBER</text><text class="ps__tb-s" x="794" y="526">ILLUSTRATIVE</text>
+    </g>
+  </svg>
+</figure>
+
+<style>
+  .ps { margin: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #fbfaf6; }
+  .ps svg { width: 100%; height: auto; display: block; font-family: var(--font); }
+  .ps__road rect { fill: #ebe8e0; }
+  .ps__cl line { stroke: #fff; stroke-width: 1.5; stroke-dasharray: 12 10; }
+  .ps__row line { stroke: #c9c4b6; stroke-width: 1; stroke-dasharray: 2 3; }
+  .ps__street { font-size: 11px; font-weight: 700; letter-spacing: .2em; fill: #8b867a; text-anchor: middle; }
+  .ps__lot rect { fill: none; stroke: #ddd8cc; stroke-width: 1; }
+  .ps__house rect { fill: #efece4; stroke: #d3cdbf; stroke-width: 1; }
+  .ps__addr text { font-size: 9px; fill: #a39d8f; text-anchor: middle; }
+
+  /* Layers: dim by default, full strength when they match the service */
+  .ps__layer { opacity: .28; }
+  .ps__layer.is-on { opacity: 1; }
+  .ps__splice:not(.is-on), .ps__guy:not(.is-on),
+  .ps__layer:not(.is-on) .ps__tag, .ps__layer:not(.is-on) .ps__drop, .ps__storm:not(.is-on) { display: none; }
+  .ps__route { stroke: #111; stroke-width: 2.6; stroke-linejoin: round; }
+  .ps__ft { font-size: 10px; font-weight: 600; fill: #3d3a33; text-anchor: middle; }
+  .ps__guy line { stroke: #111; stroke-width: 1.4; }
+  .ps__guy circle { fill: #fbfaf6; stroke: #111; stroke-width: 1.4; }
+  .ps__ugline { stroke: #111; stroke-width: 2.2; stroke-dasharray: 9 6; }
+  .ps__bore { stroke: var(--gold); stroke-width: 2.4; stroke-dasharray: 6 5; }
+  .ps__hh { fill: #fbfaf6; stroke: #111; stroke-width: 1.4; }
+  .ps__sc { fill: var(--gold); stroke: #111; stroke-width: 1.2; }
+  .ps__term { fill: #fbfaf6; stroke: #111; stroke-width: 1.4; }
+  .ps__drop path { stroke: var(--gold); stroke-width: 1.2; stroke-dasharray: 3 3; }
+  .ps__x path { stroke: #111; stroke-width: 2.2; }
+  .ps__tag { font-size: 9.5px; font-weight: 700; letter-spacing: .06em; fill: #111; }
+  .ps__tag--alert { fill: #111; }
+  .ps__poles circle { fill: #fbfaf6; stroke: #111; stroke-width: 1.8; }
+  .ps__pid { font-size: 9px; font-weight: 600; fill: #55514a; text-anchor: middle; }
+  .ps__north path { fill: #111; }
+  .ps__north text { font-size: 11px; font-weight: 700; text-anchor: middle; fill: #111; }
+  .ps__scale rect { fill: #111; }
+  .ps__scale .ps__scale-w { fill: #fbfaf6; stroke: #111; stroke-width: 1; }
+  .ps__scale text { font-size: 8.5px; fill: #55514a; }
+  .ps__tb rect { fill: #fbfaf6; stroke: #111; stroke-width: 1.2; }
+  .ps__tb line { stroke: #111; stroke-width: 1; }
+  .ps__tb-k { font-size: 8.5px; font-weight: 700; letter-spacing: .14em; fill: #8b867a; }
+  .ps__tb-v { font-size: 12px; font-weight: 700; fill: #111; letter-spacing: .02em; }
+  .ps__tb-s { font-size: 9.5px; font-weight: 600; fill: #3d3a33; }
+  .ps__leg-a { stroke: #111; stroke-width: 2.6; }
+  .ps__leg-u { stroke: #111; stroke-width: 2.2; stroke-dasharray: 6 4; }
+  .ps__leg-p { fill: #fbfaf6; stroke: #111; stroke-width: 1.6; }
+  .ps__leg-h { fill: #fbfaf6; stroke: #111; stroke-width: 1.3; }
+</style>
