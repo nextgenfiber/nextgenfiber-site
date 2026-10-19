@@ -4,14 +4,11 @@
 // the /novo-sub Fase B reads intake.json deterministically. No DB, no storage.
 //
 // Env (set in the Netlify dashboard, never in the repo):
-//   SMTP_HOST   (default smtp.gmail.com)
-//   SMTP_PORT   (default 465, secure)
-//   SMTP_USER   (required — the ngf@ mailbox)
-//   SMTP_PASS   (required — a Gmail app password, not the account password)
-//   INTAKE_TO   (default ngf@nextgenfiberllc.com)
-//   INTAKE_FROM (default SMTP_USER)
+//   RESEND_API_KEY (required — a Resend API key)
+//   INTAKE_TO      (default ngf@nextgenfiberllc.com)
+//   INTAKE_FROM    (default "NextGen Fiber <ngf@nextgenfiberllc.com>" — the domain
+//                   must be verified in Resend)
 import { parse } from 'parse-multipart-data';
-import nodemailer from 'nodemailer';
 
 const MAX_FILE = 8 * 1024 * 1024;
 const MAX_TOTAL = 9 * 1024 * 1024;
@@ -86,20 +83,11 @@ export async function handler(event) {
   }
   if (total > MAX_TOTAL) return json(413, { error: 'attachments too large' });
 
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  if (!user || !pass) return json(500, { error: 'mail transport not configured' });
-
-  const port = Number(process.env.SMTP_PORT || 465);
-  const transport = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-  });
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return json(500, { error: 'mail transport not configured' });
 
   const to = process.env.INTAKE_TO || 'ngf@nextgenfiberllc.com';
-  const from = process.env.INTAKE_FROM || user;
+  const from = process.env.INTAKE_FROM || 'NextGen Fiber <ngf@nextgenfiberllc.com>';
   const legal = String(payload.legal_name).trim();
   // Human summary uses only sanitized one-line values; the source of truth for
   // Fase B is the intake.json attachment (no in-body marker to inject into).
@@ -112,23 +100,33 @@ export async function handler(event) {
     `Anexos:       ${clean(attachments.map((a) => a.filename).join(', ')) }\n\n` +
     `Dados completos para a Fase B do /novo-sub: anexo intake.json.`;
 
-  attachments.unshift({
-    filename: 'intake.json',
-    content: Buffer.from(JSON.stringify(payload, null, 2), 'utf8'),
-    contentType: 'application/json',
-  });
+  // Resend wants attachment content as a base64 string. intake.json first = the
+  // machine-readable source of truth for Fase B.
+  const resendAttachments = [
+    { filename: 'intake.json', content: Buffer.from(JSON.stringify(payload, null, 2), 'utf8').toString('base64') },
+    ...attachments.map((a) => ({ filename: a.filename, content: a.content.toString('base64') })),
+  ];
+  const replyTo = /.+@.+\..+/.test(payload?.signer?.email || '') ? payload.signer.email : undefined;
 
   try {
-    await transport.sendMail({
-      from,
-      to,
-      replyTo: /.+@.+\..+/.test(payload?.signer?.email || '') ? payload.signer.email : undefined,
-      subject: `NOVO SUB — ${clean(legal, 120)}`,
-      text: summary,
-      attachments,
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: replyTo,
+        subject: `NOVO SUB — ${clean(legal, 120)}`,
+        text: summary,
+        attachments: resendAttachments,
+      }),
     });
+    if (!r.ok) {
+      console.error('intake-sub Resend failed:', r.status, (await r.text()).slice(0, 300)); // stays server-side
+      return json(502, { error: 'send failed' });
+    }
   } catch (e) {
-    console.error('intake-sub sendMail failed:', e && e.message); // detail stays server-side
+    console.error('intake-sub send error:', e && e.message);
     return json(502, { error: 'send failed' });
   }
 
