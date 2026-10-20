@@ -1,9 +1,0 @@
-[build]
-  command = "npm run build"
-  publish = "dist"
-
-[build.environment]
-  NODE_VERSION = "22"
-
-# Production deploys run on every merge to main. Previews run per PR.
-# Redeploy 2026-10-01: publish og-logo.jpg (#17).
