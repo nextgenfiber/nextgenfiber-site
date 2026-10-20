@@ -1,0 +1,320 @@
+---
+// Subcontractor intake form — bilingual EN/PT. Standalone page (not the site shell):
+// the sub sees only the form. Posts to the Netlify function, which e-mails ngf@ a
+// structured JSON payload + the attachments. See netlify/functions/intake-sub.mjs.
+import '@fontsource-variable/manrope';
+import { company, addressLine } from '../data/site';
+const endpoint = '/.netlify/functions/intake-sub';
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>NextGen Subcontractor Intake</title>
+<meta name="robots" content="noindex" />
+<style is:global>
+:root{
+  color-scheme:light;
+  --ivory:#f7f6f2; --stone:#ecebe7; --stone-2:#f1f0ec; --steel:#d9d8d3;
+  --ink:#111111; --mid:#626260;
+  --gold:#ac8f16; --gold-text:#7a640f;
+  --bg:var(--ivory); --fg:var(--ink); --card:#ffffff;
+  --line:rgba(17,17,17,.13); --line-strong:rgba(17,17,17,.24); --muted:var(--mid);
+  --font:'Manrope Variable','Manrope','ui-sans-serif',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --pill:999px; --maxw:680px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+h1,h2{text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--gold-text)}
+
+.hero{background:var(--stone);border-bottom:1px solid var(--line)}
+.hero .wrap{padding-block:20px 22px}
+.toprow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brandrow{display:flex;align-items:center;gap:13px}
+.brandrow .bt{font-weight:800;letter-spacing:.02em;font-size:1rem;color:var(--ink)}
+.brandrow .bs{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.lang{display:inline-flex;border:1px solid var(--line-strong);border-radius:var(--pill);overflow:hidden;flex:none}
+.lang button{font-family:inherit;font-weight:800;font-size:.76rem;letter-spacing:.04em;padding:7px 13px;background:transparent;color:var(--muted);border:0;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--gold);color:#111}
+.hero h1{margin-top:18px;font-size:clamp(1.3rem,1.1rem+1vw,1.6rem);font-weight:800;line-height:1.14;color:var(--ink)}
+.hero .sub{margin-top:6px;font-size:.95rem;color:var(--mid);max-width:52ch}
+.accent{height:3px;width:46px;background:var(--gold);border-radius:3px;margin-top:14px}
+
+.sheet{padding-block:22px 48px}
+.intro{color:var(--muted);max-width:62ch;margin-top:14px}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-top:16px}
+.sec>h2{font-size:1.02rem;font-weight:800;display:flex;align-items:center;gap:10px}
+.sec>h2 .n{flex:none;width:24px;height:24px;border-radius:999px;background:var(--ink);color:#fff;font-size:.76rem;font-weight:800;display:grid;place-items:center}
+.hint{color:var(--muted);font-size:.86rem;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.grid .full{grid-column:1/-1}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+label.f>.lab{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:800;color:var(--muted)}
+.req{color:var(--gold-text)}
+input,select,textarea{font-family:inherit;font-size:.95rem;color:var(--fg);background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus,.file:focus-within{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+textarea{resize:vertical;min-height:70px}
+
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.opt{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line-strong);border-radius:12px;padding:12px 13px;cursor:pointer;background:#fff}
+.opt:has(input:checked){border-color:var(--ink);box-shadow:inset 3px 0 0 var(--gold)}
+.opt input{width:auto;margin-top:3px;accent-color:var(--gold)}
+.opt .ot{font-weight:700;font-size:.95rem}
+.opt .od{font-size:.83rem;color:var(--muted);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chip{display:flex;gap:8px;align-items:center;border:1px solid var(--line-strong);border-radius:var(--pill);padding:8px 14px;cursor:pointer;font-weight:600;font-size:.9rem;background:#fff}
+.chip:has(input:checked){background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip input{width:auto;accent-color:var(--gold)}
+
+.files{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (max-width:560px){.files{grid-template-columns:1fr}}
+.file{display:block;border:1.5px dashed var(--line-strong);border-radius:12px;padding:14px;cursor:pointer;background:var(--stone-2)}
+.file input{display:none}
+.file .ft{font-weight:800;font-size:.84rem;letter-spacing:.04em;text-transform:uppercase}
+.file .fd{font-size:.82rem;color:var(--muted);margin-top:3px}
+.file .fn{font-size:.84rem;font-weight:700;color:var(--gold-text);margin-top:8px;word-break:break-word}
+.file.has{border-style:solid;border-color:var(--gold);background:#fff}
+
+.team .row{display:grid;grid-template-columns:1.4fr 1fr 1.4fr 1fr auto;gap:8px;margin-top:10px;align-items:center}
+.team .row input{font-size:.88rem;padding:8px 10px}
+.team .rm{width:34px;height:34px;flex:none;border:1px solid var(--line-strong);background:#fff;color:var(--muted);border-radius:9px;cursor:pointer;font-size:1rem;line-height:1;padding:0}
+.team .rm:hover{border-color:var(--ink);color:var(--fg)}
+@media (max-width:620px){.team .row{grid-template-columns:1fr 1fr;position:relative;padding:12px;border:1px solid var(--line);border-radius:12px}
+ .team .row .rm{position:absolute;top:8px;right:8px}}
+.addrow{margin-top:12px;border:1px dashed var(--line-strong);background:transparent;color:var(--fg);border-radius:var(--pill);padding:9px 16px;font-weight:700;font-size:.86rem;cursor:pointer;font-family:inherit}
+.addrow:hover{border-color:var(--ink)}
+
+.actions{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.btn{font-family:inherit;font-weight:800;font-size:1rem;border-radius:var(--pill);padding:14px 22px;border:1px solid var(--gold);background:var(--gold);color:#111;cursor:pointer}
+.btn:hover{background:#bb9d1f;border-color:#bb9d1f}
+.btn[disabled]{opacity:.6;cursor:progress}
+.foot{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem;display:flex;flex-wrap:wrap;gap:4px 16px;justify-content:space-between}
+.done{text-align:center;padding:48px 8px}
+.done .mk{width:64px;height:64px;border-radius:999px;background:var(--gold);color:#111;display:grid;place-items:center;margin:0 auto 18px;font-size:2rem;font-weight:800}
+.done h2{font-size:1.4rem;font-weight:800}
+.done p{color:var(--muted);max-width:46ch;margin:10px auto 0}
+.err{color:#b4241c;font-size:.84rem;font-weight:700;margin-top:6px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="toprow">
+      <div class="brandrow">
+        <div><div class="bt">NextGen Fiber</div><div class="bs" data-i="bs">Knoxville, TN</div></div>
+      </div>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+      </div>
+    </div>
+    <h1 data-i="htitle">Subcontractor Intake</h1>
+    <p class="sub" data-i="sub">Your company details and documents, in one submission.</p>
+    <div class="accent"></div>
+  </div>
+</header>
+
+<main class="wrap sheet" id="main">
+  <p class="intro" data-ih="intro">Fields marked <b style='color:var(--gold-text)'>*</b> are required. Your <b>EIN goes on the W-9</b> you upload, not in a field here, and banking details are handled by phone — never by email.</p>
+
+  <form id="intake" novalidate>
+    <!-- honeypot: humans never see or fill this -->
+    <input type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
+
+    <section class="sec">
+      <h2><span class="n">1</span> <span data-i="c1">Company</span></h2>
+      <div class="grid">
+        <label class="f full"><span class="lab"><span data-i="f_legal">Legal business name (with LLC / Inc)</span> <span class="req">*</span></span><input name="legal_name" required data-ph="ph_legal" placeholder="e.g. Costa Lima Communication LLC" /></label>
+        <label class="f"><span class="lab" data-i="f_dba">Doing business as (if any)</span><input name="dba" /></label>
+        <label class="f"><span class="lab"><span data-i="f_state">State of formation</span> <span class="req">*</span></span><input name="state_formed" required placeholder="TN" /></label>
+        <label class="f full"><span class="lab"><span data-i="f_addr">Business address</span> <span class="req">*</span></span><input name="address" required data-ph="ph_addr" placeholder="Street, City, State, ZIP" /></label>
+        <label class="f"><span class="lab"><span data-i="f_cphone">Company phone</span> <span class="req">*</span></span><input name="company_phone" type="tel" required /></label>
+        <label class="f"><span class="lab"><span data-i="f_cemail">Company email</span> <span class="req">*</span></span><input name="company_email" type="email" required /></label>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><span class="n">2</span> <span data-i="c2">Who signs the contract</span></h2>
+      <div class="grid">
+        <label class="f"><span class="lab"><span data-i="f_sname">Full name</span> <span class="req">*</span></span><input name="signer_name" required /></label>
+        <label class="f"><span class="lab"><span data-i="f_stitle">Title</span> <span class="req">*</span></span><input name="signer_title" required data-ph="ph_stitle" placeholder="Owner / Member" /></label>
+        <label class="f"><span class="lab"><span data-i="f_semail">Email</span> <span class="req">*</span></span><input name="signer_email" type="email" required /></label>
+        <label class="f"><span class="lab"><span data-i="f_scell">Cell</span> <span class="req">*</span></span><input name="signer_cell" type="tel" required /></label>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><span class="n">3</span> <span data-i="c3">Scope you perform</span></h2>
+      <p class="hint" data-i="h3">Check all that apply.</p>
+      <div class="chips">
+        <label class="chip"><input type="checkbox" name="scope" value="Underground / Directional drilling" /> <span data-i="sc_ug">Underground / Drilling</span></label>
+        <label class="chip"><input type="checkbox" name="scope" value="Aerial" /> <span data-i="sc_ae">Aerial (strand & fiber)</span></label>
+        <label class="chip"><input type="checkbox" name="scope" value="Splicing" /> <span data-i="sc_sp">Splicing / OTDR</span></label>
+        <label class="chip"><input type="checkbox" name="scope" value="Restoration" /> <span data-i="sc_re">Restoration</span></label>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><span class="n">4</span> <span data-i="c4">Workers’ Compensation</span></h2>
+      <p class="hint" data-i="h4">Every subcontractor must show coverage or a valid exemption. Pick one.</p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="wc" value="own_coi" required />
+          <div><div class="ot" data-i="o1t">I carry my own Workers’ Comp (COI attached)</div><div class="od" data-i="o1d">You’ll upload a Certificate of Insurance naming NextGen Fiber LLC as certificate holder.</div></div></label>
+        <label class="opt"><input type="radio" name="wc" value="exempt" />
+          <div><div class="ot" data-i="o2t">I hold a state exemption</div><div class="od" data-i="o2d">Sole owner, no employees. Covers only the named owner — upload the exemption certificate.</div></div></label>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><span class="n">5</span> <span data-i="c5">Documents</span></h2>
+      <p class="hint" data-i="h5">PDF, JPG or PNG. These are what let us issue your contract — send them here, not by email.</p>
+      <div class="files">
+        <label class="file"><div class="ft"><span data-i="d_w9">W-9</span> <span class="req">*</span></div><div class="fd" data-i="d_w9d">Signed IRS W-9 (holds your EIN)</div><input type="file" name="w9" accept=".pdf,.jpg,.jpeg,.png" required /><div class="fn" hidden></div></label>
+        <label class="file"><div class="ft"><span data-i="d_wc">Workers’ Comp COI / Exemption</span> <span class="req">*</span></div><div class="fd" data-i="d_wcd">COI or state exemption certificate</div><input type="file" name="wc_doc" accept=".pdf,.jpg,.jpeg,.png" required /><div class="fn" hidden></div></label>
+        <label class="file"><div class="ft"><span data-i="d_gl">General Liability + Auto COI</span> <span class="req">*</span></div><div class="fd" data-i="d_gld">GL $1M/$2M & Auto $1M, NextGen as holder</div><input type="file" name="gl_auto" accept=".pdf,.jpg,.jpeg,.png" required /><div class="fn" hidden></div></label>
+        <label class="file"><div class="ft" data-i="d_dl">Driver’s license</div><div class="fd" data-i="d_dld">Signatory’s ID (front)</div><input type="file" name="dl" accept=".pdf,.jpg,.jpeg,.png" /><div class="fn" hidden></div></label>
+      </div>
+    </section>
+
+    <section class="sec team">
+      <h2><span class="n">6</span> <span data-i="c6">Crew for FiberLytic</span></h2>
+      <p class="hint" data-i="h6">Everyone who needs an account. Name · Role · Email · Cell.</p>
+      <div id="rows"></div>
+      <button type="button" class="addrow" id="addrow" data-i="addrow">+ Add person</button>
+    </section>
+
+    <section class="sec">
+      <h2><span class="n">7</span> <span data-i="c7">Equipment & references</span></h2>
+      <div class="grid">
+        <label class="f full"><span class="lab" data-i="f_equip">Key equipment</span><textarea name="equipment" data-ph="ph_equip" placeholder="Drills, trucks, splicing rigs, OTDR…"></textarea></label>
+        <label class="f full"><span class="lab" data-i="f_ref">References (2 preferred)</span><textarea name="references" data-ph="ph_ref" placeholder="Company · contact · phone"></textarea></label>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button type="submit" class="btn" id="submit" data-i="submit">Send to NextGen</button>
+      <div class="err" id="err" hidden></div>
+    </div>
+  </form>
+
+  <div class="foot">
+    <span>{company.legalName} &middot; {addressLine}</span>
+    <span>{company.phone} &middot; nextgenfiberllc.com</span>
+  </div>
+</main>
+
+<script is:inline define:vars={{ endpoint }}>
+var I18N={"en": {"bs": "Knoxville, TN", "htitle": "Subcontractor Intake", "sub": "Your company details and documents, in one submission.", "intro": "Fields marked <b style='color:var(--gold-text)'>*</b> are required. Your <b>EIN goes on the W-9</b> you upload, not in a field here, and banking details are handled by phone — never by email.", "c1": "Company", "f_legal": "Legal business name (with LLC / Inc)", "ph_legal": "e.g. Costa Lima Communication LLC", "f_dba": "Doing business as (if any)", "f_state": "State of formation", "f_addr": "Business address", "ph_addr": "Street, City, State, ZIP", "f_cphone": "Company phone", "f_cemail": "Company email", "c2": "Who signs the contract", "f_sname": "Full name", "f_stitle": "Title", "ph_stitle": "Owner / Member", "f_semail": "Email", "f_scell": "Cell", "c3": "Scope you perform", "h3": "Check all that apply.", "sc_ug": "Underground / Drilling", "sc_ae": "Aerial (strand & fiber)", "sc_sp": "Splicing / OTDR", "sc_re": "Restoration", "c4": "Workers’ Compensation", "h4": "Every subcontractor must show coverage or a valid exemption. Pick one.", "o1t": "I carry my own Workers’ Comp (COI attached)", "o1d": "You’ll upload a Certificate of Insurance naming NextGen Fiber LLC as certificate holder.", "o2t": "I hold a state exemption", "o2d": "Sole owner, no employees. Covers only the named owner — upload the exemption certificate.", "c5": "Documents", "h5": "PDF, JPG or PNG. These are what let us issue your contract — send them here, not by email.", "d_w9": "W-9", "d_w9d": "Signed IRS W-9 (holds your EIN)", "d_wc": "Workers’ Comp COI / Exemption", "d_wcd": "COI or state exemption certificate", "d_gl": "General Liability + Auto COI", "d_gld": "GL $1M/$2M & Auto $1M, NextGen as holder", "d_dl": "Driver’s license", "d_dld": "Signatory’s ID (front)", "c6": "Crew for FiberLytic", "h6": "Everyone who needs an account. Name · Role · Email · Cell.", "addrow": "+ Add person", "t_name": "Name", "t_role": "Role", "t_email": "Email", "t_cell": "Cell", "c7": "Equipment & references", "f_equip": "Key equipment", "ph_equip": "Drills, trucks, splicing rigs, OTDR…", "f_ref": "References (2 preferred)", "ph_ref": "Company · contact · phone", "submit": "Send to NextGen", "sending": "Sending…", "err": "Please fill the required fields and attach the required documents.", "err_big": "The files are too large together (max 5 MB). Please send smaller scans or photos.", "err_net": "Could not send. Check your connection and try again, or email ngf@nextgenfiberllc.com.", "done_h": "Thank you — we’ve got it.", "done_p": "Your details and documents for <b>%s</b> are on their way to NextGen. We’ll review the coverage and send your contract to sign. Questions? 551-274-9008."}, "pt": {"bs": "Knoxville, TN", "htitle": "Cadastro de Subcontratado", "sub": "Os dados e documentos da sua empresa, numa submissão só.", "intro": "Campos com <b style='color:var(--gold-text)'>*</b> são obrigatórios. Seu <b>EIN vai no W-9</b> que você anexa, não num campo aqui, e dados bancários são tratados por telefone — nunca por e-mail.", "c1": "Empresa", "f_legal": "Razão social (com LLC / Inc)", "ph_legal": "ex.: Costa Lima Communication LLC", "f_dba": "Nome fantasia (se houver)", "f_state": "Estado de constituição", "f_addr": "Endereço comercial", "ph_addr": "Rua, cidade, estado, ZIP", "f_cphone": "Telefone da empresa", "f_cemail": "E-mail da empresa", "c2": "Quem assina o contrato", "f_sname": "Nome completo", "f_stitle": "Cargo", "ph_stitle": "Sócio / Proprietário", "f_semail": "E-mail", "f_scell": "Celular", "c3": "Escopo que você executa", "h3": "Marque todos que se aplicam.", "sc_ug": "Underground / Perfuração", "sc_ae": "Aéreo (strand e fibra)", "sc_sp": "Splicing / OTDR", "sc_re": "Restauração", "c4": "Workers’ Comp (seguro de acidente)", "h4": "Todo subcontratado precisa comprovar cobertura ou isenção válida. Escolha uma.", "o1t": "Tenho meu próprio Workers’ Comp (anexo o COI)", "o1d": "Você anexa o Certificate of Insurance com a NextGen Fiber LLC como certificate holder.", "o2t": "Tenho isenção estadual (exemption)", "o2d": "Dono único, sem empregados. Cobre só o dono nomeado — anexe o certificado de isenção.", "c5": "Documentos", "h5": "PDF, JPG ou PNG. É com eles que emitimos seu contrato — envie aqui, não por e-mail.", "d_w9": "W-9", "d_w9d": "W-9 do IRS assinado (contém seu EIN)", "d_wc": "COI de Workers’ Comp / Isenção", "d_wcd": "COI ou certificado de isenção estadual", "d_gl": "COI de Responsabilidade Civil + Auto", "d_gld": "GL $1M/$2M e Auto $1M, NextGen como holder", "d_dl": "CNH / Carteira de motorista", "d_dld": "Documento do signatário (frente)", "c6": "Equipe para o FiberLytic", "h6": "Todos que precisam de acesso. Nome · Função · E-mail · Celular.", "addrow": "+ Adicionar pessoa", "t_name": "Nome", "t_role": "Função", "t_email": "E-mail", "t_cell": "Celular", "c7": "Equipamento e referências", "f_equip": "Equipamento principal", "ph_equip": "Perfuratrizes, caminhões, equip. de splicing, OTDR…", "f_ref": "Referências (2 de preferência)", "ph_ref": "Empresa · contato · telefone", "submit": "Enviar para a NextGen", "sending": "Enviando…", "err": "Preencha os campos obrigatórios e anexe os documentos exigidos.", "err_big": "Os arquivos juntos estão grandes demais (máx. 5 MB). Envie digitalizações ou fotos menores.", "err_net": "Não foi possível enviar. Confira a conexão e tente de novo, ou escreva para ngf@nextgenfiberllc.com.", "done_h": "Obrigado — recebemos.", "done_p": "Os dados e documentos de <b>%s</b> estão a caminho da NextGen. Vamos revisar a cobertura e enviar seu contrato para assinatura. Dúvidas? 551-274-9008."}};
+(function(){
+  var MAX_TOTAL = 5 * 1024 * 1024; // teto do payload da function
+  var lang='en';
+  function apply(l){
+    lang=l; var d=I18N[l]; document.documentElement.lang=l;
+    document.querySelectorAll('[data-i]').forEach(function(e){var k=e.getAttribute('data-i');if(d[k]!=null)e.textContent=d[k];});
+    document.querySelectorAll('[data-ih]').forEach(function(e){var k=e.getAttribute('data-ih');if(d[k]!=null)e.innerHTML=d[k];});
+    document.querySelectorAll('[data-ph]').forEach(function(e){var k=e.getAttribute('data-ph');if(d[k]!=null)e.placeholder=d[k];});
+    document.querySelectorAll('#rows .row').forEach(setRowPh);
+    document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed', b.getAttribute('data-lang')===l?'true':'false');});
+    try{localStorage.setItem('ngf_lang',l);}catch(e){}
+  }
+  function setRowPh(r){var d=I18N[lang],i=r.querySelectorAll('input');['t_name','t_role','t_email','t_cell'].forEach(function(k,ix){if(i[ix])i[ix].placeholder=d[k];});}
+  document.querySelectorAll('.lang button').forEach(function(b){b.onclick=function(){apply(b.getAttribute('data-lang'));};});
+
+  document.querySelectorAll('.file input').forEach(function(inp){
+    inp.addEventListener('change',function(){
+      var box=inp.closest('.file'), fn=box.querySelector('.fn');
+      if(inp.files&&inp.files.length){fn.textContent='✓ '+inp.files[0].name;fn.hidden=false;box.classList.add('has');}
+      else{fn.hidden=true;box.classList.remove('has');}
+    });
+  });
+  var rows=document.getElementById('rows');
+  function addRow(){
+    var r=document.createElement('div');r.className='row';
+    r.innerHTML='<input aria-label="Name"><input aria-label="Role"><input type="email" aria-label="Email"><input type="tel" aria-label="Cell"><button type="button" class="rm" aria-label="Remove">×</button>';
+    r.querySelector('.rm').onclick=function(){r.remove();};
+    rows.appendChild(r); setRowPh(r);
+  }
+  document.getElementById('addrow').onclick=addRow; addRow();
+
+  // Comprime imagem (CNH / foto) p/ caber no teto; PDFs passam direto.
+  function compress(file){
+    return new Promise(function(res){
+      if(!/^image\//.test(file.type)){res(file);return;}
+      var img=new Image(), url=URL.createObjectURL(file);
+      img.onload=function(){
+        var max=1600, s=Math.min(1, max/Math.max(img.width,img.height));
+        var c=document.createElement('canvas'); c.width=img.width*s; c.height=img.height*s;
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(function(b){res(b&&b.size<file.size?new File([b],file.name.replace(/\.(png|jpe?g)$/i,'.jpg'),{type:'image/jpeg'}):file);},'image/jpeg',0.8);
+      };
+      img.onerror=function(){URL.revokeObjectURL(url);res(file);};
+      img.src=url;
+    });
+  }
+  function collectCrew(){
+    return Array.prototype.map.call(document.querySelectorAll('#rows .row'),function(r){
+      var i=r.querySelectorAll('input');
+      return {name:i[0].value.trim(),role:i[1].value.trim(),email:i[2].value.trim(),cell:i[3].value.trim()};
+    }).filter(function(c){return c.name||c.email;});
+  }
+
+  var form=document.getElementById('intake'), err=document.getElementById('err'), btn=document.getElementById('submit');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();err.hidden=true;
+    if(form.company_website.value){return;} // honeypot
+    if(!form.checkValidity()){
+      err.textContent=I18N[lang].err;err.hidden=false;
+      var bad=form.querySelector(':invalid');if(bad)bad.scrollIntoView({block:'center',behavior:'smooth'});
+      return;
+    }
+    btn.disabled=true; btn.textContent=I18N[lang].sending;
+    var payload={
+      legal_name:form.legal_name.value.trim(), dba:form.dba.value.trim(),
+      state_formed:form.state_formed.value.trim(), address:form.address.value.trim(),
+      company_phone:form.company_phone.value.trim(), company_email:form.company_email.value.trim(),
+      signer:{name:form.signer_name.value.trim(), title:form.signer_title.value.trim(),
+              email:form.signer_email.value.trim(), cell:form.signer_cell.value.trim()},
+      scope:Array.prototype.map.call(form.querySelectorAll('input[name=scope]:checked'),function(c){return c.value;}),
+      wc:(form.querySelector('input[name=wc]:checked')||{}).value||'',
+      crew:collectCrew(), equipment:form.equipment.value.trim(), references:form.references.value.trim()
+    };
+    var fileInputs=[['w9',form.w9],['wc',form.wc_doc],['gl',form.gl_auto],['dl',form.dl]];
+    var jobs=fileInputs.map(function(p){
+      var f=p[1].files&&p[1].files[0];
+      return f?compress(f).then(function(b){return [p[0],b];}):Promise.resolve(null);
+    });
+    Promise.all(jobs).then(function(files){
+      files=files.filter(Boolean);
+      var total=files.reduce(function(s,f){return s+f[1].size;},0);
+      if(total>MAX_TOTAL){throw {big:true};}
+      var fd=new FormData();
+      fd.append('payload', JSON.stringify(payload));
+      files.forEach(function(f){fd.append(f[0], f[1], f[1].name);});
+      return fetch(endpoint,{method:'POST',body:fd});
+    }).then(function(res){
+      if(!res||!res.ok){throw {net:true};}
+      var name=(payload.legal_name||'—').replace(/[<>&]/g,'');
+      document.getElementById('main').innerHTML=
+        '<div class="done"><div class="mk">✓</div><h2>'+I18N[lang].done_h+'</h2>'+
+        '<p>'+I18N[lang].done_p.replace('%s',name)+'</p></div>';
+      window.scrollTo({top:0,behavior:'smooth'});
+    }).catch(function(ex){
+      btn.disabled=false; btn.textContent=I18N[lang].submit;
+      err.textContent = ex&&ex.big ? I18N[lang].err_big : I18N[lang].err_net;
+      err.hidden=false;
+    });
+  });
+
+  try{var saved=localStorage.getItem('ngf_lang');if(saved==='pt'||saved==='en')apply(saved);}catch(e){}
+})();
+</script>
+</body>
+</html>
