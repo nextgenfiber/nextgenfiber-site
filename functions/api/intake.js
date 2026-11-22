@@ -89,6 +89,8 @@ export async function onRequestPost(context) {
     `COI:          ${payload.coi_delivery === 'broker'
       ? `vem do corretor ${clean(payload?.broker?.name, 120)} <${clean(payload?.broker?.email, 120)}> ${clean(payload?.broker?.phone, 40)}`
       : clean(payload.coi_delivery, 20)}\n` +
+    `NDA:          ${payload.nda_agreed ? `aceito (${clean(payload.nda_version, 20)}) em ${clean(payload.nda_agreed_at, 40)}` : 'NAO aceito'}\n` +
+    `Capacidade:   aereo ${clean(payload?.capacity?.aerial_crews, 4)} · subterraneo ${clean(payload?.capacity?.underground_crews, 4)} · splicing ${clean(payload?.capacity?.splicing_crews, 4)} · estados ${clean(payload?.capacity?.states_working, 80)}\n` +
     `Condicoes:    ${payload.terms_agreed ? `aceitas em ${clean(payload.terms_agreed_at, 40)}` : 'NAO aceitas'}\n` +
     `Anexos:       ${clean(attachments.map((a) => a.filename).join(', '))}\n\n` +
     `Dados completos para a Fase B do /novo-sub: anexo intake.json.`;
