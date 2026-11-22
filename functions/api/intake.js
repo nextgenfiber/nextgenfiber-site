@@ -8,7 +8,9 @@
 //   INTAKE_TO      (default ngf@nextgenfiberllc.com)
 //   INTAKE_FROM    (default "NextGen Fiber <ngf@nextgenfiberllc.com>" — domain verified in Resend)
 
-const OK_FIELDS = { w9: 'w9', wc: 'wc', gl: 'gl', dl: 'dl' };
+const OK_FIELDS = { w9: 'w9', wc: 'wc', gl: 'gl', auto: 'auto', dl: 'dl' };
+// crew driver's licenses: dl_c1 .. dl_c20
+for (let i = 1; i <= 20; i++) OK_FIELDS[`dl_c${i}`] = `dl_c${i}`;
 const MAX_FILE = 8 * 1024 * 1024;
 const MAX_TOTAL = 9 * 1024 * 1024;
 // magic bytes -> (type, ext); client MIME/filename are not trusted
@@ -83,7 +85,11 @@ export async function onRequestPost(context) {
     `Razao social: ${clean(legal)}\n` +
     `Signatario:   ${clean(payload?.signer?.name)} <${clean(payload?.signer?.email, 120)}>\n` +
     `Escopo:       ${clean((payload.scope || []).join(', '))}\n` +
-    `Workers comp: ${clean(payload.wc, 20)}\n` +
+    `Seguro:       ${clean(payload.wc, 20)}${payload.no_vehicle ? ' (sem veiculo)' : ''}\n` +
+    `COI:          ${payload.coi_delivery === 'broker'
+      ? `vem do corretor ${clean(payload?.broker?.name, 120)} <${clean(payload?.broker?.email, 120)}> ${clean(payload?.broker?.phone, 40)}`
+      : clean(payload.coi_delivery, 20)}\n` +
+    `Condicoes:    ${payload.terms_agreed ? `aceitas em ${clean(payload.terms_agreed_at, 40)}` : 'NAO aceitas'}\n` +
     `Anexos:       ${clean(attachments.map((a) => a.filename).join(', '))}\n\n` +
     `Dados completos para a Fase B do /novo-sub: anexo intake.json.`;
 
