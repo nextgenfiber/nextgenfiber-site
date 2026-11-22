@@ -55,7 +55,8 @@ a{color:var(--gold-text)}
 .hint{color:var(--muted);font-size:.86rem;margin-top:4px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
 .grid .full{grid-column:1/-1}
-@media (max-width:560px){.grid{grid-template-columns:1fr}}
+.grid.g3{grid-template-columns:1fr 1fr 1fr}
+@media (max-width:560px){.grid,.grid.g3{grid-template-columns:1fr}}
 label.f{display:flex;flex-direction:column;gap:6px;min-width:0}
 label.f>.lab{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:800;color:var(--muted)}
 .req{color:var(--gold-text)}
@@ -85,6 +86,7 @@ textarea{resize:vertical;min-height:70px}
 
 .team .row{display:grid;grid-template-columns:1.4fr 1fr 1.4fr 1fr auto auto;gap:8px;margin-top:10px;align-items:center}
 .team .row input{font-size:.88rem;padding:8px 10px}
+.team .row .cert{grid-column:1/5}
 .team .rm{width:34px;height:34px;flex:none;border:1px solid var(--line-strong);background:#fff;color:var(--muted);border-radius:9px;cursor:pointer;font-size:1rem;line-height:1;padding:0}
 .team .rm:hover{border-color:var(--ink);color:var(--fg)}
 @media (max-width:620px){.team .row{grid-template-columns:1fr 1fr;padding-right:52px;position:relative;padding:12px;border:1px solid var(--line);border-radius:12px}
@@ -143,7 +145,13 @@ textarea{resize:vertical;min-height:70px}
     <input type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
 
     <section class="sec">
-      <h2><span class="n">1</span> <span data-i="c1">Company</span></h2>
+      <h2><span class="n">1</span> <span data-i="c0">Confidentiality (NDA)</span></h2>
+      <p class="hint" data-ih="h0">Before we share rates, projects and customer details, both companies agree to keep each other’s information confidential. <a href="/docs/nextgen-nda.pdf" target="_blank" rel="noopener">Read the Mutual NDA (PDF, 2 pages)</a>.</p>
+      <label class="chip solo"><input type="checkbox" name="nda" required /> <span data-i="nok">I accept the NextGen Mutual NDA on behalf of the company below</span></label>
+    </section>
+
+    <section class="sec">
+      <h2><span class="n">2</span> <span data-i="c1">Company</span></h2>
       <div class="grid">
         <label class="f full"><span class="lab"><span data-i="f_legal">Legal business name (with LLC / Inc)</span> <span class="req">*</span></span><input name="legal_name" required data-ph="ph_legal" placeholder="e.g. Costa Lima Communication LLC" /></label>
         <label class="f"><span class="lab" data-i="f_dba">Doing business as (if any)</span><input name="dba" /></label>
@@ -155,7 +163,7 @@ textarea{resize:vertical;min-height:70px}
     </section>
 
     <section class="sec">
-      <h2><span class="n">2</span> <span data-i="c2">Who signs the contract</span></h2>
+      <h2><span class="n">3</span> <span data-i="c2">Who signs the contract</span></h2>
       <div class="grid">
         <label class="f"><span class="lab"><span data-i="f_sname">Full name</span> <span class="req">*</span></span><input name="signer_name" required /></label>
         <label class="f"><span class="lab"><span data-i="f_stitle">Title</span> <span class="req">*</span></span><input name="signer_title" required data-ph="ph_stitle" placeholder="Owner / Member" /></label>
@@ -165,7 +173,7 @@ textarea{resize:vertical;min-height:70px}
     </section>
 
     <section class="sec">
-      <h2><span class="n">3</span> <span data-i="c3">Scope you perform</span></h2>
+      <h2><span class="n">4</span> <span data-i="c3">Scope you perform</span></h2>
       <p class="hint" data-i="h3">Check all that apply.</p>
       <div class="chips">
         <label class="chip"><input type="checkbox" name="scope" value="Underground / Directional drilling" /> <span data-i="sc_ug">Underground / Drilling</span></label>
@@ -173,11 +181,22 @@ textarea{resize:vertical;min-height:70px}
         <label class="chip"><input type="checkbox" name="scope" value="Splicing" /> <span data-i="sc_sp">Splicing / OTDR</span></label>
         <label class="chip"><input type="checkbox" name="scope" value="Restoration" /> <span data-i="sc_re">Restoration</span></label>
       </div>
+      <p class="sublab" data-i="cap">Crews available today</p>
+      <div class="grid g3">
+        <label class="f"><span class="lab" data-i="cap_ae">Aerial crews</span><input name="crews_aerial" type="number" min="0" max="99" inputmode="numeric" /></label>
+        <label class="f"><span class="lab" data-i="cap_ug">Underground crews</span><input name="crews_underground" type="number" min="0" max="99" inputmode="numeric" /></label>
+        <label class="f"><span class="lab" data-i="cap_sp">Splicing crews</span><input name="crews_splicing" type="number" min="0" max="99" inputmode="numeric" /></label>
+      </div>
+      <div class="grid">
+        <label class="f"><span class="lab"><span data-i="cap_st">States you work in today</span> <span class="req">*</span></span><input name="states_working" required placeholder="TN, VA, KY" /></label>
+        <label class="f"><span class="lab" data-i="cap_ex">States you would expand to</span><input name="states_expand" placeholder="GA, NC" /></label>
+        <label class="f full"><span class="lab" data-i="cap_fa">Yard / office / storage (city, state)</span><input name="facilities" /></label>
+      </div>
     </section>
 
     <section class="sec">
-      <h2><span class="n">4</span> <span data-i="c4">Insurance</span></h2>
-      <p class="hint" data-i="h4">Workers’ comp, general liability and auto. Pick how you are covered.</p>
+      <h2><span class="n">5</span> <span data-i="c4">Insurance</span></h2>
+      <p class="hint" data-ih="h4">Workers’ comp, general liability and auto. Pick how you are covered. <a href="/docs/nextgen-insurance-requirements.pdf" target="_blank" rel="noopener">Insurance requirements (PDF)</a>.</p>
       <div class="opts">
         <label class="opt"><input type="radio" name="wc" value="own_coi" required />
           <div><div class="ot" data-i="o1t">I carry my own insurance</div><div class="od" data-i="o1d">Workers’ comp, general liability $1M/$2M and auto $1M, with NextGen Fiber LLC as certificate holder.</div></div></label>
@@ -210,7 +229,7 @@ textarea{resize:vertical;min-height:70px}
     </section>
 
     <section class="sec">
-      <h2><span class="n">5</span> <span data-i="c5">Documents</span></h2>
+      <h2><span class="n">6</span> <span data-i="c5">Documents</span></h2>
       <p class="hint" data-i="h5">PDF, JPG or PNG. These are what let us issue your contract — send them here, not by email.</p>
       <div class="files">
         <label class="file"><div class="ft"><span data-i="d_w9">W-9</span> <span class="req">*</span></div><div class="fd" data-i="d_w9d">Signed IRS W-9 (holds your EIN)</div><input type="file" name="w9" accept=".pdf,.jpg,.jpeg,.png" required /><div class="fn" hidden></div></label>
@@ -222,14 +241,14 @@ textarea{resize:vertical;min-height:70px}
     </section>
 
     <section class="sec team">
-      <h2><span class="n">6</span> <span data-i="c6">Crew for FiberLytic</span></h2>
+      <h2><span class="n">7</span> <span data-i="c6">Crew for FiberLytic</span></h2>
       <p class="hint" data-i="h6">Everyone who needs an account. Name · Role · Email · Cell, plus the driver’s license of anyone who drives or runs equipment.</p>
       <div id="rows"></div>
       <button type="button" class="addrow" id="addrow" data-i="addrow">+ Add person</button>
     </section>
 
     <section class="sec">
-      <h2><span class="n">7</span> <span data-i="c7">Equipment & references</span></h2>
+      <h2><span class="n">8</span> <span data-i="c7">Equipment & references</span></h2>
       <div class="grid">
         <label class="f full"><span class="lab" data-i="f_equip">Key equipment</span><textarea name="equipment" data-ph="ph_equip" placeholder="Drills, trucks, splicing rigs, OTDR…"></textarea></label>
         <label class="f full"><span class="lab" data-i="f_ref">References (2 preferred)</span><textarea name="references" data-ph="ph_ref" placeholder="Company · contact · phone"></textarea></label>
@@ -237,7 +256,7 @@ textarea{resize:vertical;min-height:70px}
     </section>
 
     <section class="sec">
-      <h2><span class="n">8</span> <span data-i="c8">Terms</span></h2>
+      <h2><span class="n">9</span> <span data-i="c8">Terms</span></h2>
       <ul class="terms">
         <li data-i="t1">Net 30, counted from NextGen’s acceptance of the invoice.</li>
         <li data-i="t2">10% retainage on each invoice.</li>
@@ -260,7 +279,7 @@ textarea{resize:vertical;min-height:70px}
 </main>
 
 <script is:inline define:vars={{ endpoint, holder, ngfEmail }}>
-var I18N={"en": {"bs": "Knoxville, TN", "htitle": "Subcontractor Intake", "sub": "Your company details and documents, in one submission.", "intro": "Fields marked <b style='color:var(--gold-text)'>*</b> are required. Your <b>EIN goes on the W-9</b> you upload, not in a field here, and banking details are handled by phone — never by email.", "c1": "Company", "f_legal": "Legal business name (with LLC / Inc)", "ph_legal": "e.g. Costa Lima Communication LLC", "f_dba": "Doing business as (if any)", "f_state": "State of formation", "f_addr": "Business address", "ph_addr": "Street, City, State, ZIP", "f_cphone": "Company phone", "f_cemail": "Company email", "c2": "Who signs the contract", "f_sname": "Full name", "f_stitle": "Title", "ph_stitle": "Owner / Member", "f_semail": "Email", "f_scell": "Cell", "c3": "Scope you perform", "h3": "Check all that apply.", "sc_ug": "Underground / Drilling", "sc_ae": "Aerial (strand & fiber)", "sc_sp": "Splicing / OTDR", "sc_re": "Restoration", "c4": "Insurance", "h4": "Workers’ comp, general liability and auto. Pick how you are covered.", "o1t": "I carry my own insurance", "o1d": "Workers’ comp, general liability $1M/$2M and auto $1M, with NextGen Fiber LLC as certificate holder.", "o2t": "State workers’ comp exemption + my own GL and auto", "o2d": "Sole owner, no employees. The exemption covers only the named owner.", "c5": "Documents", "h5": "PDF, JPG or PNG. Insurance certificates only show here if you chose to attach them.", "d_w9": "W-9", "d_w9d": "Signed IRS W-9 (holds your EIN)", "d_wc": "Workers’ Comp COI / Exemption", "d_wcd": "COI or state exemption certificate", "d_gl": "General Liability COI", "d_gld": "$1M per occurrence / $2M aggregate, NextGen as holder", "d_dl": "Driver’s license", "d_dld": "Signatory’s license (front). Crew licenses go in section 6.", "c6": "Crew for FiberLytic", "h6": "Everyone who needs an account. Name · Role · Email · Cell, plus the driver’s license of anyone who drives or runs equipment.", "addrow": "+ Add person", "t_name": "Name", "t_role": "Role", "t_email": "Email", "t_cell": "Cell", "c7": "Equipment & references", "f_equip": "Key equipment", "ph_equip": "Drills, trucks, splicing rigs, OTDR…", "f_ref": "References (2 preferred)", "ph_ref": "Company · contact · phone", "submit": "Send to NextGen", "sending": "Sending…", "err": "Please fill the required fields and attach the required documents.", "err_big": "The files are too large together (max 5 MB). Please send smaller scans or photos.", "err_net": "Could not send. Check your connection and try again, or email ngf@nextgenfiberllc.com.", "done_h": "Thank you — we’ve got it.", "done_p": "Your details and documents for <b>%s</b> are on their way to NextGen. We’ll review the coverage and send your contract to sign. Questions? 551-274-9008.", "o3t": "Use NextGen’s policy (workers’ comp + general liability)", "o3d": "US$150 per covered person, per month, deducted from your invoice. Vehicles still need their own auto policy.", "novh": "We will not use any vehicle on NextGen work (no auto COI)", "dvq": "How will the certificates reach us?", "dv1t": "I’ll attach them below", "dv2t": "My insurance agent will email them to NextGen", "dv2d": "Tell us who the agent is and forward them the request below. We follow up with them directly.", "f_bname": "Agent / agency", "f_bemail": "Agent email", "f_bphone": "Agent phone", "brq": "Send this to your agent (in English):", "copy": "Copy request", "copied": "Copied ✓", "d_au": "Auto COI", "d_aud": "$1M combined single limit, NextGen as holder", "dlbtn": "License", "c8": "Terms", "t1": "Net 30, counted from NextGen’s acceptance of the invoice.", "t2": "10% retainage on each invoice.", "t3": "FiberLytic (the field app your crew uses): US$149 once to open your organization, plus US$49 per person per month, deducted from your invoice.", "t4": "NextGen insurance: US$150 per covered person per month, deducted from your invoice.", "tok": "I have read and agree to these terms", "done_brk": " We’ll watch for the certificates from your agent."}, "pt": {"bs": "Knoxville, TN", "htitle": "Cadastro de Subcontratado", "sub": "Os dados e documentos da sua empresa, numa submissão só.", "intro": "Campos com <b style='color:var(--gold-text)'>*</b> são obrigatórios. Seu <b>EIN vai no W-9</b> que você anexa, não num campo aqui, e dados bancários são tratados por telefone — nunca por e-mail.", "c1": "Empresa", "f_legal": "Razão social (com LLC / Inc)", "ph_legal": "ex.: Costa Lima Communication LLC", "f_dba": "Nome fantasia (se houver)", "f_state": "Estado de constituição", "f_addr": "Endereço comercial", "ph_addr": "Rua, cidade, estado, ZIP", "f_cphone": "Telefone da empresa", "f_cemail": "E-mail da empresa", "c2": "Quem assina o contrato", "f_sname": "Nome completo", "f_stitle": "Cargo", "ph_stitle": "Sócio / Proprietário", "f_semail": "E-mail", "f_scell": "Celular", "c3": "Escopo que você executa", "h3": "Marque todos que se aplicam.", "sc_ug": "Underground / Perfuração", "sc_ae": "Aéreo (strand e fibra)", "sc_sp": "Splicing / OTDR", "sc_re": "Restauração", "c4": "Seguro", "h4": "Workers’ comp, responsabilidade civil (GL) e auto. Escolha como você está coberto.", "o1t": "Tenho seguro próprio", "o1d": "Workers’ comp, GL $1M/$2M e auto $1M, com a NextGen Fiber LLC como certificate holder.", "o2t": "Isenção estadual de workers’ comp + GL e auto próprios", "o2d": "Dono único, sem empregados. A isenção cobre só o dono nomeado.", "c5": "Documentos", "h5": "PDF, JPG ou PNG. Os certificados de seguro só aparecem aqui se você escolheu anexar.", "d_w9": "W-9", "d_w9d": "W-9 do IRS assinado (contém seu EIN)", "d_wc": "COI de Workers’ Comp / Isenção", "d_wcd": "COI ou certificado de isenção estadual", "d_gl": "COI de Responsabilidade Civil (GL)", "d_gld": "$1M por ocorrência / $2M agregado, NextGen como holder", "d_dl": "CNH / Carteira de motorista", "d_dld": "CNH do signatário (frente). As da equipe vão na seção 6.", "c6": "Equipe para o FiberLytic", "h6": "Todos que precisam de acesso. Nome · Função · E-mail · Celular, e a CNH de quem dirige ou opera equipamento.", "addrow": "+ Adicionar pessoa", "t_name": "Nome", "t_role": "Função", "t_email": "E-mail", "t_cell": "Celular", "c7": "Equipamento e referências", "f_equip": "Equipamento principal", "ph_equip": "Perfuratrizes, caminhões, equip. de splicing, OTDR…", "f_ref": "Referências (2 de preferência)", "ph_ref": "Empresa · contato · telefone", "submit": "Enviar para a NextGen", "sending": "Enviando…", "err": "Preencha os campos obrigatórios e anexe os documentos exigidos.", "err_big": "Os arquivos juntos estão grandes demais (máx. 5 MB). Envie digitalizações ou fotos menores.", "err_net": "Não foi possível enviar. Confira a conexão e tente de novo, ou escreva para ngf@nextgenfiberllc.com.", "done_h": "Obrigado — recebemos.", "done_p": "Os dados e documentos de <b>%s</b> estão a caminho da NextGen. Vamos revisar a cobertura e enviar seu contrato para assinatura. Dúvidas? 551-274-9008.", "o3t": "Usar o seguro da NextGen (workers’ comp + GL)", "o3d": "US$ 150 por pessoa coberta, por mês, descontado da sua fatura. Os veículos continuam precisando de seguro auto próprio.", "novh": "Não vamos usar veículo nenhum na obra da NextGen (sem COI de auto)", "dvq": "Como os certificados vão chegar até nós?", "dv1t": "Vou anexar abaixo", "dv2t": "Meu corretor vai mandar por e-mail para a NextGen", "dv2d": "Informe quem é o corretor e encaminhe para ele o pedido abaixo. A gente acompanha direto com ele.", "f_bname": "Corretor / agência", "f_bemail": "E-mail do corretor", "f_bphone": "Telefone do corretor", "brq": "Mande isto para o seu corretor (em inglês):", "copy": "Copiar pedido", "copied": "Copiado ✓", "d_au": "COI de Auto", "d_aud": "$1M limite combinado, NextGen como holder", "dlbtn": "CNH", "c8": "Condições", "t1": "Net 30, contado da aceitação da fatura pela NextGen.", "t2": "Retenção de 10% em cada fatura.", "t3": "FiberLytic (o app de campo da equipe): US$ 149 uma vez para abrir a sua organização, mais US$ 49 por pessoa, por mês, descontados da fatura.", "t4": "Seguro da NextGen: US$ 150 por pessoa coberta, por mês, descontado da fatura.", "tok": "Li e concordo com estas condições", "done_brk": " Vamos ficar de olho nos certificados do seu corretor."}};
+var I18N={"en": {"bs": "Knoxville, TN", "htitle": "Subcontractor Intake", "sub": "Your company details and documents, in one submission.", "intro": "Fields marked <b style='color:var(--gold-text)'>*</b> are required. Your <b>EIN goes on the W-9</b> you upload, not in a field here, and banking details are handled by phone — never by email.", "c1": "Company", "f_legal": "Legal business name (with LLC / Inc)", "ph_legal": "e.g. Costa Lima Communication LLC", "f_dba": "Doing business as (if any)", "f_state": "State of formation", "f_addr": "Business address", "ph_addr": "Street, City, State, ZIP", "f_cphone": "Company phone", "f_cemail": "Company email", "c2": "Who signs the contract", "f_sname": "Full name", "f_stitle": "Title", "ph_stitle": "Owner / Member", "f_semail": "Email", "f_scell": "Cell", "c3": "Scope and capacity", "h3": "Check all that apply.", "sc_ug": "Underground / Drilling", "sc_ae": "Aerial (strand & fiber)", "sc_sp": "Splicing / OTDR", "sc_re": "Restoration", "c4": "Insurance", "h4": "Workers’ comp, general liability and auto. Pick how you are covered. <a href=\"/docs/nextgen-insurance-requirements.pdf\" target=\"_blank\" rel=\"noopener\">Insurance requirements (PDF)</a>.", "o1t": "I carry my own insurance", "o1d": "Workers’ comp, general liability $1M/$2M and auto $1M, with NextGen Fiber LLC as certificate holder.", "o2t": "State workers’ comp exemption + my own GL and auto", "o2d": "Sole owner, no employees. The exemption covers only the named owner.", "c5": "Documents", "h5": "PDF, JPG or PNG. Insurance certificates only show here if you chose to attach them.", "d_w9": "W-9", "d_w9d": "Signed IRS W-9 (holds your EIN)", "d_wc": "Workers’ Comp COI / Exemption", "d_wcd": "COI or state exemption certificate", "d_gl": "General Liability COI", "d_gld": "$1M per occurrence / $2M aggregate, NextGen as holder", "d_dl": "Driver’s license", "d_dld": "Signatory’s license (front). Crew licenses go in section 6.", "c6": "Crew for FiberLytic", "h6": "Everyone who needs an account. Name · Role · Email · Cell, their safety certifications, and the driver’s license of anyone who drives or runs equipment.", "addrow": "+ Add person", "t_name": "Name", "t_role": "Role", "t_email": "Email", "t_cell": "Cell", "c7": "Equipment & references", "f_equip": "Key equipment", "ph_equip": "Drills, trucks, splicing rigs, OTDR…", "f_ref": "References (2 preferred)", "ph_ref": "Company · contact · phone", "submit": "Send to NextGen", "sending": "Sending…", "err": "Please fill the required fields and attach the required documents.", "err_big": "The files are too large together (max 5 MB). Please send smaller scans or photos.", "err_net": "Could not send. Check your connection and try again, or email ngf@nextgenfiberllc.com.", "done_h": "Thank you — we’ve got it.", "done_p": "Your details and documents for <b>%s</b> are on their way to NextGen. We’ll review the coverage and send your contract to sign. Questions? 551-274-9008.", "o3t": "Use NextGen’s policy (workers’ comp + general liability)", "o3d": "US$150 per covered person, per month, deducted from your invoice. Vehicles still need their own auto policy.", "novh": "We will not use any vehicle on NextGen work (no auto COI)", "dvq": "How will the certificates reach us?", "dv1t": "I’ll attach them below", "dv2t": "My insurance agent will email them to NextGen", "dv2d": "Tell us who the agent is and forward them the request below. We follow up with them directly.", "f_bname": "Agent / agency", "f_bemail": "Agent email", "f_bphone": "Agent phone", "brq": "Send this to your agent (in English):", "copy": "Copy request", "copied": "Copied ✓", "d_au": "Auto COI", "d_aud": "$1M combined single limit, NextGen as holder", "dlbtn": "License", "c8": "Terms", "t1": "Net 30, counted from NextGen’s acceptance of the invoice.", "t2": "10% retainage on each invoice.", "t3": "FiberLytic (the field app your crew uses): US$149 once to open your organization, plus US$49 per person per month, deducted from your invoice.", "t4": "NextGen insurance: US$150 per covered person per month, deducted from your invoice.", "tok": "I have read and agree to these terms", "done_brk": " We’ll watch for the certificates from your agent.", "c0": "Confidentiality (NDA)", "h0": "Before we share rates, projects and customer details, both companies agree to keep each other’s information confidential. <a href=\"/docs/nextgen-nda.pdf\" target=\"_blank\" rel=\"noopener\">Read the Mutual NDA (PDF, 2 pages)</a>.", "nok": "I accept the NextGen Mutual NDA on behalf of the company below", "cap": "Crews available today", "cap_ae": "Aerial crews", "cap_ug": "Underground crews", "cap_sp": "Splicing crews", "cap_st": "States you work in today", "cap_ex": "States you would expand to", "cap_fa": "Yard / office / storage (city, state)", "t_cert": "Certifications (OSHA 10, First Aid, aerial lift, flagger, CDL…)"}, "pt": {"bs": "Knoxville, TN", "htitle": "Cadastro de Subcontratado", "sub": "Os dados e documentos da sua empresa, numa submissão só.", "intro": "Campos com <b style='color:var(--gold-text)'>*</b> são obrigatórios. Seu <b>EIN vai no W-9</b> que você anexa, não num campo aqui, e dados bancários são tratados por telefone — nunca por e-mail.", "c1": "Empresa", "f_legal": "Razão social (com LLC / Inc)", "ph_legal": "ex.: Costa Lima Communication LLC", "f_dba": "Nome fantasia (se houver)", "f_state": "Estado de constituição", "f_addr": "Endereço comercial", "ph_addr": "Rua, cidade, estado, ZIP", "f_cphone": "Telefone da empresa", "f_cemail": "E-mail da empresa", "c2": "Quem assina o contrato", "f_sname": "Nome completo", "f_stitle": "Cargo", "ph_stitle": "Sócio / Proprietário", "f_semail": "E-mail", "f_scell": "Celular", "c3": "Escopo e capacidade", "h3": "Marque todos que se aplicam.", "sc_ug": "Underground / Perfuração", "sc_ae": "Aéreo (strand e fibra)", "sc_sp": "Splicing / OTDR", "sc_re": "Restauração", "c4": "Seguro", "h4": "Workers’ comp, responsabilidade civil (GL) e auto. Escolha como você está coberto. <a href=\"/docs/nextgen-insurance-requirements.pdf\" target=\"_blank\" rel=\"noopener\">Requisitos de seguro (PDF em inglês)</a>.", "o1t": "Tenho seguro próprio", "o1d": "Workers’ comp, GL $1M/$2M e auto $1M, com a NextGen Fiber LLC como certificate holder.", "o2t": "Isenção estadual de workers’ comp + GL e auto próprios", "o2d": "Dono único, sem empregados. A isenção cobre só o dono nomeado.", "c5": "Documentos", "h5": "PDF, JPG ou PNG. Os certificados de seguro só aparecem aqui se você escolheu anexar.", "d_w9": "W-9", "d_w9d": "W-9 do IRS assinado (contém seu EIN)", "d_wc": "COI de Workers’ Comp / Isenção", "d_wcd": "COI ou certificado de isenção estadual", "d_gl": "COI de Responsabilidade Civil (GL)", "d_gld": "$1M por ocorrência / $2M agregado, NextGen como holder", "d_dl": "CNH / Carteira de motorista", "d_dld": "CNH do signatário (frente). As da equipe vão na seção 6.", "c6": "Equipe para o FiberLytic", "h6": "Todos que precisam de acesso. Nome · Função · E-mail · Celular, as certificações de segurança e a CNH de quem dirige ou opera equipamento.", "addrow": "+ Adicionar pessoa", "t_name": "Nome", "t_role": "Função", "t_email": "E-mail", "t_cell": "Celular", "c7": "Equipamento e referências", "f_equip": "Equipamento principal", "ph_equip": "Perfuratrizes, caminhões, equip. de splicing, OTDR…", "f_ref": "Referências (2 de preferência)", "ph_ref": "Empresa · contato · telefone", "submit": "Enviar para a NextGen", "sending": "Enviando…", "err": "Preencha os campos obrigatórios e anexe os documentos exigidos.", "err_big": "Os arquivos juntos estão grandes demais (máx. 5 MB). Envie digitalizações ou fotos menores.", "err_net": "Não foi possível enviar. Confira a conexão e tente de novo, ou escreva para ngf@nextgenfiberllc.com.", "done_h": "Obrigado — recebemos.", "done_p": "Os dados e documentos de <b>%s</b> estão a caminho da NextGen. Vamos revisar a cobertura e enviar seu contrato para assinatura. Dúvidas? 551-274-9008.", "o3t": "Usar o seguro da NextGen (workers’ comp + GL)", "o3d": "US$ 150 por pessoa coberta, por mês, descontado da sua fatura. Os veículos continuam precisando de seguro auto próprio.", "novh": "Não vamos usar veículo nenhum na obra da NextGen (sem COI de auto)", "dvq": "Como os certificados vão chegar até nós?", "dv1t": "Vou anexar abaixo", "dv2t": "Meu corretor vai mandar por e-mail para a NextGen", "dv2d": "Informe quem é o corretor e encaminhe para ele o pedido abaixo. A gente acompanha direto com ele.", "f_bname": "Corretor / agência", "f_bemail": "E-mail do corretor", "f_bphone": "Telefone do corretor", "brq": "Mande isto para o seu corretor (em inglês):", "copy": "Copiar pedido", "copied": "Copiado ✓", "d_au": "COI de Auto", "d_aud": "$1M limite combinado, NextGen como holder", "dlbtn": "CNH", "c8": "Condições", "t1": "Net 30, contado da aceitação da fatura pela NextGen.", "t2": "Retenção de 10% em cada fatura.", "t3": "FiberLytic (o app de campo da equipe): US$ 149 uma vez para abrir a sua organização, mais US$ 49 por pessoa, por mês, descontados da fatura.", "t4": "Seguro da NextGen: US$ 150 por pessoa coberta, por mês, descontado da fatura.", "tok": "Li e concordo com estas condições", "done_brk": " Vamos ficar de olho nos certificados do seu corretor.", "c0": "Confidencialidade (NDA)", "h0": "Antes de compartilharmos tarifas, obras e dados de clientes, as duas empresas se comprometem a manter as informações uma da outra em sigilo. <a href=\"/docs/nextgen-nda.pdf\" target=\"_blank\" rel=\"noopener\">Ler o NDA mútuo (PDF em inglês, 2 páginas)</a>.", "nok": "Aceito o NDA mútuo da NextGen em nome da empresa abaixo", "cap": "Equipes disponíveis hoje", "cap_ae": "Equipes de aéreo", "cap_ug": "Equipes de subterrâneo", "cap_sp": "Equipes de splicing", "cap_st": "Estados onde trabalha hoje", "cap_ex": "Estados para onde expandiria", "cap_fa": "Galpão / escritório / depósito (cidade, estado)", "t_cert": "Certificações (OSHA 10, primeiros socorros, aerial lift, flagger, CDL…)"}};
 (function(){
   var MAX_TOTAL = 5 * 1024 * 1024; // teto do payload da function
   var lang='en';
@@ -274,7 +293,7 @@ var I18N={"en": {"bs": "Knoxville, TN", "htitle": "Subcontractor Intake", "sub":
     document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed', b.getAttribute('data-lang')===l?'true':'false');});
     try{localStorage.setItem('ngf_lang',l);}catch(e){}
   }
-  function setRowPh(r){var d=I18N[lang],i=r.querySelectorAll('input');['t_name','t_role','t_email','t_cell'].forEach(function(k,ix){if(i[ix])i[ix].placeholder=d[k];});var sp=r.querySelector('.dlf span');if(sp)sp.textContent=(r.querySelector('.dlf').classList.contains('has')?'✓ ':'')+d.dlbtn;}
+  function setRowPh(r){var d=I18N[lang],i=r.querySelectorAll('input');['t_name','t_role','t_email','t_cell','t_cert'].forEach(function(k,ix){if(i[ix])i[ix].placeholder=d[k];});var sp=r.querySelector('.dlf span');if(sp)sp.textContent=(r.querySelector('.dlf').classList.contains('has')?'✓ ':'')+d.dlbtn;}
   document.querySelectorAll('.lang button').forEach(function(b){b.onclick=function(){apply(b.getAttribute('data-lang'));};});
 
   function wireFile(inp){
@@ -290,7 +309,7 @@ var I18N={"en": {"bs": "Knoxville, TN", "htitle": "Subcontractor Intake", "sub":
   var rows=document.getElementById('rows');
   function addRow(){
     var r=document.createElement('div');r.className='row';
-    r.innerHTML='<input aria-label="Name"><input aria-label="Role"><input type="email" aria-label="Email"><input type="tel" aria-label="Cell"><label class="dlf"><span></span><input type="file" accept=".pdf,.jpg,.jpeg,.png"></label><button type="button" class="rm" aria-label="Remove">×</button>';
+    r.innerHTML='<input aria-label="Name"><input aria-label="Role"><input type="email" aria-label="Email"><input type="tel" aria-label="Cell"><input class="cert" aria-label="Certifications"><label class="dlf"><span></span><input type="file" accept=".pdf,.jpg,.jpeg,.png"></label><button type="button" class="rm" aria-label="Remove">×</button>';
     r.querySelector('.dlf span').textContent=I18N[lang].dlbtn;
     wireFile(r.querySelector('.dlf input'));
     r.querySelector('.rm').onclick=function(){r.remove();};
@@ -317,7 +336,7 @@ var I18N={"en": {"bs": "Knoxville, TN", "htitle": "Subcontractor Intake", "sub":
   function collectCrew(){
     return Array.prototype.map.call(document.querySelectorAll('#rows .row'),function(r){
       var i=r.querySelectorAll('input');
-      return {name:i[0].value.trim(),role:i[1].value.trim(),email:i[2].value.trim(),cell:i[3].value.trim(),_dl:i[4].files&&i[4].files[0]};
+      return {name:i[0].value.trim(),role:i[1].value.trim(),email:i[2].value.trim(),cell:i[3].value.trim(),certs:i[4].value.trim(),_dl:i[5].files&&i[5].files[0]};
     }).filter(function(c){return c.name||c.email;});
   }
 
@@ -377,6 +396,10 @@ var I18N={"en": {"bs": "Knoxville, TN", "htitle": "Subcontractor Intake", "sub":
       coi_delivery:document.getElementById('deliv').hidden?'':val('coi_delivery'),
       broker:document.getElementById('brk').hidden?null:{name:form.broker_name.value.trim(),email:form.broker_email.value.trim(),phone:form.broker_phone.value.trim()},
       terms_agreed:true, terms_agreed_at:new Date().toISOString(),
+      nda_agreed:true, nda_version:'NDA-2026-11', nda_agreed_at:new Date().toISOString(),
+      states_of_work:form.states_working.value.trim(),
+      capacity:{aerial_crews:form.crews_aerial.value, underground_crews:form.crews_underground.value, splicing_crews:form.crews_splicing.value,
+        states_working:form.states_working.value.trim(), states_expand:form.states_expand.value.trim(), facilities:form.facilities.value.trim()},
       crew:[], equipment:form.equipment.value.trim(), references:form.references.value.trim()
     };
     var fileInputs=[];
