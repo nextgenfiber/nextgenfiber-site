@@ -1,25 +1,20 @@
 ---
-// The NextGen monogram is used exactly as supplied. Only the version changes
-// with the background: dark mark on light surfaces, light mark on dark ones.
+// The NextGen logo is always the official artwork — never re-typed in a web font.
+// With the wordmark: the lockup (mark + NEXTGEN / FIBER, gold shadow).
+// Without it: the monogram alone. Dark artwork on light surfaces, light on dark ones.
 interface Props { tone?: 'dark' | 'light'; size?: number; wordmark?: boolean }
 const { tone = 'dark', size = 40, wordmark = true } = Astro.props;
-const src = `/img/brand/mark-${tone}-128.png`;
-const src2 = `/img/brand/mark-${tone}-256.png`;
+const mark = `/img/brand/mark-${tone}-128.png`;
+const mark2 = `/img/brand/mark-${tone}-256.png`;
+const lockup = `/img/brand/lockup-${tone}.png`;
+const lw = Math.round(size * 576 / 180);
 ---
 <span class={`logo logo--${tone}`} style={`--s:${size}px`}>
-  <img src={src} srcset={`${src} 1x, ${src2} 2x`} width={size} height={size} alt={wordmark ? '' : 'NextGen Fiber'} />
-  {wordmark && (
-    <span class="logo__word" aria-label="NextGen Fiber">
-      <span>NEXTGEN</span><span>FIBER</span>
-    </span>
-  )}
+  {wordmark
+    ? <img src={lockup} width={lw} height={size} alt="NextGen Fiber" />
+    : <img src={mark} srcset={`${mark} 1x, ${mark2} 2x`} width={size} height={size} alt="NextGen Fiber" />}
 </span>
 <style>
-  /* Wordmark matches the email signature lockup: two stacked lines, regular
-     weight, very wide tracking, gold offset shadow like the mark's double stroke. */
-  .logo { display: inline-flex; align-items: center; gap: calc(var(--s) * .3); }
-  .logo img { flex: none; }
-  .logo__word { display: grid; gap: calc(var(--s) * .06); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 400; font-size: calc(var(--s) * .36); letter-spacing: .42em; line-height: 1; }
-  .logo--dark .logo__word { color: var(--ink); text-shadow: .07em .07em 0 var(--gold); }
-  .logo--light .logo__word { color: var(--ivory); text-shadow: .07em .07em 0 var(--gold); }
+  .logo { display: inline-flex; align-items: center; }
+  .logo img { flex: none; display: block; height: var(--s); width: auto; }
 </style>
